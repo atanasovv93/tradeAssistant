@@ -1,0 +1,28 @@
+<div class="product-card">
+
+  <div class="content">
+    <a [routerLink]="['/product', product.id]">
+
+      <h4>{{ product.name }}</h4>
+      <img *ngIf="product.image"
+         [src]="product.image"
+         class="product-image" />
+      <p>Категорија: {{ product.category }}</p>
+      <p>Количина: {{ product.quantity }}</p>
+
+      <p *ngIf="product.distributor">Дистрибутер: {{ product.distributor }}</p>
+      <p *ngIf="product.entryDate">Додадено: {{ product.entryDate | date:'mediumDate' }}</p>
+      <p *ngIf="product.expirationDate">
+        Рок на траење: {{ product.expirationDate | date:'mediumDate' }}
+      </p>
+      <p *ngIf="product.purchasePrice">Цена на набавка: {{ product.purchasePrice | currency }}</p>
+      <p *ngIf="product.barcode">Баркод: {{ product.barcode }}</p>
+
+      <p class="price" *ngIf="product.salePrice">
+        {{ product.salePrice | currency }}
+      </p>
+
+    </a>
+  </div>
+
+</div>

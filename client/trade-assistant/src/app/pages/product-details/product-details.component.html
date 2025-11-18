@@ -1,0 +1,19 @@
+<div *ngIf="message" class="message">{{ message }}</div>
+
+<a routerLink="/">Back</a>
+
+
+<div *ngIf="product" class="product-details-card">
+  <h2>{{ product.name }}</h2>
+  <img *ngIf="product.image"
+         [src]="product.image"
+         class="product-image" />
+  <p><strong>Category:</strong> {{ product.category }}</p>
+  <p><strong>Quantity:</strong> {{ product.quantity }}</p>
+  <p *ngIf="product.distributor"><strong>Distributor:</strong> {{ product.distributor }}</p>
+  <p *ngIf="product.entryDate"><strong>Entry Date:</strong> {{ product.entryDate | date:'mediumDate' }}</p>
+  <p *ngIf="product.expirationDate"><strong>Expiration:</strong> {{ product.expirationDate | date:'mediumDate' }}</p>
+  <p *ngIf="product.purchasePrice"><strong>Purchase Price:</strong> {{ product.purchasePrice | currency }}</p>
+  <p *ngIf="product.salePrice"><strong>Sale Price:</strong> {{ product.salePrice | currency }}</p>
+  <p *ngIf="product.barcode"><strong>Barcode:</strong> {{ product.barcode }}</p>
+</div>

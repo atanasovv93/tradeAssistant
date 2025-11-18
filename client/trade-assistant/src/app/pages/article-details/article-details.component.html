@@ -1,0 +1,21 @@
+<a routerLink="/" class="back-button">← Назад кон почетна</a>
+<div class="article-details" *ngIf="news; else loading">
+  <h1>{{ news.title }}</h1>
+  <img *ngIf="news.imageUrl || news.image"
+     [src]="news.imageUrl || news.image"
+     [alt]="news.title"
+     class="news-image">
+  <p class="meta">
+    Автор: {{ news.author || 'Непознат' }} |
+    Датум: {{ news.publishDate | date:'mediumDate' }} |
+    Категорија: {{ news.category }}
+  </p>
+  <div class="content">
+  {{ news.content }}
+</div>
+</div>
+
+<ng-template #loading>
+  <p *ngIf="message">{{ message }}</p>
+  <p *ngIf="!message">Loading...</p>
+</ng-template>

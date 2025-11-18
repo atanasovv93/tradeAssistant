@@ -1,0 +1,123 @@
+.logout-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+
+  &:hover {
+    background-color: #b02a37;
+  }
+}
+
+.add-news-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+
+  input, textarea {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+  }
+
+  button {
+    width: 120px;
+    padding: 0.5rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  .message {
+    margin-top: 0.5rem;
+    font-weight: bold;
+  }
+}
+
+.news-list {
+  .news-item {
+    border: 1px solid #ccc;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+    background: #f9f9f9;
+
+    h4 {
+      margin: 0 0 0.25rem 0;
+    }
+
+    p {
+      margin: 0.25rem 0;
+    }
+
+    img {
+      width: 200px;
+    }
+
+    .actions {
+      margin-top: 0.5rem;
+      display: flex;
+      gap: 0.5rem;
+
+      button {
+        padding: 0.25rem 0.5rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.85rem;
+
+        &:first-child {
+          background-color: #28a745;
+          color: white;
+
+          &:hover {
+            background-color: #1e7e34;
+          }
+        }
+
+        &:last-child {
+          background-color: #dc3545;
+          color: white;
+
+          &:hover {
+            background-color: #b02a37;
+          }
+        }
+      }
+    }
+
+    .edit-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      input, textarea {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      .actions {
+        display: flex;
+        gap: 0.5rem;
+
+        button {
+          width: 80px;
+          padding: 0.5rem;
+        }
+      }
+    }
+  }
+}

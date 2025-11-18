@@ -1,0 +1,19 @@
+.dashboard {
+  padding: 1rem;
+
+  nav {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    a {
+      text-decoration: none;
+      color: #007bff;
+      font-weight: bold;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

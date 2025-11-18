@@ -1,0 +1,34 @@
+<ng-container *ngIf="isLoading; else content">
+  <app-loading-spinner
+    message="Ве молиме почекајте... бидејќи користиме бесплатен сервис, првото вчитување може да трае и до 2 минути.">
+  </app-loading-spinner>
+</ng-container>
+
+
+<ng-template #content>
+  <div *ngIf="message" class="message">{{ message }}</div>
+
+  <div *ngFor="let category of articleByCategory | keyvalue" class="category-section">
+    <h3 class="categoryname">{{ category.key }}</h3>
+
+    <div class="article-card">
+      <app-article-card
+        *ngFor="let article of category.value"
+        [article]="article">
+      </app-article-card>
+    </div>
+  </div>
+
+  <h2>Продукти</h2>
+
+  <div *ngIf="productsList.length; else noProducts" class="product-card">
+    <app-product-card
+      *ngFor="let product of productsList"
+      [product]="product">
+    </app-product-card>
+  </div>
+
+  <ng-template #noProducts>
+    <p>Нема продукти за прикажување</p>
+  </ng-template>
+</ng-template>

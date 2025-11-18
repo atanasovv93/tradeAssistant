@@ -1,0 +1,72 @@
+<button (click)="logout()">Logout</button>
+
+<!-- Додавање нов продукт -->
+<div class="add-product-form">
+  <h3>Додај Продукт</h3>
+  <input [(ngModel)]="newProduct.name" placeholder="Име на продукт" />
+  <input [(ngModel)]="newProduct.image" placeholder="Cloudinary URL на слика" />
+  <img
+    *ngIf="newProduct.image"
+    [src]="newProduct.image"
+    alt="Product image"
+    class="newsImage"
+  />
+  <input [(ngModel)]="newProduct.category" placeholder="Категорија" />
+  <input [(ngModel)]="newProduct.quantity" type="number" placeholder="Количина" />
+  <input [(ngModel)]="newProduct.distributor" placeholder="Дистрибутер" />
+  <input [(ngModel)]="newProduct.entryDate" type="date" placeholder="Датум на внесување" />
+  <input [(ngModel)]="newProduct.expirationDate" type="date" placeholder="Датум на истек" />
+  <input [(ngModel)]="newProduct.purchasePrice" type="number" placeholder="Цена на купување" />
+  <input [(ngModel)]="newProduct.salePrice" type="number" placeholder="Цена на продажба" />
+  <input [(ngModel)]="newProduct.barcode" placeholder="Баркод" />
+  <button (click)="addProduct()">Додај</button>
+  <p>{{ message }}</p>
+</div>
+
+<hr />
+
+<!-- Листа на продукти со edit -->
+<div class="product-list">
+  <h3>Листа на Продукти</h3>
+  <div *ngFor="let product of productsList">
+
+    <!-- Ако продуктот е во edit режим -->
+    <div *ngIf="editingProductId === product.id; else viewMode">
+      <input [(ngModel)]="editedProduct.name" placeholder="Име на продукт" />
+      <input [(ngModel)]="editedProduct.image" placeholder="Cloudinary URL на слика" />
+      <input [(ngModel)]="editedProduct.category" placeholder="Категорија" />
+      <input [(ngModel)]="editedProduct.quantity" type="number" placeholder="Количина" />
+      <input [(ngModel)]="editedProduct.distributor" placeholder="Дистрибутер" />
+      <input [(ngModel)]="editedProduct.entryDate" type="date" placeholder="Датум на внесување" />
+      <input [(ngModel)]="editedProduct.expirationDate" type="date" placeholder="Датум на истек" />
+      <input [(ngModel)]="editedProduct.purchasePrice" type="number" placeholder="Цена на купување" />
+      <input [(ngModel)]="editedProduct.salePrice" type="number" placeholder="Цена на продажба" />
+      <input [(ngModel)]="editedProduct.barcode" placeholder="Баркод" />
+
+      <button (click)="saveEdit()">Save</button>
+      <button (click)="cancelEdit()">Cancel</button>
+    </div>
+
+    <!-- View режим -->
+    <ng-template #viewMode>
+      <h4>{{ product.name }}</h4>
+      <img *ngIf="product.image" [src]="product.image" class="preview" alt="Product image" />
+      <p>Категорија: {{ product.category }}</p>
+      <p>Количина: {{ product.quantity }}</p>
+      <p>Дистрибутер: {{ product.distributor }}</p>
+      <p>Внесено: {{ product.entryDate }} | Истек: {{ product.expirationDate }}</p>
+      <p>Цена купување: {{ product.purchasePrice }} | Цена продажба: {{ product.salePrice }}</p>
+      <p>Баркод: {{ product.barcode }}</p>
+      <button (click)="openDeleteModal(product.id!)">Избриши</button>
+      <button (click)="startEdit(product)">Edit</button>
+    </ng-template>
+
+  </div>
+</div>
+
+<app-confirm-modal
+  *ngIf="showDeleteModal"
+  [message]="'Дали сте сигурни дека сакате да го избришете овој продукт?'"
+  (confirm)="confirmDelete()"
+  (cancel)="cancelDelete()">
+</app-confirm-modal>

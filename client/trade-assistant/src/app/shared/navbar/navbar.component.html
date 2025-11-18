@@ -1,0 +1,55 @@
+<nav class="navbar">
+  <div class="navbar__inner">
+    <div class="logo" routerLink="/">🌍 Trade Assistant</div>
+
+    <div class="menu-icon" [class.open]="isMenuOpen" (click)="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <ul class="nav-links" [class.active]="isMenuOpen">
+      <li>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="toggleMenu()">
+          Почетна
+        </a>
+      </li>
+      <li>
+        <a routerLink="/about" routerLinkActive="active" (click)="toggleMenu()">
+          За нас
+        </a>
+      </li>
+      <li>
+        <a routerLink="/services" routerLinkActive="active" (click)="toggleMenu()">
+          Наши услуги
+        </a>
+      </li>
+      <li>
+        <a routerLink="/contact" routerLinkActive="active" (click)="toggleMenu()">
+          Контакт
+        </a>
+      </li>
+
+      <ng-container *ngIf="!auth.isLoggedIn(); else loggedIn">
+        <li>
+          <a routerLink="/auth/login" routerLinkActive="active" (click)="toggleMenu()">
+            Најава
+          </a>
+        </li>
+      </ng-container>
+
+      <ng-template #loggedIn>
+        <li>
+          <a routerLink="/dashboard" routerLinkActive="active" (click)="toggleMenu()">
+            Уредник
+          </a>
+        </li>
+        <li>
+          <a (click)="logout()">
+            Одјави се
+          </a>
+        </li>
+      </ng-template>
+    </ul>
+  </div>
+</nav>
