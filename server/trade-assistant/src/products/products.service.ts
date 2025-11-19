@@ -17,7 +17,6 @@ export class ProductsService {
   ) {}
 
   async create(createDto: CreateProductDto): Promise<Product> {
-  // ✅ Проверка дали category е валидна
   if (!Object.values(ProductCategory).includes(createDto.category as ProductCategory)) {
     throw new BadRequestException(`Invalid category: ${createDto.category}`);
   }

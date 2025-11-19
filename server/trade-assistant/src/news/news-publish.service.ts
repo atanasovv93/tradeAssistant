@@ -21,7 +21,7 @@ export class NewsPublishService {
 
             if (!analysis || !analysis.trends?.length) {
                 this.logger.warn(
-                    '⚠️ Нема доволно податоци за дневна анализа денес. News не е објавено.',
+                    '⚠️ There is not enough data for a daily analysis today. The daily analysis has not been published.',
                 );
                 return false;
             }
@@ -37,11 +37,11 @@ export class NewsPublishService {
             });
 
             const news: CreateNewsDto = {
-                title: `Анализа на валутите во однос со Американскиот Долар, ден ${todaysDate}`,
+                title: `Analysis of currencies against the US Dollar, day ${todaysDate}`,
                 content: contentLines.join('\n\n'),
                 image: 'https://images.ctfassets.net/hzjmpv1aaorq/2GG2BaOtWnvcy0odw5QseF/59984c27d5c432170cc7a37b72d6d4b4/Untitled_design__13_.png?q=70',
-                author: 'AutoForexBot',
-                category: 'Forex Дневна Анализа',
+                author: 'Forex Analysis',
+                category: 'Forex Daily Analysis',
             };
 
 

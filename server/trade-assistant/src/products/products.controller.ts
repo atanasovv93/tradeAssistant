@@ -11,7 +11,6 @@ import { Roles } from '../auth/roles.decorator';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
-  // 📦 Get all products (with pagination + filters)
   @Get()
   findAll(
     @Query('search') search?: string,
@@ -29,20 +28,17 @@ export class ProductsController {
     });
   }
 
-  // 💰 Get total warehouse value
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('total-value')
   getTotalValue(@Query('mode') mode: 'purchase' | 'sale' = 'purchase') {
     return this.productsService.totalValue(mode);
   }
 
-  // 🔍 Get single product
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.productsService.findOne(id);
   }
 
-  // ➕ Create (admin or manager)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin', 'manager')
   @Post()
@@ -50,7 +46,6 @@ export class ProductsController {
     return this.productsService.create(dto);
   }
 
-  // ✏️ Update
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin', 'manager')
   @Put(':id')
@@ -58,7 +53,6 @@ export class ProductsController {
     return this.productsService.update(id, dto);
   }
 
-  // ❌ Delete
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Delete(':id')

@@ -8,9 +8,9 @@ export class CreateForexRateDto {
   rates: Record<string, number>;
 
   @IsNumber()
-  @IsOptional() // ако API-то не праќа, можеш да го додадеш автоматски при фетч
+  @IsOptional()
   timestamp?: number;
 
   @IsOptional()
-  createdAt?: Date; // Date кога е зачувано во базата, може да е автоматски
+  createdAt?: Date;
 }

@@ -8,13 +8,13 @@ import { NewsService } from './news.service';
 import { NewsController } from './news.controller';
 import { NewsPublishService } from './news-publish.service';
 import { News } from '../entities/news.entity';
-import { ForexRateModule } from '../forexRate/forex-rate.module'; // <<== импорт на ForexRateModule
+import { ForexRateModule } from '../forexRate/forex-rate.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([News]),
-    ScheduleModule.forRoot(), // Овозможува @Cron
-    ForexRateModule,           // <<== додај го овде
+    ScheduleModule.forRoot(),
+    ForexRateModule,           
   ],
   controllers: [NewsController],
   providers: [NewsService, NewsPublishService],

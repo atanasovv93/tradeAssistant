@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -16,7 +13,6 @@ export class UsersController {
 
   constructor(private readonly usersService: UsersService) {}
 
-  // ✅ helper function за валидација на ID со логирање
   private validateId(id: string | number, context: string): number {
     const userId = typeof id === 'string' ? Number(id) : id;
     if (!userId || isNaN(userId)) {
@@ -41,7 +37,6 @@ export class UsersController {
   @Put(':id')
   async updateUser(@Param('id') id: string, @Request() req) {
     const userId = this.validateId(id, 'updateUser');
-    // Дополнителна логика за ажурирање на корисникот може да се додаде овде
     return this.usersService.update(userId, req.body);
   }
 

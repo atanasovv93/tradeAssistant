@@ -12,7 +12,6 @@ export class UsersService {
     const user = await this.findById(userId);
     if (!user) throw new NotFoundException('User not found');
 
-    // Update user properties
     Object.assign(user, body);
     return this.usersRepo.save(user);
   }

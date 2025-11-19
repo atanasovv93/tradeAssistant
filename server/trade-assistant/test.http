@@ -1,6 +1,16 @@
-### 🔹 1. Креирај нов корисник
-POST http://localhost:3000/auth/create-admin
+### 
+POST http://localhost:8080/auth/login
 Content-Type: application/json
+
+{
+  "email": "admin@trade.com",
+  "password": "supersecret"
+}
+
+### 
+POST http://localhost:8080/auth/create-admin
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoibW9kZXJhdG9yQHRyYWRlLmNvbSIsInJvbGUiOiJtb2RlcmF0b3IiLCJpYXQiOjE3NjM1NDg0ODgsImV4cCI6MTc2MzYzNDg4OH0.-a9W1vYYzzbxfsqz6dzF9nn_7QG_eRe0EcWyItB-vvE
 
 {
   "name": "Marija Admin",
@@ -10,11 +20,11 @@ Content-Type: application/json
   "role": "admin"
 }
 
-### 🔹 2. Креирај нов корисник
+### 
 
-POST http://localhost:3000/auth/create-user
+POST http://localhost:8080/auth/create-user
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJlbWFpbCI6Im1hcmlqYS5hZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MDA5Nzc4NSwiZXhwIjoxNzYwMTg0MTg1fQ.WP8xrJmvjJkoVGcGPxk61oGl_kKkuaRa2bI4lLV67ac
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoibW9kZXJhdG9yQHRyYWRlLmNvbSIsInJvbGUiOiJtb2RlcmF0b3IiLCJpYXQiOjE3NjM1NDg0ODgsImV4cCI6MTc2MzYzNDg4OH0.-a9W1vYYzzbxfsqz6dzF9nn_7QG_eRe0EcWyItB-vvE
 
 {
   "name": "Nikola User",
@@ -24,97 +34,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJlbWFpb
   "role": "user"
 }
 
-### 🔹 Избриши корисник со ID 4
-DELETE http://localhost:3000/users/17
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibmlrb2xhQGV4YW1wbGUuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjAwMDM3MzcsImV4cCI6MTc2MDA5MDEzN30._F7Bl4pg8-W9JPJSQsTnLgVt4eZUlxthZrNaVJnLaKc
-
-
-### Login and get JWT
-POST http://localhost:8080/auth/login
+### 
+GET http://localhost:8080/users/
 Content-Type: application/json
-
-{
-  "email": "moderator@trade.com",
-  "password": "supersecret"
-}
-
-### Use JWT to access protected route
-GET http://localhost:3000/news/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJlbWFpbCI6Im1hcmlqYS5hZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MDIxMDc5MiwiZXhwIjoxNzYwMjk3MTkyfQ._74m76iGsjlg6Q3X7qELK2D0y_GflwrbNrXOs8hwfag
-
-### 🔹 2. Земи ги сите корисници### 🔹 2. Земи ги сите корисници
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoibW9kZXJhdG9yQHRyYWRlLmNvbSIsInJvbGUiOiJtb2RlcmF0b3IiLCJpYXQiOjE3NjM1NDg0ODgsImV4cCI6MTc2MzYzNDg4OH0.-a9W1vYYzzbxfsqz6dzF9nn_7QG_eRe0EcWyItB-vvE
 
 
-GET http://localhost:3000/users
-
-###
-
-### 🔹 3. Земи корисник по ID
-GET http://localhost:3000/api/users/1
-
-###
-
-### 🔹 4. Ажурирај корисник
-PUT http://localhost:3000/api/users/1
-Content-Type: application/json
-
-{
-  "password": "071987654"
-}
-
-###
-
-### 🔹 5. Избриши корисник
-DELETE  http://localhost:3000/users/1
+### 
+DELETE  http://localhost:8080/users/4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJlbWFpbCI6Im1hcmlqYS5hZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MDA5Nzc4NSwiZXhwIjoxNzYwMTg0MTg1fQ.WP8xrJmvjJkoVGcGPxk61oGl_kKkuaRa2bI4lLV67ac
 Content-Type: application/json
-###
 
-### 🔹 6. Додај нова трговија (trade) за корисник
-POST http://localhost:3000/api/users/1/trades
-Content-Type: application/json
-
-{
-  "symbol": "ADAUSDT",
-  "amount": 100,
-  "price": 0.3,
-  "type": "buy",
-  "date": "2025-10-06T17:30:00Z"
-}
-
-###
-
-### 🔹 7. Земи ги сите трговии за корисник
-GET http://localhost:3000/api/users/2/trades
-
-###
-
-### 🔹 8. Ажурирај trade
-PUT http://localhost:3000/api/users/2/trades/3
-Content-Type: application/json
-
-{
-  "price": 0.35,
-  "amount": 120
-}
-
-###
-
-### 🔹 9. Избриши trade
-DELETE http://localhost:3000/api/users/2/trades/3
-
-###
-
-### 🔹 10. Земи преглед на трговии со суми и профит
-GET http://localhost:3000/api/users/2/summary
-
-
-
-###
 
 ### Create new product
-POST http://localhost:8080/products
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoibW9kZXJhdG9yQHRyYWRlLmNvbSIsInJvbGUiOiJtb2RlcmF0b3IiLCJpYXQiOjE3NjI4MTUzMjAsImV4cCI6MTc2MjkwMTcyMH0.lHBY7BJ1S5pMNqjvOj1XJu9VxWwhR33B_umIcFFd5J4
+GET http://localhost:8080/products
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoiYWRtaW5AdHJhZGUuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzYzNTQ5MjcxLCJleHAiOjE3NjM2MzU2NzF9.8DOV1R4uXvi7M4eZiVS2el1K1XXH8ckxsu-K0VqVYEk
 Content-Type: application/json
 
 {
@@ -133,40 +67,38 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:8080/products/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoiYWRtaW5AdHJhZGUuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzYyNDcyMDA2LCJleHAiOjE3NjI1NTg0MDZ9.onnWW5fL1M9YVxyWYvcn_k64L8GmozMCMlBNXJ08nuA
+GET http://localhost:8080/products/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoiYWRtaW5AdHJhZGUuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzYzNTQ5MjcxLCJleHAiOjE3NjM2MzU2NzF9.8DOV1R4uXvi7M4eZiVS2el1K1XXH8ckxsu-K0VqVYEk
 Content-Type: application/json
 
 
 ###
 
-PUT http://localhost:3000/products/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJlbWFpbCI6Im1hcmlqYS5hZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MDA5Nzc4NSwiZXhwIjoxNzYwMTg0MTg1fQ.WP8xrJmvjJkoVGcGPxk61oGl_kKkuaRa2bI4lLV67ac
+PUT http://localhost:8080/products/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoiYWRtaW5AdHJhZGUuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzYzNTQ5MjcxLCJleHAiOjE3NjM2MzU2NzF9.8DOV1R4uXvi7M4eZiVS2el1K1XXH8ckxsu-K0VqVYEk
 Content-Type: application/json
 
 {
   "quantity": 130,
-  "salePrice": 55
+  "salePrice": 31
 }
 
 
 ###
-// Земи ја вкупната вредност на магацинот ( набавна цена )
-GET http://localhost:3000/products/total-value?mode=purchase
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJlbWFpbCI6Im1hcmlqYS5hZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MDA5Nzc4NSwiZXhwIjoxNzYwMTg0MTg1fQ.WP8xrJmvjJkoVGcGPxk61oGl_kKkuaRa2bI4lLV67ac
+GET http://localhost:8080/products/total-value?mode=purchase
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoiYWRtaW5AdHJhZGUuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzYzNTQ5MjcxLCJleHAiOjE3NjM2MzU2NzF9.8DOV1R4uXvi7M4eZiVS2el1K1XXH8ckxsu-K0VqVYEk
 Content-Type: application/json
 
 
 
 ###
-// Земи ја вкупната вредност на магацинот ( продажна цена )
-GET http://localhost:3000/products/total-value?mode=sale
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJlbWFpbCI6Im1hcmlqYS5hZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MDA5Nzc4NSwiZXhwIjoxNzYwMTg0MTg1fQ.WP8xrJmvjJkoVGcGPxk61oGl_kKkuaRa2bI4lLV67ac
+GET http://localhost:8080/products/total-value?mode=sale
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoiYWRtaW5AdHJhZGUuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzYzNTQ5MjcxLCJleHAiOjE3NjM2MzU2NzF9.8DOV1R4uXvi7M4eZiVS2el1K1XXH8ckxsu-K0VqVYEk
 Content-Type: application/json
 
 
 
-### 1️⃣ CREATE News
+### 
 POST  http://localhost:8080/news/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoibW9kZXJhdG9yQHRyYWRlLmNvbSIsInJvbGUiOiJtb2RlcmF0b3IiLCJpYXQiOjE3NjI4MTUzMjAsImV4cCI6MTc2MjkwMTcyMH0.lHBY7BJ1S5pMNqjvOj1XJu9VxWwhR33B_umIcFFd5J4
@@ -179,23 +111,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsI
   "category": "technology"
 }
 
-###
 
-### 2️⃣ GET All News
-GET http://localhost:3000/news?page=1&limit=10
+### 
+GET http://localhost:8080/news?page=1&limit=10
 Authorization: Bearer <JWT_TOKEN>
 
-###
 
-### 3️⃣ GET One News by ID
-GET http://localhost:3000/news/1
+### 
+GET http://localhost:8080/news/
 Authorization: Bearer <JWT_TOKEN>
 
-###
 
 ### 4️⃣ UPDATE News
-PUT http://localhost:8080/news/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoibW9kZXJhdG9yQHRyYWRlLmNvbSIsInJvbGUiOiJtb2RlcmF0b3IiLCJpYXQiOjE3NjI4MTUzMjAsImV4cCI6MTc2MjkwMTcyMH0.lHBY7BJ1S5pMNqjvOj1XJu9VxWwhR33B_umIcFFd5J4
+PUT http://localhost:8080/news/9
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoiYWRtaW5AdHJhZGUuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzYzNTQ5MjcxLCJleHAiOjE3NjM2MzU2NzF9.8DOV1R4uXvi7M4eZiVS2el1K1XXH8ckxsu-K0VqVYEk
 Content-Type: application/json
 
 {
@@ -204,39 +133,32 @@ Content-Type: application/json
   "content": "Updated content for NestJS 2025 release"
 }
 
-###
 
 ### 5️⃣ DELETE News
-DELETE http://localhost:3000/news/1
+DELETE http://localhost:8080/news/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJlbWFpbCI6Im1hcmlqYS5hZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MDEwMTQ3MiwiZXhwIjoxNzYwMTg3ODcyfQ.6XlVLDIhtdcMF95jN-byNlpl-v4RZk4dgVv37EQP-hs
 
 ###
 
 ### 6️⃣ SEARCH News (Optional)
-GET http://localhost:3000/news?search=NestJS&page=1&limit=5
+GET http://localhost:8080/news?search=&page=1&limit=5
 Authorization: Bearer <JWT_TOKEN>
 
-###
 
 ### 4️⃣ GET All News with Pagination
-GET http://localhost:3000/news?page=1&limit=2
+GET http://localhost:8080/news?page=1&limit=2
 Authorization: Bearer <JWT_TOKEN>
 
-###
 
 ### 5️⃣ SEARCH News by Title
-GET http://localhost:3000/news?search=Angular&page=1&limit=5
+GET http://localhost:8080/news?search=Денес&page=1&limit=5
 Authorization: Bearer <JWT_TOKEN>
 
-###
 
 ### 6️⃣ SEARCH News by Category
-GET http://localhost:3000/news?search=technology&page=1&limit=10
+GET http://localhost:8080/news?search=technology&page=1&limit=10
 Authorization: Bearer <JWT_TOKEN>
 
 
-
-
 ###
-
 GET http://localhost:8080/forex/fetch
