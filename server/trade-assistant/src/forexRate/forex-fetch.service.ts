@@ -15,7 +15,7 @@ export class ForexFetchService {
   @Cron(CronExpression.EVERY_8_HOURS)
   async fetchAndSave() {
     try {
-      const response = await axios.get<ForexApiResponse>(this.API_URL); // Type-safe
+      const response = await axios.get<ForexApiResponse>(this.API_URL);
       const data = response.data;
 
       if (!data.success) {

@@ -27,7 +27,6 @@ export class NewsService {
     return new HttpHeaders({ Authorization: `Bearer ${token}` });
   }
 
-  // GET не е заштитен, нема Authorization header
   getAll(): Observable<News[]> {
     return this.http.get<News[]>(this.baseUrl);
   }
@@ -36,7 +35,6 @@ export class NewsService {
     return this.http.get<News>(`${this.baseUrl}/${id}`);
   }
 
-  // CREATE, UPDATE и DELETE користат токен
   create(data: News): Observable<News> {
     return this.http.post<News>(this.baseUrl, data, { headers: this.getHeaders() });
   }
