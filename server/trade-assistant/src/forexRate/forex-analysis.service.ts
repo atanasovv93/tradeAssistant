@@ -30,7 +30,7 @@ export class ForexAnalysisService {
         records.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
         if (records.length < 3) {
-            this.logger.warn('Нема доволно податоци за дневна анализа (потребни се 3 фетча).');
+            this.logger.warn('There is not enough data for daily analysis (3 fetches required).');
             return null;
         }
 
@@ -48,9 +48,9 @@ export class ForexAnalysisService {
                 mid: midt,
                 end,
                 dailyChange: Number(change.toFixed(3)),
-                trend: change > 0 ? '📈 Раст во текот на денот'
-                     : change < 0 ? '📉 Пад во текот на денот'
-                     : '⏸️ Без промена',
+                trend: change > 0 ? '📈 Rise during the day'
+                     : change < 0 ? '📉 Fall during the day'
+                     : '⏸️ No change detected',
             };
         });
 
