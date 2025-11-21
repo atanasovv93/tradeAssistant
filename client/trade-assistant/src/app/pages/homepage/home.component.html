@@ -1,6 +1,7 @@
 <ng-container *ngIf="isLoading; else content">
   <app-loading-spinner
-    message="Ве молиме почекајте... бидејќи користиме бесплатен сервис, првото вчитување може да трае и до 2 минути.">
+    message="Loading... The first load may take up to 2 minutes because we are using a free service. Thank you for your patience.
+">
   </app-loading-spinner>
 </ng-container>
 
@@ -19,7 +20,7 @@
     </div>
   </div>
 
-  <h2>Продукти</h2>
+  <h2>Products</h2>
 
   <div *ngIf="productsList.length; else noProducts" class="product-card">
     <app-product-card
@@ -29,6 +30,6 @@
   </div>
 
   <ng-template #noProducts>
-    <p>Нема продукти за прикажување</p>
+    <p>No products to display</p>
   </ng-template>
 </ng-template>

@@ -1,4 +1,4 @@
-<a routerLink="/" class="back-button">← Назад кон почетна</a>
+<app-back-button />
 <div class="article-details" *ngIf="news; else loading">
   <h1>{{ news.title }}</h1>
   <img *ngIf="news.imageUrl || news.image"
@@ -6,9 +6,9 @@
      [alt]="news.title"
      class="news-image">
   <p class="meta">
-    Автор: {{ news.author || 'Непознат' }} |
-    Датум: {{ news.publishDate | date:'mediumDate' }} |
-    Категорија: {{ news.category }}
+    Author: {{ news.author || 'Unknown' }} |
+    Date: {{ news.publishDate | date:'mediumDate' }} |
+    Category: {{ news.category }}
   </p>
   <div class="content">
   {{ news.content }}

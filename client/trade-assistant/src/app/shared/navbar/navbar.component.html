@@ -11,29 +11,29 @@
     <ul class="nav-links" [class.active]="isMenuOpen">
       <li>
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="toggleMenu()">
-          Почетна
+          Home
         </a>
       </li>
       <li>
         <a routerLink="/about" routerLinkActive="active" (click)="toggleMenu()">
-          За нас
+          About Us
         </a>
       </li>
       <li>
         <a routerLink="/services" routerLinkActive="active" (click)="toggleMenu()">
-          Наши услуги
+          Our Services
         </a>
       </li>
       <li>
         <a routerLink="/contact" routerLinkActive="active" (click)="toggleMenu()">
-          Контакт
+          Contact
         </a>
       </li>
 
       <ng-container *ngIf="!auth.isLoggedIn(); else loggedIn">
         <li>
           <a routerLink="/auth/login" routerLinkActive="active" (click)="toggleMenu()">
-            Најава
+            Login
           </a>
         </li>
       </ng-container>
@@ -41,12 +41,12 @@
       <ng-template #loggedIn>
         <li>
           <a routerLink="/dashboard" routerLinkActive="active" (click)="toggleMenu()">
-            Уредник
+            Dashboard
           </a>
         </li>
         <li>
           <a (click)="logout()">
-            Одјави се
+            Logout
           </a>
         </li>
       </ng-template>

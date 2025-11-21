@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ProductsService, Product } from '../../services/product.service';
 import { NgIf } from '@angular/common';
-
+import { BackButtonComponent } from '../../shared/back-button/back-button.component';
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule, NgIf, RouterLink],
+  imports: [CommonModule, NgIf, BackButtonComponent],
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.scss']
 })
@@ -28,7 +28,7 @@ export class ProductDetailsComponent implements OnInit {
   loadProduct(id: number) {
     this.productsService.getOne(id).subscribe({
       next: (res) => this.product = res,
-      error: () => this.message = '❌ Грешка при вчитување на продуктот'
+      error: () => this.message = '❌ Error fetching product details.'
     });
   }
 }

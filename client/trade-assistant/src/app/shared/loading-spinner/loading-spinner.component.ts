@@ -7,5 +7,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./loading-spinner.component.scss']
 })
 export class LoadingSpinnerComponent {
-  @Input() message = 'Вчитување...';
+  @Input() message = 'Loading...';
 }

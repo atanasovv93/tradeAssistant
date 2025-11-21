@@ -28,14 +28,14 @@ export class LoginComponent {
     this.auth.login({ email: this.email, password: this.password }).subscribe({
       next: (res) => {
         this.auth.saveToken(res.access_token);
-        this.message = '✅ Успешна најава!';
+        this.message = '✅ Successful login!';
         this.loading = false;
         if (this.auth.isLoggedIn()) {
           this.router.navigate(['/dashboard']);
         }
       },
       error: () => {
-        this.message = '❌ Неточни податоци.';
+        this.message = '❌ Incorrect credentials.';
         this.loading = false;
       },
     });

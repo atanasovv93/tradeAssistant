@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { AuthService } from '../../auth/auth.service'; // увези го AuthService
-
+import { AuthService } from '../../auth/auth.service';
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -13,7 +12,7 @@ import { AuthService } from '../../auth/auth.service'; // увези го AuthSe
 export class NavbarComponent {
   isMenuOpen = false;
 
-  constructor(public auth: AuthService) {} // public за да можеме да пристапиме од HTML
+  constructor(public auth: AuthService) {}
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
@@ -21,6 +20,6 @@ export class NavbarComponent {
 
   logout() {
     this.auth.logout();
-    window.location.reload(); // да се обнови navbar
+    window.location.reload();
   }
 }

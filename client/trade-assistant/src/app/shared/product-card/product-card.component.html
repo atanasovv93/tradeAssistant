@@ -7,16 +7,16 @@
       <img *ngIf="product.image"
          [src]="product.image"
          class="product-image" />
-      <p>Категорија: {{ product.category }}</p>
-      <p>Количина: {{ product.quantity }}</p>
+      <p>Category: {{ product.category }}</p>
+      <p>Quantity: {{ product.quantity }}</p>
 
-      <p *ngIf="product.distributor">Дистрибутер: {{ product.distributor }}</p>
-      <p *ngIf="product.entryDate">Додадено: {{ product.entryDate | date:'mediumDate' }}</p>
+      <p *ngIf="product.distributor">Distributor: {{ product.distributor }}</p>
+      <p *ngIf="product.entryDate">Added: {{ product.entryDate | date:'mediumDate' }}</p>
       <p *ngIf="product.expirationDate">
-        Рок на траење: {{ product.expirationDate | date:'mediumDate' }}
+        Expiration Date: {{ product.expirationDate | date:'mediumDate' }}
       </p>
-      <p *ngIf="product.purchasePrice">Цена на набавка: {{ product.purchasePrice | currency }}</p>
-      <p *ngIf="product.barcode">Баркод: {{ product.barcode }}</p>
+      <p *ngIf="product.purchasePrice">Purchase Price: {{ product.purchasePrice | currency }}</p>
+      <p *ngIf="product.barcode">Barcode: {{ product.barcode }}</p>
 
       <p class="price" *ngIf="product.salePrice">
         {{ product.salePrice | currency }}

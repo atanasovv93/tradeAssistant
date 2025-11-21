@@ -1,13 +1,13 @@
 <button (click)="logout()" class="logout-btn">Logout</button>
 
 <div class="add-news-form">
-  <h3>📰 Додај Нова Вест</h3>
+  <h3>📰 Add new Article</h3>
 
-  <input [(ngModel)]="newNews.title" placeholder="Наслов" />
+  <input [(ngModel)]="newNews.title" placeholder="Title" />
 
   <input
     [(ngModel)]="newNews.image"
-    placeholder="Cloudinary URL на слика"
+    placeholder="Cloudinary URL of image"
   />
   <img
     *ngIf="newNews.image"
@@ -16,21 +16,20 @@
     class="newsImage"
   />
 
-  <textarea [(ngModel)]="newNews.content" placeholder="Содржина"></textarea>
-  <input [(ngModel)]="newNews.author" placeholder="Автор" />
-  <input [(ngModel)]="newNews.publishDate" type="date" placeholder="Датум" />
-  <input [(ngModel)]="newNews.category" placeholder="Категорија" />
+  <textarea [(ngModel)]="newNews.content" placeholder="Content"></textarea>
+  <input [(ngModel)]="newNews.author" placeholder="Author" />
+  <input [(ngModel)]="newNews.publishDate" type="date" placeholder="Date" />
+  <input [(ngModel)]="newNews.category" placeholder="Category" />
 
-  <button (click)="addNews()">Додај</button>
+  <button (click)="addNews()">Add</button>
   <p class="message">{{ message }}</p>
 </div>
 
 <hr />
 
 <div class="news-list">
-  <h3>📜 Листа на Вести</h3>
+  <h3>📜 News List</h3>
   <div *ngFor="let news of newsList" class="news-item">
-    <!-- Приказ на вест -->
     <div *ngIf="editingNewsId !== news.id">
       <h4>{{ news.title }}</h4>
       <img
@@ -40,22 +39,20 @@
         alt="News image"
       />
       <p>{{ news.content }}</p>
-      <p>Автор: {{ news.author }} | Датум: {{ news.publishDate | date }}</p>
-      <p>Категорија: {{ news.category }}</p>
+      <p>Author: {{ news.author }} | Date: {{ news.publishDate | date }}</p>
+      <p>Category: {{ news.category }}</p>
 
       <div class="actions">
         <button (click)="startEdit(news)">✏️ Edit</button>
-        <!-- ОВА Е ПРОМЕНЕТО: сега отвора модал наместо директно да ја брише -->
-        <button (click)="openDeleteModal(news.id)">🗑️ Избриши</button>
+        <button (click)="openDeleteModal(news.id)">🗑️ Delete</button>
       </div>
     </div>
 
-    <!-- Форма за уредување -->
     <div *ngIf="editingNewsId === news.id" class="edit-form">
-      <input [(ngModel)]="editedNews.title" placeholder="Наслов" />
+      <input [(ngModel)]="editedNews.title" placeholder="Title" />
       <input
         [(ngModel)]="editedNews.image"
-        placeholder="Cloudinary URL на слика"
+        placeholder="Cloudinary URL of image"
       />
       <img
         *ngIf="editedNews.image"
@@ -63,14 +60,14 @@
         class="preview"
         alt="News image"
       />
-      <textarea [(ngModel)]="editedNews.content" placeholder="Содржина"></textarea>
-      <input [(ngModel)]="editedNews.author" placeholder="Автор" />
+      <textarea [(ngModel)]="editedNews.content" placeholder="Content"></textarea>
+      <input [(ngModel)]="editedNews.author" placeholder="Author" />
       <input
         [(ngModel)]="editedNews.publishDate"
         type="date"
-        placeholder="Датум"
+        placeholder="Date"
       />
-      <input [(ngModel)]="editedNews.category" placeholder="Категорија" />
+      <input [(ngModel)]="editedNews.category" placeholder="Category" />
       <div class="actions">
         <button (click)="saveEdit()">💾 Save</button>
         <button (click)="cancelEdit()">❌ Cancel</button>
@@ -79,10 +76,9 @@
   </div>
 </div>
 
-<!-- ✅ МОДАЛ ЗА ПОТВРДА НА БРИШЕЊЕ -->
 <app-confirm-modal
   *ngIf="showDeleteModal"
-  [message]="'Дали сте сигурни дека сакате да ја избришете оваа вест?'"
+  [message]="'Are you sure you want to delete this news article?'"
   (confirm)="confirmDelete()"
   (cancel)="cancelDelete()">
 </app-confirm-modal>

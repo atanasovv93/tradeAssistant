@@ -41,14 +41,14 @@ export class NewsComponent implements OnInit {
       next: (res: any) => {
         this.newsList = Array.isArray(res.items) ? res.items : [];
       },
-      error: () => (this.message = '❌ Грешка при вчитување на вести'),
+      error: () => (this.message = '❌ Error while loading news'),
     });
   }
 
   addNews() {
     this.routesService.create(this.newNews).subscribe({
       next: () => {
-        this.message = '✅ Веста е успешно додадена!';
+        this.message = '✅ Article successfully added!';
         this.loadNews();
         this.newNews = {
           title: '',
@@ -59,7 +59,7 @@ export class NewsComponent implements OnInit {
           category: '',
         };
       },
-      error: () => (this.message = '❌ Грешка при додавање на вест'),
+      error: () => (this.message = '❌ Error while adding article'),
     });
   }
 
@@ -72,12 +72,12 @@ export class NewsComponent implements OnInit {
   if (this.newsIdToDelete !== null) {
     this.routesService.delete(this.newsIdToDelete).subscribe({
       next: () => {
-        this.message = '✅ Веста е успешно избришана!';
+        this.message = '✅ Article successfully deleted!';
         this.loadNews();
         setTimeout(() => (this.message = ''), 3000);
       },
       error: () => {
-        this.message = '❌ Грешка при бришење на вест';
+        this.message = '❌ Error while deleting article';
         setTimeout(() => (this.message = ''), 3000);
       },
       complete: () => {
@@ -103,7 +103,7 @@ export class NewsComponent implements OnInit {
 
   startEdit(news: any) {
     this.editingNewsId = news.id!;
-    this.editedNews = { ...news }; // копија за edit
+    this.editedNews = { ...news };
   }
 
   cancelEdit() {
@@ -116,11 +116,11 @@ export class NewsComponent implements OnInit {
 
     this.routesService.update(this.editingNewsId, this.editedNews).subscribe({
       next: () => {
-        this.message = '✅ Веста е успешно изменета!';
+        this.message = '✅ Article successfully updated!';
         this.loadNews();
         this.cancelEdit();
       },
-      error: () => (this.message = '❌ Грешка при изменување на веста'),
+      error: () => (this.message = '❌ Error while updating article'),
     });
   }
 }

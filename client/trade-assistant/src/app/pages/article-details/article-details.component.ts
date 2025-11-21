@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { NewsService } from '../../services/news.service';
+import { BackButtonComponent } from '../../shared/back-button/back-button.component';
 
 @Component({
   selector: 'app-article-details',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, BackButtonComponent],
   templateUrl: './article-details.component.html',
   styleUrls: ['./article-details.component.scss']
 })
@@ -24,7 +25,7 @@ export class ArticleDetailsComponent implements OnInit {
   if (id) {
     this.routesService.getOne(+id).subscribe({
       next: (res) => this.news = res,
-      error: () => this.message = '❌ Грешка при вчитување на веста'
+      error: () => this.message = '❌ Error fetching article details.'
     });
   }
 }
