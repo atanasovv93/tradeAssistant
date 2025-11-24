@@ -40,21 +40,21 @@ export class ProductsController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin', 'manager')
+  @Roles('admin', 'moderator')
   @Post()
   create(@Body() dto: CreateProductDto) {
     return this.productsService.create(dto);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin', 'manager')
+  @Roles('admin', 'moderator')
   @Put(':id')
   update(@Param('id') id: number, @Body() dto: UpdateProductDto) {
     return this.productsService.update(id, dto);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
+  @Roles('admin', 'moderator')
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.productsService.remove(id);

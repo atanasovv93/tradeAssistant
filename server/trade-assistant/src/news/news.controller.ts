@@ -17,6 +17,8 @@ export class NewsController {
     private readonly newsPublishService: NewsPublishService,
   ) {}
 
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('admin', 'moderator')
 @Get('publish-daily-forex')
 async publishDailyForex() {
   try {
@@ -46,14 +48,14 @@ async publishDailyForex() {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
+  @Roles('admin', 'moderator')
   @Post()
   create(@Body() dto: CreateNewsDto) {
     return this.newsService.create(dto);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
+  @Roles('admin', 'moderator')
   @Put(':id')
   update(@Param('id', new ParseIntPipe({
     errorHttpStatusCode: 400,
@@ -63,7 +65,7 @@ async publishDailyForex() {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
+  @Roles('admin', 'moderator')
   @Delete(':id')
   remove(@Param('id', new ParseIntPipe({
     errorHttpStatusCode: 400,

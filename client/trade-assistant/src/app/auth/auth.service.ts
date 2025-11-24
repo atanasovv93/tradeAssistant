@@ -25,7 +25,14 @@ export class AuthService {
   register(dto: { name: string; email: string; password: string; phone?: string }) {
     return this.http.post(`${this.apiUrl}/register`, dto);
   }
-
+  
+  decodeToken(token: string): any {
+  try {
+    return jwtDecode(token);
+  } catch {
+    return null;
+  }
+}
   // Token management
   saveToken(token: string) {
     localStorage.setItem('token', token);

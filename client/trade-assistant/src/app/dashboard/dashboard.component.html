@@ -2,11 +2,20 @@
   <h2>Dashboard</h2>
   <nav>
     <a routerLink="">Home</a>
-    <a routerLink="news">News</a>
-    <a routerLink="products">Products</a>
+    <a *ngIf="isAdminOrModerator()" routerLink="news">News</a>
+    <a *ngIf="isAdminOrModerator()" routerLink="products">Products</a>
   </nav>
 
   <hr />
 
-  <router-outlet></router-outlet>
+  <!-- Router outlet само за Admin/Moderator -->
+  <div *ngIf="isAdminOrModerator(); else noAccess">
+    <router-outlet></router-outlet>
+  </div>
+
+  <ng-template #noAccess>
+    <p style="color: #ffd700; text-align: center; margin-top: 20px;">
+      You do not have permission to view this content.
+    </p>
+  </ng-template>
 </div>
