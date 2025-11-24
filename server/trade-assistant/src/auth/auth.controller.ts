@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable prettier/prettier */
 import { 
@@ -13,7 +12,6 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 import { RolesGuard } from './roles.guard';
 import { UserRole } from '../users/user-role.enum';
 import { Roles } from './roles.decorator';
-import type { Request as ExpressRequest } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -22,24 +20,70 @@ export class AuthController {
     private readonly usersService: UsersService,
   ) {}
 
+  // ----------------------------
+  // PUBLIC REGISTER (frontend)
+  // ----------------------------
+  @Post('register')
+  async register(@Body() dto: CreateUserDto) {
+    return this.authService.register(
+      dto.name,
+      dto.email,
+      dto.password,
+      dto.phone,
+      UserRole.USER
+    );
+  }
+
+  // ----------------------------
+  // ADMIN CREATE ADMIN
+  // ----------------------------
   @Post('create-admin')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   async createAdmin(@Body() dto: CreateUserDto) {
-    return this.authService.register(dto.name, dto.email, dto.password, dto.phone, UserRole.ADMIN);
+    return this.authService.register(
+      dto.name,
+      dto.email,
+      dto.password,
+      dto.phone,
+      UserRole.ADMIN
+    );
   }
 
-  @Post('create-user')
+  // ----------------------------
+  // ADMIN/MODERATOR CREATE MODERATOR
+  // ----------------------------
+  @Post('create-moderator')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.MODERATOR)
-  async createUser(@Body() dto: CreateUserDto, @Request() req: any) {
-    if (req.user.role === UserRole.MODERATOR && dto.role === UserRole.ADMIN) {
-      dto.role = UserRole.MODERATOR;
+  async createModerator(@Body() dto: CreateUserDto, @Request() req: any) {
+
+    // Moderator cannot create admins
+    if (req.user.role === UserRole.MODERATOR) {
+      return this.authService.register(
+        dto.name,
+        dto.email,
+        dto.password,
+        dto.phone,
+        UserRole.MODERATOR
+      );
     }
-    if (!dto.role) dto.role = UserRole.USER;
-    return this.authService.register(dto.name, dto.email, dto.password, dto.phone, dto.role);
+
+    // Admin can set any role, but default to moderator
+    const finalRole = dto.role || UserRole.MODERATOR;
+
+    return this.authService.register(
+      dto.name,
+      dto.email,
+      dto.password,
+      dto.phone,
+      finalRole
+    );
   }
 
+  // ----------------------------
+  // LOGIN
+  // ----------------------------
   @Post('login')
   @UsePipes(new ValidationPipe({ whitelist: true }))
   async login(@Body() dto: LoginDto) {
@@ -48,6 +92,9 @@ export class AuthController {
     return this.authService.login(user);
   }
 
+  // ----------------------------
+  // DELETE USER
+  // ----------------------------
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.MODERATOR, UserRole.USER)

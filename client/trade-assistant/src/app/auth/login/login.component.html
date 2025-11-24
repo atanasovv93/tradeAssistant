@@ -8,9 +8,17 @@
         <ng-container *ngIf="!loading; else loadingTpl">Login</ng-container>
       </button>
     </form>
+
     <ng-template #loadingTpl>
       <span class="spinner"></span> Loading...
     </ng-template>
+
     <div class="message">{{ message }}</div>
+
+    <!-- REGISTER LINK -->
+    <div class="register-link">
+      Don't have an account?
+      <a routerLink="/auth/register">Register</a>
+    </div>
   </div>
 </div>

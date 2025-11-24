@@ -6,13 +6,13 @@ import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = `${environment.apiUrl}/auth/login`;
+  private apiUrl = `${environment.apiUrl}/auth`;
 
   constructor(private http: HttpClient) {}
 
-  // 📌 Login бара email и password, backend враќа { access_token: '...' }
+  // Login
   login(credentials: { email: string; password: string }): Observable<{ access_token: string }> {
-    return this.http.post<{ access_token: string }>(this.apiUrl, credentials).pipe(
+    return this.http.post<{ access_token: string }>(`${this.apiUrl}/login`, credentials).pipe(
       tap(res => {
         if (res?.access_token) {
           this.saveToken(res.access_token);
@@ -21,7 +21,12 @@ export class AuthService {
     );
   }
 
-  // 📌 Се користи унифициран клуч "token"
+  // Register
+  register(dto: { name: string; email: string; password: string; phone?: string }) {
+    return this.http.post(`${this.apiUrl}/register`, dto);
+  }
+
+  // Token management
   saveToken(token: string) {
     localStorage.setItem('token', token);
   }
@@ -30,7 +35,6 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
-  // ✅ Проверка дали токенот е валиден и не истечен
   isLoggedIn(): boolean {
     const token = this.getToken();
     if (!token) return false;

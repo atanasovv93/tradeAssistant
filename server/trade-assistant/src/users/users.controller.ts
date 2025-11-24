@@ -34,6 +34,8 @@ export class UsersController {
     const userId = this.validateId(id, 'getUser');
     return this.usersService.findById(userId);
   }
+  
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async updateUser(@Param('id') id: string, @Request() req) {
     const userId = this.validateId(id, 'updateUser');
