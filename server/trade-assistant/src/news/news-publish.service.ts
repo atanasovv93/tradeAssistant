@@ -84,7 +84,7 @@ export class NewsPublishService {
             const news: CreateNewsDto = {
                 title: `Crypto Market Daily Analysis - ${todaysDate}`,
                 content: contentLines.join('\n\n'),
-                image: 'https://i.ibb.co/5T3gN6p/crypto-analysis.png',
+                image: 'https://images.ctfassets.net/hzjmpv1aaorq/2GG2BaOtWnvcy0odw5QseF/59984c27d5c432170cc7a37b72d6d4b4/Untitled_design__13_.png?q=70',
                 author: 'Crypto Analysis Bot',
                 category: 'Crypto Daily Analysis',
             };
