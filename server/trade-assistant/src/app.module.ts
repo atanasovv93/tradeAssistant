@@ -8,6 +8,7 @@ import { ProductsModule } from './products/products.module';
 import { NewsModule } from './news/news.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { BinanceModule } from './binance/services/binance.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { AppService } from './app.service';
     AuthModule,
     ProductsModule,
     NewsModule,
+    BinanceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
