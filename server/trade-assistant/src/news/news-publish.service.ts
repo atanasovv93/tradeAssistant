@@ -3,7 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { NewsService } from './news.service';
 import { ForexAnalysisService } from '../forexRate/forex-analysis.service';
-import { CryptoAnalysisService } from '../binance/services/crypto-analysis.service';
+import { CryptoDailyAnalysisService } from '../binance/services/crypto-analysis.service';
 import { CreateNewsDto } from '../dto/news/create-article.dto';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class NewsPublishService {
     constructor(
         private readonly newsService: NewsService,
         private readonly forexAnalysisService: ForexAnalysisService,
-        private readonly cryptoDailyAnalysisService: CryptoAnalysisService,
+        private readonly cryptoDailyAnalysisService: CryptoDailyAnalysisService,
     ) { }
 
     /**

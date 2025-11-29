@@ -5,20 +5,27 @@ import { CryptoKline } from '../entities/crypto-kline.entity';
 import { BinanceService } from './binance.service';
 import { CryptoMarketService } from './crypto-market.service';
 import { CryptoSyncCron } from '../cron/crypto-sync.cron';
-import { CryptoAnalysisService } from './crypto-analysis.service';
+import { CryptoDailyAnalysisService } from './crypto-analysis.service';
+import { CryptoAnalysisService } from './analysis/crypto-analysis.service';
+import { CryptoController } from '../controllers/crypto.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CryptoKline])],
+  imports: [
+    TypeOrmModule.forFeature([CryptoKline]),
+  ],
+  controllers: [CryptoController],
   providers: [
     BinanceService,
     CryptoMarketService,
     CryptoSyncCron,
-    CryptoAnalysisService, // ⬅⬅ важно!
+    CryptoDailyAnalysisService,
+    CryptoAnalysisService,
   ],
   exports: [
     BinanceService,
     CryptoMarketService,
-    CryptoAnalysisService, // ⬅⬅ да може NewsModule да го користи
+    CryptoDailyAnalysisService,
+    CryptoAnalysisService,
   ],
 })
 export class BinanceModule {}

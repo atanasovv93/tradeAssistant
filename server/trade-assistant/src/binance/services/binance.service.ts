@@ -9,6 +9,7 @@ import axios from 'axios';
 import { CryptoKline } from '../entities/crypto-kline.entity';
 import { BinanceKline } from '../interfaces/bininaceKline.interface';
 
+
 @Injectable()
 export class BinanceService {
   private readonly logger = new Logger(BinanceService.name);

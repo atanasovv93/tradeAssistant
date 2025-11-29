@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { CryptoKline } from '../entities/crypto-kline.entity';
 
 @Injectable()
-export class CryptoAnalysisService {
+export class CryptoDailyAnalysisService {
   constructor(
     @InjectRepository(CryptoKline)
     private readonly klineRepo: Repository<CryptoKline>,
