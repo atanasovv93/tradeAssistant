@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { NewsService } from '../../services/news.service';
+import { NewsService } from '../../services/news/news.service';
 import { Router } from '@angular/router';
 import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.component';
 @Component({

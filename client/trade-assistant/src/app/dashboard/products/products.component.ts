@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { ProductsService, Product } from '../../services/product.service';
+import { ProductsService, Product } from '../../services/product/product.service';
 import { Router } from '@angular/router';
 import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.component'; // ✅ Import
 

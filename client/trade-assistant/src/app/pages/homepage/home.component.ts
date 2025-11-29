@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-import { NewsService } from '../../services/news.service';
-import { ProductsService, Product } from '../../services/product.service';
+import { NewsService } from '../../services/news/news.service';
+import { ProductsService, Product } from '../../services/product/product.service';
 
 import { ArticleCardComponent } from '../../shared/article-card/article-card.component';
 import { ProductCardComponent } from '../../shared/product-card/product-card.component';

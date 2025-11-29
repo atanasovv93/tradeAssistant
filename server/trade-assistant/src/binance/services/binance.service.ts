@@ -1,4 +1,7 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable prettier/prettier */
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -22,14 +25,16 @@ export class BinanceService {
     const symbols = symbolsEnv.split(',');
 
     for (const symbol of symbols) {
-      this.logger.log(`🔄 Syncing ${symbol}...`);
+      this.logger.log(`🔄 Full sync for ${symbol}...`);
       await this.syncSymbol(symbol);
     }
   }
 
-
   /**
    * MAIN SMART SYNC
+   * - ако нема податоци: влече 1 година наназад
+   * - ако има: продолжува од последната свеќа
+   * - секогаш sync до КРАЈ НА ВЧЕРА (не до денес)
    */
   async syncSymbol(symbol: string, interval = '1d'): Promise<void> {
     const last = await this.klineRepo.findOne({
@@ -41,21 +46,46 @@ export class BinanceService {
 
     if (!last) {
       // FIRST TIME: sync 1 year
-      this.logger.log(`📥 First sync for ${symbol}, downloading 1 year...`);
+      this.logger.log(`📥 First sync for ${symbol}, downloading last 1 year...`);
       const oneYear = 365 * 24 * 60 * 60 * 1000;
       startTime = Date.now() - oneYear;
     } else {
       // DAILY UPDATE: sync only missing data
       startTime = Number(last.closeTime) + 1;
-      this.logger.log(`📈 Updating ${symbol} from ${new Date(startTime).toISOString()}`);
+      this.logger.log(
+        `📈 Updating ${symbol} from ${new Date(startTime).toISOString()}`,
+      );
     }
 
-    const endTime = Date.now();
+    const now = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000;
+
+    // крај на вчера (23:59:59.999)
+    const endOfYesterday =
+      Math.floor((now - oneDay) / oneDay) * oneDay + (oneDay - 1);
+
+    // safety: никогаш не барај понатаму од endOfYesterday
+    const endTime = Math.min(endOfYesterday, now);
+
+    if (startTime > endTime) {
+      this.logger.log(
+        `⏭ ${symbol} is already up to date. startTime=${new Date(
+          startTime,
+        ).toISOString()}, endTime=${new Date(endTime).toISOString()}`,
+      );
+      return;
+    }
+
+    this.logger.log(
+      `📊 Requesting klines for ${symbol} from ${new Date(
+        startTime,
+      ).toISOString()} to ${new Date(endTime).toISOString()}`,
+    );
 
     const klines = await this.getKlines(symbol, interval, startTime, endTime);
 
     if (!klines.length) {
-      this.logger.log(`✔ ${symbol} is already up to date.`);
+      this.logger.log(`✔ No new klines for ${symbol} (empty response).`);
       return;
     }
 
@@ -71,16 +101,45 @@ export class BinanceService {
     endTime: number,
     retries = 3,
   ): Promise<BinanceKline[]> {
-
     const url = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&startTime=${startTime}&endTime=${endTime}`;
 
     for (let attempt = 1; attempt <= retries; attempt++) {
       try {
         const response = await axios.get<BinanceKline[]>(url, { timeout: 10000 });
         return response.data;
-      } catch (err) {
-        this.logger.warn(`Attempt ${attempt} failed for ${symbol}: ${err}`);
-        if (attempt === retries) throw err;
+      } catch (err: any) {
+        const status = err?.response?.status;
+        const data = err?.response?.data;
+
+        this.logger.warn(
+          `Attempt ${attempt} failed for ${symbol} (status ${status}, code ${data?.code}): ${data?.msg || err.message}`,
+        );
+
+        // Binance specific rate-limit / ban
+        if (data?.code === -1003) {
+          this.logger.error(
+            `🚫 Binance rate limit hit for ${symbol}. Message: ${data?.msg}`,
+          );
+          // Не retry-аме исто барање. Враќаме празно.
+          return [];
+        }
+
+        // 418, 400, 422 -> нема смисла да retry-аме
+        if (status === 418 || status === 400 || status === 422) {
+          this.logger.warn(
+            `⚠️ Non-retryable status ${status} for ${symbol}, returning empty array.`,
+          );
+          return [];
+        }
+
+        if (attempt === retries) {
+          this.logger.error(
+            `❌ Exhausted retries for ${symbol}. Throwing error.`,
+          );
+          throw err;
+        }
+
+        // backoff: 1s, 2s, 3s...
         await new Promise((res) => setTimeout(res, 1000 * attempt));
       }
     }
@@ -109,10 +168,9 @@ export class BinanceService {
   }
 
   async getHistoryFromDB(symbol: string) {
-  return this.klineRepo.find({
-    where: { symbol },
-    order: { openTime: 'ASC' },
-  });
-}
-
+    return this.klineRepo.find({
+      where: { symbol },
+      order: { openTime: 'ASC' },
+    });
+  }
 }

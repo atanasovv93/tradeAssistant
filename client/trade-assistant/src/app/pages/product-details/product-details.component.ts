@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { ProductsService, Product } from '../../services/product.service';
+import { ProductsService, Product } from '../../services/product/product.service';
 import { NgIf } from '@angular/common';
 import { BackButtonComponent } from '../../shared/back-button/back-button.component';
 @Component({

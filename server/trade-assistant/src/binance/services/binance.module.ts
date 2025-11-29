@@ -6,7 +6,7 @@ import { BinanceService } from '../services/binance.service';
 import { CryptoMarketService } from '../services/crypto-market.service';
 import { CryptoController } from '../controllers/crypto.controller';
 import { CryptoSyncCron } from '../cron/crypto-sync.cron';
-import { CryptoAnalysisService } from '../services/analysis/crypto-analysis.service';
+import { CryptoAnalysisService } from './analysis/crypto-analysis.service';
 
 @Module({
   imports: [
