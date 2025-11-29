@@ -9,7 +9,7 @@ import { NewsController } from './news.controller';
 import { NewsPublishService } from './news-publish.service';
 import { News } from '../entities/news.entity';
 import { ForexRateModule } from '../forexRate/forex-rate.module';
-import { BinanceModule } from 'src/binance/services/binance.module';
+import { BinanceModule } from '../binance/services/binance.module';
 
 @Module({
   imports: [

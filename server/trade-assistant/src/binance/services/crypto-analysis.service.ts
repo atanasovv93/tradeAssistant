@@ -15,11 +15,11 @@ export class CryptoAnalysisService {
    * Main function required by NewsPublishService
    */
   async analyzeDailyTrends() {
-    const symbols = (process.env.SYMBOLS || '').split(',');
+    const symbols = (process.env.SYMBOLS || '').split(',').filter(Boolean);
     const trends: Array<{
       symbol: string;
       open: number;
-      mid: number;
+      mid: number | null;
       close: number;
       change: number;
       trend: string;
@@ -37,13 +37,29 @@ export class CryptoAnalysisService {
       const today = data[0];
       const yesterday = data[1];
 
-      const change = ((today.close - yesterday.close) / yesterday.close) * 100;
+      const open = Number(today.open);
+      const high = Number(today.high);
+      const low = Number(today.low);
+      const close = Number(today.close);
+      const prevClose = Number(yesterday.close);
+
+      if (!Number.isFinite(open) || !Number.isFinite(close) || !Number.isFinite(prevClose)) {
+        // ако има скршени податоци, скачи го симболот
+        continue;
+      }
+
+      const change = ((close - prevClose) / prevClose) * 100;
+
+      let mid: number | null = null;
+      if (Number.isFinite(high) && Number.isFinite(low)) {
+        mid = +(((high + low) / 2).toFixed(4));
+      }
 
       trends.push({
         symbol,
-        open: today.open,
-        mid: (today.high + today.low) / 2,
-        close: today.close,
+        open: +open.toFixed(4),
+        mid,
+        close: +close.toFixed(4),
         change: +change.toFixed(2),
         trend: change >= 0 ? '📈 Bullish' : '📉 Bearish',
       });
