@@ -28,8 +28,9 @@ export class NewsPublishService {
                 this.logger.warn('⚠️ Not enough Forex data for publishing.');
                 return false;
             }
-
-            const todaysDate = new Date().toLocaleDateString();
+            const now = Date.now();
+            const oneDay = 24 * 60 * 60 * 1000;
+            const yesterdayDate = (new Date(now - oneDay)).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
 
             const contentLines = analysis.trends.map((t) => {
                 return `${t.currency}: Start ${t.start.toFixed(
@@ -40,7 +41,7 @@ export class NewsPublishService {
             });
 
             const news: CreateNewsDto = {
-                title: `Forex Daily Analysis - ${todaysDate}`,
+                title: `Forex Daily Analysis - ${yesterdayDate}`,
                 content: contentLines.join('\n\n'),
                 image:
                     'https://images.ctfassets.net/hzjmpv1aaorq/2GG2BaOtWnvcy0odw5QseF/59984c27d5c432170cc7a37b72d6d4b4/Untitled_design__13_.png?q=70',
@@ -64,41 +65,42 @@ export class NewsPublishService {
      * 🟪 Daily Crypto Article — 08:05
      */
     @Cron('5 8 * * *')
-    async publishDailyCryptoAnalysis(): Promise<boolean> {
-        try {
-            const analysis = await this.cryptoDailyAnalysisService.analyzeDailyTrends();
+async publishDailyCryptoAnalysis(): Promise<boolean> {
+  try {
+    const analysis = await this.cryptoDailyAnalysisService.analyzeDailyTrends();
 
-            if (!analysis || !analysis.trends?.length) {
-                this.logger.warn('⚠️ Not enough Crypto data for publishing.');
-                return false;
-            }
-
-            const todaysDate = new Date().toLocaleDateString();
-
-            const contentLines = analysis.trends.map(t => {
-                const midText = t.mid == null ? 'N/A' : t.mid;
-                return `${t.symbol}: Open ${t.open}, Mid ${midText}, Close ${t.close}, Change ${t.change}% ${t.trend}`;
-            });
-
-
-            const news: CreateNewsDto = {
-                title: `Crypto Market Daily Analysis - ${todaysDate}`,
-                content: contentLines.join('\n\n'),
-                image:
-                    'https://images.ctfassets.net/hzjmpv1aaorq/2GG2BaOtWnvcy0odw5QseF/59984c27d5c432170cc7a37b72d6d4b4/Untitled_design__13_.png?q=70',
-                author: 'Crypto Analysis Bot',
-                category: 'Crypto Daily Analysis',
-            };
-
-            await this.newsService.create(news);
-            this.logger.log(`✅ Crypto analysis news published`);
-
-            return true;
-        } catch (error) {
-            this.logger.error(
-                `❌ Error publishing daily Crypto analysis: ${error}`,
-            );
-            return false;
-        }
+    if (!analysis || !analysis.trends?.length) {
+      this.logger.warn('⚠️ Not enough Crypto data for publishing.');
+      return false;
     }
+
+    const now = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000;
+    const yesterdayDate = (new Date(now - oneDay)).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+
+    const contentLines = analysis.trends.map(t => {
+      const midText = t.mid == null ? 'N/A' : t.mid;
+      return `${t.symbol}: Open ${t.open}, Mid ${midText}, Close ${t.close}, Change ${t.change}% ${t.trend}`;
+    });
+
+    const news: CreateNewsDto = {
+      title: `Crypto Market Daily Analysis - ${yesterdayDate}`,
+      content: contentLines.join('\n\n'),
+      image:
+        'https://images.ctfassets.net/hzjmpv1aaorq/2GG2BaOtWnvcy0odw5QseF/59984c27d5c432170cc7a37b72d6d4b4/Untitled_design__13_.png?q=70',
+      author: 'Crypto Analysis Bot',
+      category: 'Crypto Daily Analysis',
+    };
+
+    await this.newsService.create(news);
+    this.logger.log(`✅ Crypto analysis news published`);
+
+    return true;
+  } catch (error) {
+    this.logger.error(
+      `❌ Error publishing daily Crypto analysis: ${error}`,
+    );
+    return false;
+  }
+}
 }
