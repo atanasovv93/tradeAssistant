@@ -4,6 +4,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CryptoKline } from '../entities/crypto-kline.entity';
 
+export interface Trend {
+  symbol: string;
+  open: number;
+  mid?: number | null;
+  close: number;
+  change: number;
+  trend: string;
+}
+
 @Injectable()
 export class CryptoDailyAnalysisService {
   constructor(
@@ -12,18 +21,11 @@ export class CryptoDailyAnalysisService {
   ) {}
 
   /**
-   * Main function required by NewsPublishService
+   * Daily trends (последни 2 дена)
    */
   async analyzeDailyTrends() {
     const symbols = (process.env.SYMBOLS || '').split(',').filter(Boolean);
-    const trends: Array<{
-      symbol: string;
-      open: number;
-      mid: number | null;
-      close: number;
-      change: number;
-      trend: string;
-    }> = [];
+    const trends: Trend[] = [];
 
     for (const symbol of symbols) {
       const data = await this.klineRepo.find({
@@ -44,7 +46,6 @@ export class CryptoDailyAnalysisService {
       const prevClose = Number(yesterday.close);
 
       if (!Number.isFinite(open) || !Number.isFinite(close) || !Number.isFinite(prevClose)) {
-        // ако има скршени податоци, скачи го симболот
         continue;
       }
 
@@ -59,6 +60,78 @@ export class CryptoDailyAnalysisService {
         symbol,
         open: +open.toFixed(4),
         mid,
+        close: +close.toFixed(4),
+        change: +change.toFixed(2),
+        trend: change >= 0 ? '📈 Bullish' : '📉 Bearish',
+      });
+    }
+
+    return { trends };
+  }
+
+  /**
+   * Weekly trends (последни 8 дена)
+   */
+  async analyzeWeeklyTrends() {
+    const symbols = (process.env.SYMBOLS || '').split(',').filter(Boolean);
+    const trends: Trend[] = [];
+
+    for (const symbol of symbols) {
+      const data = await this.klineRepo.find({
+        where: { symbol },
+        order: { openTime: 'DESC' },
+        take: 8, // 7 дена + денес
+      });
+
+      if (data.length < 2) continue;
+
+      const first = data[data.length - 1]; 
+      const last = data[0];               
+
+      const open = Number(first.open);
+      const close = Number(last.close);
+
+      const change = ((close - open) / open) * 100;
+
+      trends.push({
+        symbol,
+        open: +open.toFixed(4),
+        close: +close.toFixed(4),
+        change: +change.toFixed(2),
+        trend: change >= 0 ? '📈 Bullish' : '📉 Bearish',
+      });
+    }
+
+    return { trends };
+  }
+
+  /**
+   * Monthly trends (последни 31 ден)
+   */
+  async analyzeMonthlyTrends() {
+    const symbols = (process.env.SYMBOLS || '').split(',').filter(Boolean);
+    const trends: Trend[] = [];
+
+    for (const symbol of symbols) {
+      const data = await this.klineRepo.find({
+        where: { symbol },
+        order: { openTime: 'DESC' },
+        take: 31,
+      });
+
+      if (data.length < 2) continue;
+
+      const first = data[data.length - 1];
+      const last = data[0];
+
+      const open = Number(first.open);
+      const close = Number(last.close);
+
+      const change = ((close - open) / open) * 100;
+
+      trends.push({
+        symbol,
+        open: +open.toFixed(4),
         close: +close.toFixed(4),
         change: +change.toFixed(2),
         trend: change >= 0 ? '📈 Bullish' : '📉 Bearish',

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Body, Delete, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { ForexRateService } from './forex-rate.service';
 import { ForexAnalysisService, DailyAnalysis } from './forex-analysis.service';
 import { ForexFetchService } from './forex-fetch.service';
@@ -20,8 +20,8 @@ export class ForexRateController {
   }
 
   @Get('latest')
-  async getLatest() {
-    return this.forexRateService.findLatest();
+  async getLatest(@Query('base') base = 'USD') {
+    return this.forexRateService.getLatestRebased(base);
   }
 
   @Get('history')

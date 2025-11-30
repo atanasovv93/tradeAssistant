@@ -1,9 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ForexRate } from './entities/forex-rate.entity';
 import { CreateForexRateDto } from './dto/create-forex-rate.dto';
+import { buildAllBaseRates, RebasedResponse } from './utils/forex-rebase.util';
+import { ForexApiResponse } from './dto/forex-api-response.dto';
 
 @Injectable()
 export class ForexRateService {
@@ -32,6 +34,33 @@ export class ForexRateService {
   });
   return latest;
 }
+
+  async getLatestRebased(base: string): Promise<RebasedResponse> {
+    const last = await this.findLatest();
+
+    if (!last) {
+      throw new NotFoundException('No forex rates found in database yet.');
+    }
+
+    const apiLike: ForexApiResponse = {
+      success: true,
+      base: last.base,
+      timestamp: last.timestamp,
+      rates: last.rates,
+    };
+
+    const allBases = buildAllBaseRates(apiLike);
+    const upperBase = base.toUpperCase();
+
+    if (!allBases[upperBase]) {
+      throw new NotFoundException(
+        `Base currency "${upperBase}" not available from latest forex data.`,
+      );
+    }
+
+    return allBases[upperBase];
+  }
+
 
 async deleteById(id: number) {
   const result = await this.forexRepository.delete(id);

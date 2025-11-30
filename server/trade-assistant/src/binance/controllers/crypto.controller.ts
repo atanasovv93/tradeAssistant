@@ -3,6 +3,7 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { CryptoMarketService } from '../services/crypto-market.service';
 import { CryptoDailyAnalysisService } from '../services/crypto-analysis.service';
 import { CryptoAnalysisService } from '../services/analysis/crypto-analysis.service';
+import { Trend } from '../services/crypto-analysis.service'; // исправи го патот според твојата структура
 
 @Controller('crypto')
 export class CryptoController {
@@ -23,9 +24,20 @@ export class CryptoController {
   }
 
   @Get('daily-trends')
-  async dailyTrends() {
-    return this.cryptoDailyAnalysisService.analyzeDailyTrends();
-  }
+async dailyTrends(): Promise<{ trends: Trend[] }> {
+  return this.cryptoDailyAnalysisService.analyzeDailyTrends();
+}
+
+@Get('weekly-trends')
+async weeklyTrends(): Promise<{ trends: Trend[] }> {
+  return this.cryptoDailyAnalysisService.analyzeWeeklyTrends();
+}
+
+@Get('monthly-trends')
+async monthlyTrends(): Promise<{ trends: Trend[] }> {
+  return this.cryptoDailyAnalysisService.analyzeMonthlyTrends();
+}
+
 
   @Get('analysis/:symbol')
   async analyze(@Param('symbol') symbol: string) {
