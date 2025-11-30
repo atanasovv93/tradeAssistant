@@ -5,8 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 
-const API_URL = environment.apiUrl;
-
 export interface CryptoRate {
   base: string;
   rates: Record<string, number>;
@@ -48,7 +46,7 @@ export interface CryptoAnalysis {
 })
 export class CryptoService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = `${API_URL}/crypto`;
+    private baseUrl = `${environment.apiUrl}/crypto`;
 
 
   syncAll(): Observable<any> {

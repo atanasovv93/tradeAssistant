@@ -33,7 +33,7 @@ export interface ForexTrendsResponse {
 })
 export class ForexService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = `${API_URL}/forex`;
+    private baseUrl = `${environment.apiUrl}/forex`;
 
 
   getLatest(): Observable<ForexRate> {
