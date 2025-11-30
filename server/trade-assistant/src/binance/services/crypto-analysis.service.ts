@@ -18,10 +18,10 @@ export class CryptoDailyAnalysisService {
   constructor(
     @InjectRepository(CryptoKline)
     private readonly klineRepo: Repository<CryptoKline>,
-  ) {}
+  ) { }
 
   /**
-   * Daily trends (последни 2 дена)
+   * Daily trends
    */
   async analyzeDailyTrends() {
     const symbols = (process.env.SYMBOLS || '').split(',').filter(Boolean);
@@ -70,7 +70,7 @@ export class CryptoDailyAnalysisService {
   }
 
   /**
-   * Weekly trends (последни 8 дена)
+   * Weekly trends
    */
   async analyzeWeeklyTrends() {
     const symbols = (process.env.SYMBOLS || '').split(',').filter(Boolean);
@@ -80,13 +80,13 @@ export class CryptoDailyAnalysisService {
       const data = await this.klineRepo.find({
         where: { symbol },
         order: { openTime: 'DESC' },
-        take: 8, // 7 дена + денес
+        take: 8,
       });
 
       if (data.length < 2) continue;
 
-      const first = data[data.length - 1]; 
-      const last = data[0];               
+      const first = data[data.length - 1];
+      const last = data[0];
 
       const open = Number(first.open);
       const close = Number(last.close);
@@ -106,17 +106,20 @@ export class CryptoDailyAnalysisService {
   }
 
   /**
-   * Monthly trends (последни 31 ден)
+   * Monthly trends
    */
   async analyzeMonthlyTrends() {
     const symbols = (process.env.SYMBOLS || '').split(',').filter(Boolean);
     const trends: Trend[] = [];
 
+    const now = new Date();
+    const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+
     for (const symbol of symbols) {
       const data = await this.klineRepo.find({
         where: { symbol },
         order: { openTime: 'DESC' },
-        take: 31,
+        take: daysInMonth,
       });
 
       if (data.length < 2) continue;
