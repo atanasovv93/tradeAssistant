@@ -1,0 +1,29 @@
+.forex-widget {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  max-width: 400px;
+}
+
+.loading {
+  color: blue;
+}
+
+.error {
+  color: red;
+}
+
+.controls {
+  margin-bottom: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}

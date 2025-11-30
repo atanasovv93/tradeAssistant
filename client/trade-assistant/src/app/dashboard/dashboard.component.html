@@ -14,8 +14,9 @@
   </div>
 
   <ng-template #noAccess>
-    <p style="color: #ffd700; text-align: center; margin-top: 20px;">
-      You do not have permission to view this content.
-    </p>
+    <section class="no-access">
+      <app-forex-dashboard-widget />
+      <app-crypto-dashboard-widget />
+    </section>
   </ng-template>
 </div>

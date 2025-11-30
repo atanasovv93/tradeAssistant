@@ -59,5 +59,6 @@ export class CryptoController {
   @Get('analysis/:symbol')
   async analyze(@Param('symbol') symbol: string) {
     return this.cryptoAnalysisService.analyze(symbol);
+    
   }
 }

@@ -1,0 +1,30 @@
+<div class="crypto-widget">
+  <h3>Crypto Dashboard</h3>
+
+  <div *ngIf="loading()">Loading...</div>
+  <div *ngIf="error()" class="error">{{ error() }}</div>
+
+  <table *ngIf="!loading() && !error() && latest().length">
+    <thead>
+      <tr>
+        <th>Symbol</th>
+        <th>Close Price</th>
+        <th>Trend</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rate of latest()">
+        <td>{{ rate.symbol }}</td>
+        <td>{{ rate.value | number:'1.2-8' }}</td>
+        <td>
+          <span class="trend" [ngClass]="{
+            bullish: rate.trend?.includes('📈'),
+            bearish: rate.trend?.includes('📉')
+          }">{{ rate.trend }}</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="!loading() && !error()">Last updated: {{ getFormattedDate() }}</p>
+</div>
