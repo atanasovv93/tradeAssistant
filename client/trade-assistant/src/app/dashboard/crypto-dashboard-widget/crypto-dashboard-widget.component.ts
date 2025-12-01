@@ -12,10 +12,10 @@ import { CryptoService } from '../../services/binance/binance.service';
   styleUrls: ['./crypto-dashboard-widget.component.scss'],
 })
 export class CryptoDashboardWidgetComponent implements OnInit {
-  private readonly cryptoService = inject(CryptoService);
+private readonly cryptoService = inject(CryptoService);
 
-  // закучани симболи (секогаш достапни)
-  readonly fixedBases = ['BTC', 'ADA'];
+  // заклучани симболи (секогаш достапни)
+  readonly fixedBases = ['BTC',  'ETH', 'BNB', 'SOL', 'LTC', 'ADA', 'AXS'];
 
   // state
   latest = signal<any[]>([]);
@@ -23,37 +23,44 @@ export class CryptoDashboardWidgetComponent implements OnInit {
   error = signal<string | null>(null);
 
   ngOnInit(): void {
-    this.loadRates();
+    this.loadRates(); // повик на методот за вчитување на rates
   }
 
   private loadRates() {
     this.loading.set(true);
     this.error.set(null);
 
-    // земи trends од daily-trends API
-    this.cryptoService.getDailyTrends().subscribe({
+    this.cryptoService.getMultiple24hTrends(
+      this.fixedBases.map(s => s + 'USDT')
+    ).subscribe({
       next: (res) => {
-        // филтрираме само заклучаните симболи
-        const filtered = res.trends
-          .filter(t => this.fixedBases.includes(t.symbol.replace('USDT', '')))
-          .map(t => ({
-            symbol: t.symbol,
-            value: t.close, // или t.mid ако сакаш средна цена
-            trend: t.trend,
-          }));
-
+        const filtered = res.trends.map(t => ({
+          symbol: t.symbol,
+          value: t.close,
+          trend: t.trend
+        }));
         this.latest.set(filtered);
         this.loading.set(false);
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error(err);
         this.error.set('Не можам да ги вчитам курсевите моментално.');
         this.loading.set(false);
-      },
+      }
     });
   }
 
   getFormattedDate(): string {
-    return new Date().toLocaleString();
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    return now.toLocaleString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+      timeZone: 'UTC'
+    }) + ' (UTC)';
   }
 }

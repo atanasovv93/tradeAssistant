@@ -1,17 +1,18 @@
 .crypto-widget {
-  position: relative;
+  display: flex;
+  flex-direction: column;
   background: #1e1e2f;
   padding: 16px;
   border-radius: 8px;
   color: #fff;
   font-family: Arial, sans-serif;
+  max-height: 385px;
 
   h3 {
     margin-bottom: 12px;
   }
 
   table {
-    width: 100%;
     border-collapse: collapse;
 
     th, td {
@@ -43,5 +44,10 @@
   .error {
     color: #ff5252;
     font-weight: bold;
+  }
+
+  .showedtime {
+    display: flex;
+    justify-content: center;
   }
 }

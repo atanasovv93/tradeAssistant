@@ -18,13 +18,15 @@
         <td>{{ rate.value | number:'1.2-8' }}</td>
         <td>
           <span class="trend" [ngClass]="{
-            bullish: rate.trend?.includes('📈'),
-            bearish: rate.trend?.includes('📉')
+            bullish: rate.trend === '📈',
+            bearish: rate.trend === '📉'
           }">{{ rate.trend }}</span>
         </td>
       </tr>
     </tbody>
   </table>
 
-  <p *ngIf="!loading() && !error()">Last updated: {{ getFormattedDate() }}</p>
+  <div class="showedtime">
+    <p *ngIf="!loading() && !error()">Last updated: {{ getFormattedDate() }}</p>
+  </div>
 </div>

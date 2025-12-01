@@ -18,9 +18,9 @@
   }
 }
 
-.no-access {
+.widgets-container {
   display: flex;
-  gap: 20px;
   justify-content: center;
-  flex-wrap: wrap;
+  gap: 20px;             // простор меѓу компонентите
+  align-items: stretch;   // израмнува по висина
 }
