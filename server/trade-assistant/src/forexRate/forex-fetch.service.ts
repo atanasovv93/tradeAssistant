@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 import { Cron, CronExpression } from '@nestjs/schedule';
@@ -7,23 +8,31 @@ import { ForexApiResponse } from './dto/forex-api-response.dto';
 @Injectable()
 export class ForexFetchService {
   private readonly logger = new Logger(ForexFetchService.name);
-  private readonly API_URL =
-    'https://api.forexrateapi.com/v1/latest?api_key=e72bc7f3a3c16ca609354e27734c4c8f&base=USD&currencies=GBP,CHF,EUR,CAD,AUD,MKD';
+
+  // директно од process.env
+  private readonly apiUrl = process.env.FOREX_API_URL;
+  private readonly apiKey = process.env.FOREX_API_KEY ;
 
   constructor(private readonly forexRateService: ForexRateService) {}
 
   @Cron(CronExpression.EVERY_8_HOURS)
   async fetchAndSave() {
     try {
-      const response = await axios.get<ForexApiResponse>(this.API_URL);
-      const data = response.data;
-
-      if (!data.success) {
-        this.logger.warn('⚠️ Forex API response unsuccessful.');
+      if (!this.apiKey) {
+        this.logger.error('❌ FOREX_API_KEY не е подесен во process.env');
         return;
       }
 
-      // Пополнуваме timestamp (ако го нема, користиме тековен)
+      // Fixer стил: ?access_key=...
+      const url = `${this.apiUrl}?access_key=${this.apiKey}&symbols=USD,AUD,CAD,GBP,CHF,MKD&format=1`;
+      const response = await axios.get<ForexApiResponse>(url);
+      const data = response.data;
+
+      if (!data.success) {
+        this.logger.warn('⚠️ Forex API response unsuccessful.', data);
+        return;
+      }
+
       const timestamp = data.timestamp ?? Math.floor(Date.now() / 1000);
 
       await this.forexRateService.create({

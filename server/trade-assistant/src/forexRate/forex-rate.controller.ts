@@ -20,7 +20,7 @@ export class ForexRateController {
   }
 
   @Get('latest')
-  async getLatest(@Query('base') base = 'USD') {
+  async getLatest(@Query('base') base = 'EUR') {
     return this.forexRateService.getLatestRebased(base);
   }
 
