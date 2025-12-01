@@ -102,7 +102,7 @@ export class BinanceService {
     endTime: number,
     retries = 3,
   ): Promise<BinanceKline[]> {
-    const url = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&startTime=${startTime}&endTime=${endTime}`;
+    const url = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&startTime=${startTime}&endTime=${endTime}&limit=500`;
 
     for (let attempt = 1; attempt <= retries; attempt++) {
       try {

@@ -9,7 +9,7 @@ export class CryptoSyncCron {
 
   constructor(private readonly cryptoService: CryptoMarketService) {}
 
-  @Cron('55 7 * * *') // секоја сабајле 07:55 (UTC)
+  @Cron('30 9 * * *') // секоја сабајле 09:30 (UTC)
 async handleDailySync() {
   this.logger.log('Starting daily crypto sync...');
   await this.cryptoService.syncDaily();
