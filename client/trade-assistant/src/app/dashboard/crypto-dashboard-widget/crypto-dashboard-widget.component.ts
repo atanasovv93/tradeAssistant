@@ -52,15 +52,13 @@ private readonly cryptoService = inject(CryptoService);
 
   getFormattedDate(): string {
     const now = new Date();
-    now.setHours(0, 0, 0, 0);
     return now.toLocaleString('en-GB', {
       day: '2-digit',
       month: 'short',
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-      hour12: false,
-      timeZone: 'UTC'
-    }) + ' (UTC)';
+      hour12: true,
+    });
   }
 }

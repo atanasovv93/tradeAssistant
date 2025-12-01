@@ -24,3 +24,11 @@
   gap: 20px;             // простор меѓу компонентите
   align-items: stretch;   // израмнува по висина
 }
+
+
+@media (max-width: 800px) {
+  .widgets-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
