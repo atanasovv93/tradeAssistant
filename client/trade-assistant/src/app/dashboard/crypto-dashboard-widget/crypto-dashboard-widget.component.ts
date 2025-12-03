@@ -37,7 +37,8 @@ private readonly cryptoService = inject(CryptoService);
         const filtered = res.trends.map(t => ({
           symbol: t.symbol,
           value: t.close,
-          trend: t.trend
+          trend: t.trend,
+          changePercent: t.priceChangePercent,
         }));
         this.latest.set(filtered);
         this.loading.set(false);

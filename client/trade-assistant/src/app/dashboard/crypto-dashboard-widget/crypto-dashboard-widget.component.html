@@ -17,11 +17,21 @@
         <td>{{ rate.symbol }}</td>
         <td>{{ rate.value | number:'1.2-8' }}</td>
         <td>
-          <span class="trend" [ngClass]="{
-            bullish: rate.trend === '📈',
-            bearish: rate.trend === '📉'
-          }">{{ rate.trend }}</span>
-        </td>
+  <span class="trend"
+    [ngClass]="{
+      bullish: rate.trend === '📈',
+      bearish: rate.trend === '📉'
+    }">
+
+    {{ rate.trend }}
+    <strong>
+      {{ rate.trend === '📈' ? '↑' : '↓' }}
+    </strong>
+
+    {{ rate.changePercent | number:'1.2-2' }}%
+  </span>
+</td>
+
       </tr>
     </tbody>
   </table>

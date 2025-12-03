@@ -5,6 +5,10 @@ export class CreateNewsDto {
   @IsString()
   title: string;
 
+  @IsOptional()
+  @IsString()
+  fixedMorningMessage?: string;
+
   @IsString()
   content: string;
   

@@ -51,3 +51,11 @@
     justify-content: center;
   }
 }
+
+@media  (max-width: 450px) {
+  .crypto-widget {
+    max-height: none;
+    overflow-y: auto;
+  }
+
+}

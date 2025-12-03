@@ -10,6 +10,7 @@ export interface CryptoTrend {
   mid?: number | null;
   close: number;
   change: number;
+  priceChangePercent: number;
   trend: string;
 }
 
@@ -34,11 +35,12 @@ export class CryptoService {
       map(res => {
         const open = parseFloat(res.openPrice);
         const close = parseFloat(res.lastPrice);
+        const priceChangePercent = parseFloat(res.priceChangePercent);
         const change = close - open;
         const trend = change > 0 ? '📈' : change < 0 ? '📉' : '➡️';
         const mid = (open + close) / 2;
 
-        return { symbol: res.symbol, open, mid, close, change, trend } as CryptoTrend;
+        return { symbol: res.symbol, open, mid, close, change, priceChangePercent, trend } as CryptoTrend;
       })
     );
   }
@@ -49,7 +51,10 @@ export class CryptoService {
   getMultiple24hTrends(symbols: string[]): Observable<CryptoTrendsResponse> {
     const requests = symbols.map(s => this.get24hTrend(s));
     return forkJoin(requests).pipe(
-      map(trends => ({ trends }))
+      map(trends => {
+        console.log(trends);
+        return { trends };
+      })
     );
   }
 

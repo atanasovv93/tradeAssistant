@@ -17,9 +17,9 @@ export class NewsPublishService {
     ) { }
 
     /**
-     * 🟦 Daily Forex Article — 08:00
+     * 🟦 Daily Forex Article — 08:05
      */
-    @Cron('0 8 * * *')
+    @Cron('5 8 * * *')
     async publishDailyForexAnalysis(): Promise<boolean> {
         try {
             const analysis = await this.forexAnalysisService.analyzeDailyTrends();
@@ -42,6 +42,7 @@ export class NewsPublishService {
 
             const news: CreateNewsDto = {
                 title: `Forex Daily Analysis - ${yesterdayDate}`,
+                fixedMorningMessage: `Good morning! Here is the daily analysis of the Forex market for ${yesterdayDate}.`,
                 content: contentLines.join('\n\n'),
                 image:
                     'https://images.ctfassets.net/hzjmpv1aaorq/2GG2BaOtWnvcy0odw5QseF/59984c27d5c432170cc7a37b72d6d4b4/Untitled_design__13_.png?q=70',
@@ -62,9 +63,9 @@ export class NewsPublishService {
     }
 
     /**
-     * 🟪 Daily Crypto Article — 08:05
+     * 🟪 Daily Crypto Article — 08:06
      */
-    @Cron('5 8 * * *')
+    @Cron('6 8 * * *')
 async publishDailyCryptoAnalysis(): Promise<boolean> {
   try {
     const analysis = await this.cryptoDailyAnalysisService.analyzeDailyTrends();
@@ -85,6 +86,7 @@ async publishDailyCryptoAnalysis(): Promise<boolean> {
 
     const news: CreateNewsDto = {
       title: `Crypto Market Daily Analysis - ${yesterdayDate}`,
+      fixedMorningMessage: `Good morning! Here is the daily analysis of the Crypto market for ${yesterdayDate}.`,
       content: contentLines.join('\n\n'),
       image:
         'https://images.ctfassets.net/hzjmpv1aaorq/2GG2BaOtWnvcy0odw5QseF/59984c27d5c432170cc7a37b72d6d4b4/Untitled_design__13_.png?q=70',
