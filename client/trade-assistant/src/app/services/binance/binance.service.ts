@@ -52,7 +52,6 @@ export class CryptoService {
     const requests = symbols.map(s => this.get24hTrend(s));
     return forkJoin(requests).pipe(
       map(trends => {
-        console.log(trends);
         return { trends };
       })
     );

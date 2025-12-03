@@ -1,6 +1,6 @@
-/* eslint-disable prettier/prettier */
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
+import { interval, switchMap, Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CryptoService } from '../../services/binance/binance.service';
 
@@ -11,19 +11,45 @@ import { CryptoService } from '../../services/binance/binance.service';
   templateUrl: './crypto-dashboard-widget.component.html',
   styleUrls: ['./crypto-dashboard-widget.component.scss'],
 })
-export class CryptoDashboardWidgetComponent implements OnInit {
-private readonly cryptoService = inject(CryptoService);
+export class CryptoDashboardWidgetComponent implements OnInit, OnDestroy {
 
-  // заклучани симболи (секогаш достапни)
-  readonly fixedBases = ['BTC',  'ETH', 'BNB', 'SOL', 'LTC', 'ADA', 'AXS'];
+  private readonly cryptoService = inject(CryptoService);
+  private refreshSub!: Subscription;
 
-  // state
+  readonly fixedBases = ['BTC', 'ETH', 'BNB', 'SOL', 'LTC', 'ADA', 'AXS'];
+
   latest = signal<any[]>([]);
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
 
   ngOnInit(): void {
-    this.loadRates(); // повик на методот за вчитување на rates
+    this.loadRates();
+
+    this.refreshSub = interval(5000)
+      .pipe(
+        switchMap(() => this.cryptoService.getMultiple24hTrends(
+          this.fixedBases.map(s => s + 'USDT')
+        ))
+      )
+      .subscribe({
+        next: (res) => {
+          const filtered = res.trends.map(t => ({
+            symbol: t.symbol,
+            value: t.close,
+            trend: t.trend,
+            changePercent: t.priceChangePercent,
+          }));
+
+          this.latest.set(filtered);
+        },
+        error: () => {
+          this.error.set('Cannot load rates at the moment.');
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    if (this.refreshSub) this.refreshSub.unsubscribe();
   }
 
   private loadRates() {
@@ -43,9 +69,8 @@ private readonly cryptoService = inject(CryptoService);
         this.latest.set(filtered);
         this.loading.set(false);
       },
-      error: (err: any) => {
-        console.error(err);
-        this.error.set('Не можам да ги вчитам курсевите моментално.');
+      error: () => {
+        this.error.set('Cannot load rates at the moment.');
         this.loading.set(false);
       }
     });
