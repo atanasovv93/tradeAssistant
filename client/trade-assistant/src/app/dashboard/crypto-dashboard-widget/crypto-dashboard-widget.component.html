@@ -26,10 +26,10 @@
 
     {{ Math.abs(rate.changePercent) < 0.01 ? '≈' : rate.trend }}
     <strong>
-      {{ Math.abs(rate.changePercent) < 0.01 ? '➖' : (rate.trend === '📈' ? '↑' : '↓') }}
+      {{ Math.abs(rate.changePercent) < 0.01 ? '' : (rate.trend === '📈' ? '↑' : '↓') }}
     </strong>
 
-    {{ Math.abs(rate.changePercent) < 0.01 ? '~ 0' : (rate.changePercent | number:'1.2-2') }}%
+    {{ Math.abs(rate.changePercent) < 0.01 ? '0' : (rate.changePercent | number:'1.2-2') }}%
   </span>
 </td>
 
