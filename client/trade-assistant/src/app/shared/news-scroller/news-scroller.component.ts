@@ -20,6 +20,7 @@ export class NewsScrollerComponent implements OnInit, OnDestroy {
 
   articles: News[] = [];
   isLoading = true;
+  elRef: any;
 
   ngOnInit(): void {
     this.loadNews();
@@ -52,7 +53,11 @@ export class NewsScrollerComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.refreshSub) this.refreshSub.unsubscribe();
   }
-  togglePause() {
-  this.isPaused = !this.isPaused;
-}
+
+  togglePause(event: MouseEvent) {
+    event.stopPropagation(); // спречува propagation до document
+    this.isPaused = !this.isPaused;
+  }
+
+  
 }

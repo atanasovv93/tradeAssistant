@@ -1,5 +1,6 @@
 .news-scroller {
-  width: 97%;
+  width: 100%;
+  justify-self: center;
   overflow: hidden;
   padding: 1.5rem 0;
   display: flex;
@@ -10,7 +11,7 @@
     display: flex;
     gap: 1rem;
     width: max-content;
-    animation: scroll-left 45s linear infinite;
+    animation: scroll-left 60s linear infinite;
 
     .news-item {
       flex: 0 0 auto;
@@ -40,7 +41,7 @@
     100% { transform: translateX(-50%); }
   }
 
-  &:hover .scroller-track { 
+  &:hover .scroller-track {
     animation-play-state: running;
   }
 

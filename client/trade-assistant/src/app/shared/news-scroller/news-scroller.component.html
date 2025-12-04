@@ -1,6 +1,8 @@
 <div class="news-scroller"
      *ngIf="!isLoading && articles.length"
-     (click)="togglePause()">
+     (click)="togglePause($event)"
+     (mouseenter)="isPaused = true"
+     (mouseleave)="isPaused = false">
   <div class="scroller-track" [ngStyle]="{'animation-play-state': isPaused ? 'paused' : 'running'}">
     <ng-container *ngFor="let article of articles">
       <div class="news-item">
