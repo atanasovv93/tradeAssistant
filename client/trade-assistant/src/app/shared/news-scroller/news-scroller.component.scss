@@ -2,10 +2,11 @@
   width: 100%;
   justify-self: center;
   overflow: hidden;
-  padding: 1.5rem 0;
+  padding: 1.9rem 0;
   display: flex;
   justify-content: center;
-  background: linear-gradient(180deg, #f7f9fb 0%, #f0f3f7 100%);
+  background: inherit; // наследува background од parent
+  transition: background 0.3s, color 0.3s;
 
   .scroller-track {
     display: flex;
@@ -17,7 +18,7 @@
       flex: 0 0 auto;
       width: 230px;
       height: 360px;
-      background: linear-gradient(180deg, #fff 0%, #f9fafc 100%);
+      background: inherit; // наследува background од parent
       border-radius: 12px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.12);
       display: flex;
@@ -25,13 +26,13 @@
       justify-content: space-between;
       padding: 1rem;
       cursor: pointer;
-      transition: transform 0.3s ease;
+      transition: background 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
 
       &:hover { transform: translateY(-5px); box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
 
       img { width: 100%; height: 140px; object-fit: cover; border-radius: 8px; margin-bottom: 0.7rem; }
-      h3 { font-size: 1rem; font-weight: 700; color: #111; margin: 0.3rem 0; line-height: 1.3; }
-      p { font-size: 0.9rem; color: #555; flex-grow: 1; margin-bottom: 1rem; }
+      h3 { font-size: 1rem; font-weight: 700; color: inherit; margin: 0.3rem 0; line-height: 1.3; }
+      p { font-size: 0.9rem; color: inherit; flex-grow: 1; margin-bottom: 1rem; }
       .btn { margin-top: auto; padding: 0.45rem 0.9rem; background: linear-gradient(90deg, #007bff,#00a6ff); color: #fff; border-radius: 6px; text-decoration: none; }
     }
   }
@@ -44,7 +45,6 @@
   &:hover .scroller-track {
     animation-play-state: running;
   }
-
 
   // Mobile / tablet
   @media (max-width: 370px) {

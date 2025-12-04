@@ -2,7 +2,34 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh; /* целата висина на екранот */
-}
+
+&.dark-mode {
+    background: #121212;
+    color: #eee;
+
+    .news-scroller {
+      background: #1e1e1e;
+
+      .news-item {
+        background: #2c2c2c;
+        color: #eee;
+
+        .btn {
+          background: linear-gradient(90deg, #4b9cff, #00a6ff);
+          color: #fff;
+
+          &:hover {
+            background: linear-gradient(90deg, #007bff, #0056b3);
+          }
+        }
+
+        h3, p {
+          color: #eee;
+        }
+      }
+    }
+  }
+  }
 
 app-navbar {
   flex-shrink: 0; /* не дозволува navbar-от да се стеснува */
@@ -16,4 +43,38 @@ router-outlet {
 app-footer {
   flex-shrink: 0;
   margin-top: auto; /* го бутка футерот долу */
+}
+
+.darkmode-btn {
+  position: fixed;
+  top: 83px;
+  left: 10px;
+  z-index: 1000;
+  opacity: 0.8;
+
+  button {
+    background: #1e252d;
+    color: #fff;
+    border: none;
+    padding: 5px 9px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+
+    &:hover {
+      background: #0056b3;
+    }
+  }
+}
+
+@media (max-width: 770px) {
+  .darkmode-btn {
+    top: 60px;
+    left: 5px;
+
+    button {
+      padding: 4px 7px;
+      font-size: 12px;
+    }
+  }
 }

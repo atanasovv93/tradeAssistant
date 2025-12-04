@@ -1,4 +1,6 @@
 <app-navbar></app-navbar>
-
+<div class="darkmode-btn"><button (click)="toggleDarkMode()">
+    {{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}
+  </button></div>
 <router-outlet></router-outlet>
 <app-footer></app-footer>
