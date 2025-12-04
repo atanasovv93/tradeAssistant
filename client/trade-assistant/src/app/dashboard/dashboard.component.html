@@ -13,11 +13,7 @@
   <div *ngIf="isAdminOrModerator(); else noAccess">
     <router-outlet></router-outlet>
   </div>
-  
+
   <ng-template #noAccess>
-      <div class="widgets-container">
-      <app-forex-dashboard-widget />
-      <app-crypto-dashboard-widget />
-      </div>
   </ng-template>
 </div>

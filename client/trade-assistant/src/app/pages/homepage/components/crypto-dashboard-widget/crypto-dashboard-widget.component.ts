@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
 import { interval, switchMap, Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { CryptoService } from '../../services/binance/binance.service';
-import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component.js';
+import { CryptoService } from '../../../../services/binance/binance.service';
+import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/loading-spinner.component';
 @Component({
   selector: 'app-crypto-dashboard-widget',
   standalone: true,

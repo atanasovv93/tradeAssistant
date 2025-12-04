@@ -1,0 +1,24 @@
+<div class="news-scroller"
+     *ngIf="!isLoading && articles.length"
+     (click)="togglePause()">
+  <div class="scroller-track" [ngStyle]="{'animation-play-state': isPaused ? 'paused' : 'running'}">
+    <ng-container *ngFor="let article of articles">
+      <div class="news-item">
+        <img [src]="article.image" [alt]="article.title" />
+        <h3>{{ article.title | slice:0:40 }}{{ article.title.length > 40 ? '...' : '' }}</h3>
+        <p>{{ article.content | slice:0:80 }}{{ article.content.length > 80 ? '...' : '' }}</p>
+        <a [routerLink]="['/news', article.id]" class="btn">Read</a>
+      </div>
+    </ng-container>
+
+    <!-- duplicate for smooth infinite scroll -->
+    <ng-container *ngFor="let article of articles">
+      <div class="news-item">
+        <img [src]="article.image" [alt]="article.title" />
+        <h3>{{ article.title | slice:0:40 }}{{ article.title.length > 40 ? '...' : '' }}</h3>
+        <p>{{ article.content | slice:0:80 }}{{ article.content.length > 80 ? '...' : '' }}</p>
+        <a [routerLink]="['/news', article.id]" class="btn">Read</a>
+      </div>
+    </ng-container>
+  </div>
+</div>

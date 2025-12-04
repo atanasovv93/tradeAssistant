@@ -4,21 +4,23 @@ import { RouterModule } from '@angular/router';
 
 import { NewsService } from '../../services/news/news.service';
 import { ProductsService, Product } from '../../services/product/product.service';
-
-import { ArticleCardComponent } from '../../shared/article-card/article-card.component';
+import { NewsScrollerComponent } from '../../shared/news-scroller/news-scroller.component';
 import { ProductCardComponent } from '../../shared/product-card/product-card.component';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
-
+import { CryptoDashboardWidgetComponent } from './components/crypto-dashboard-widget/crypto-dashboard-widget.component';
+import { ForexDashboardWidgetComponent } from './components/forex-dashboard-widget/forex-dashboard-widget.component';
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     CommonModule,
     RouterModule,
-    ArticleCardComponent,
     ProductCardComponent,
-    LoadingSpinnerComponent
-  ],
+    LoadingSpinnerComponent,
+    NewsScrollerComponent,
+    CryptoDashboardWidgetComponent,
+    ForexDashboardWidgetComponent
+],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
@@ -47,7 +49,6 @@ export class HomeComponent implements OnInit {
     this.newsService.getAll().subscribe({
       next: (res: any) => {
         this.articleList = Array.isArray(res) ? res : res.items ? res.items : [];
-        this.articleByCategory = this.newsService.groupByCategory(this.articleList);
       },
       error: () => (this.message = '❌ Грешка при вчитување на вести'),
       complete: () => (this.isLoadingNews = false)
