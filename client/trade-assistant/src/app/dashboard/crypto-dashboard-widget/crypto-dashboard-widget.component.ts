@@ -3,11 +3,11 @@ import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
 import { interval, switchMap, Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CryptoService } from '../../services/binance/binance.service';
-
+import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component.js';
 @Component({
   selector: 'app-crypto-dashboard-widget',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, LoadingSpinnerComponent],
   templateUrl: './crypto-dashboard-widget.component.html',
   styleUrls: ['./crypto-dashboard-widget.component.scss'],
 })
@@ -21,6 +21,7 @@ export class CryptoDashboardWidgetComponent implements OnInit, OnDestroy {
   latest = signal<any[]>([]);
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
+  Math = Math;
 
   ngOnInit(): void {
     this.loadRates();

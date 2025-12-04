@@ -1,5 +1,6 @@
 <div class="dashboard">
   <h2>Dashboard</h2>
+
   <nav>
     <a routerLink="">Home</a>
     <a *ngIf="isAdminOrModerator()" routerLink="news">News</a>
@@ -12,7 +13,7 @@
   <div *ngIf="isAdminOrModerator(); else noAccess">
     <router-outlet></router-outlet>
   </div>
-
+  
   <ng-template #noAccess>
       <div class="widgets-container">
       <app-forex-dashboard-widget />

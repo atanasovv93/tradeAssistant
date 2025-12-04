@@ -1,7 +1,7 @@
 <div class="forex-widget">
   <h3>Forex Rates</h3>
 
-  <div *ngIf="loading()" class="loading">Loading...</div>
+  <app-loading-spinner max-width="100px"max-height="100px" *ngIf="loading()"></app-loading-spinner>
   <div *ngIf="error()" class="error">{{ error() }}</div>
 
   <div class="controls">

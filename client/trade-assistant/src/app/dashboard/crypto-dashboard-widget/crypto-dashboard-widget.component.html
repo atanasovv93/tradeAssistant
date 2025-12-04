@@ -1,7 +1,7 @@
 <div class="crypto-widget">
   <h3>Crypto Dashboard</h3>
 
-  <div *ngIf="loading()">Loading...</div>
+  <app-loading-spinner max-width="100px" max-height="100px" *ngIf="loading()"></app-loading-spinner>
   <div *ngIf="error()" class="error">{{ error() }}</div>
 
   <table *ngIf="!loading() && !error() && latest().length">
@@ -19,18 +19,20 @@
         <td>
   <span class="trend"
     [ngClass]="{
-      bullish: rate.trend === '📈',
-      bearish: rate.trend === '📉'
+      bullish: rate.trend === '📈' && Math.abs(rate.changePercent) >= 0.01,
+      bearish: rate.trend === '📉' && Math.abs(rate.changePercent) >= 0.01,
+      neutral: Math.abs(rate.changePercent) < 0.01
     }">
 
-    {{ rate.trend }}
+    {{ Math.abs(rate.changePercent) < 0.01 ? '≈' : rate.trend }}
     <strong>
-      {{ rate.trend === '📈' ? '↑' : '↓' }}
+      {{ Math.abs(rate.changePercent) < 0.01 ? '➖' : (rate.trend === '📈' ? '↑' : '↓') }}
     </strong>
 
-    {{ rate.changePercent | number:'1.2-2' }}%
+    {{ Math.abs(rate.changePercent) < 0.01 ? '~ 0' : (rate.changePercent | number:'1.2-2') }}%
   </span>
 </td>
+
 
       </tr>
     </tbody>

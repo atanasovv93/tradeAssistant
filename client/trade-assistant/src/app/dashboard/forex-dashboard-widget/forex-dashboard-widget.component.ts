@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ForexService, ForexRate } from '../../services/forex.service/forex.service.js';
+import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component.js';
 
 @Component({
   selector: 'app-forex-dashboard-widget',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, LoadingSpinnerComponent],
   templateUrl: './forex-dashboard-widget.component.html',
   styleUrls: ['./forex-dashboard-widget.component.scss'],
 })
