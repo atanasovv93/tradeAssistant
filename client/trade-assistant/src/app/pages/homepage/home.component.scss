@@ -1,14 +1,15 @@
 .product-card {
   display: grid;
-  grid-template-columns: repeat(5, minmax(200px, 1fr));
+  justify-self: center;
+  grid-template-columns: repeat(3, minmax(161px, 1fr));
   gap: 1.5rem;
-  max-width: fit-content;
-  max-height: fit-content;
+  max-width: 50%;
+  max-height: 70%;
   margin: 1rem 1rem 2rem;
 
 
   @media (max-width: 1600px) {
-    grid-template-columns: repeat(5, minmax(200px, 1fr));
+    grid-template-columns: repeat(3, minmax(200px, 1fr));
   }
   @media (max-width: 850px) {
     grid-template-columns: repeat(3, minmax(200px, 1fr));
@@ -18,7 +19,7 @@
     grid-template-columns: repeat(2, minmax(200px, 1fr));
   }
   @media (max-width: 500px) {
-    grid-template-columns: repeat(1, minmax(170px, 1fr));
+    grid-template-columns: repeat(1, minmax(200px, 1fr));
   }
 }
 

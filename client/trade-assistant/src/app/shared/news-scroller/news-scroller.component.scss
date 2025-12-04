@@ -12,7 +12,7 @@
     display: flex;
     gap: 1rem;
     width: max-content;
-    animation: scroll-left 60s linear infinite;
+    animation: scroll-left 95s linear infinite;
 
     .news-item {
       flex: 0 0 auto;
@@ -20,7 +20,7 @@
       height: 360px;
       background: inherit; // наследува background од parent
       border-radius: 12px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+      box-shadow: 0 3px 10px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;

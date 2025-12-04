@@ -23,8 +23,12 @@ export interface ForexTrendItem {
 }
 
 export interface ForexTrendsResponse {
+  base: string;
+  from: string;
+  to: string;
   trends: ForexTrendItem[];
 }
+
 
 @Injectable({
   providedIn: 'root',

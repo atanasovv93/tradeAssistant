@@ -6,9 +6,11 @@
 &.dark-mode {
     background: #121212;
     color: #eee;
+    box-shadow: #eee;
 
     .news-scroller {
       background: #1e1e1e;
+
 
       .news-item {
         background: #2c2c2c;

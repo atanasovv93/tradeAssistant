@@ -1,22 +1,18 @@
 <ng-container *ngIf="isLoading; else content">
-  <app-loading-spinner
-    message="Loading... The first load may take up to 2 minutes because we are using a free service. Thank you for your patience.
+  <app-loading-spinner message="Loading... The first load may take up to 2 minutes because we are using a free service. Thank you for your patience.
 ">
   </app-loading-spinner>
 </ng-container>
 
 
 <ng-template #content>
-
-  <app-news-scroller  />
   <div class="widgets-container">
-      <app-forex-dashboard-widget />
-      <app-crypto-dashboard-widget />
-      </div>
-      <div *ngIf="productsList.length; else noProducts" class="product-card">
-    <app-product-card
-      *ngFor="let product of productsList"
-      [product]="product">
+    <app-forex-dashboard-widget />
+    <app-crypto-dashboard-widget />
+  </div>
+  <app-news-scroller />
+  <div *ngIf="productsList.length; else noProducts" class="product-card">
+    <app-product-card *ngFor="let product of productsList" [product]="product">
     </app-product-card>
   </div>
   <ng-template #noProducts>

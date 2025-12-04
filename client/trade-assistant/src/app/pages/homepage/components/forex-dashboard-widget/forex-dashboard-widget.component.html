@@ -1,7 +1,9 @@
 <div class="forex-widget">
   <h3>Forex Rates</h3>
 
-  <app-loading-spinner max-width="100px"max-height="100px" *ngIf="loading()"></app-loading-spinner>
+  <app-loading-spinner max-width="100px" max-height="100px"
+    *ngIf="loading()"></app-loading-spinner>
+
   <div *ngIf="error()" class="error">{{ error() }}</div>
 
   <div class="controls">
@@ -19,13 +21,21 @@
     <thead>
       <tr>
         <th>Currency</th>
-        <th>Rate</th>
+        <th>Last Price</th>
+        <th>Trend</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let r of ratesArray()">
         <td>{{ r.currency }}</td>
         <td>{{ r.value | number:'1.4-4' }}</td>
+        <td>
+          <ng-container *ngIf="r.trendInfo; else noTrend">
+            {{ r.trendInfo.trend }}
+            ({{ r.trendInfo.dailyChange }}%)
+          </ng-container>
+          <ng-template #noTrend>—</ng-template>
+        </td>
       </tr>
     </tbody>
   </table>

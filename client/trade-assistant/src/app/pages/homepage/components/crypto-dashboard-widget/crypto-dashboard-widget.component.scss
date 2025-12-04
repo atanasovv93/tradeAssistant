@@ -1,12 +1,15 @@
 .crypto-widget {
   display: flex;
   flex-direction: column;
-  background: #1e1e2f;
+  background: inherit;
   padding: 16px;
+  border: 1px solid #ccc;
   border-radius: 8px;
-  color: #fff;
+  color: inherit;
   font-family: Arial, sans-serif;
   max-height: 385px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 
   h3 {
     margin-bottom: 12px;
@@ -15,17 +18,20 @@
   table {
     border-collapse: collapse;
 
-    th, td {
+    th,
+    td {
       padding: 8px 12px;
       text-align: left;
     }
 
     th {
-      background: #2e2e44;
+      background: inherit;
     }
 
-    tbody tr:nth-child(odd) {
-      background: #2a2a3a;
+    tbody tr:nth-child(odd),
+    tbody tr:nth-child(even) {
+      background: inherit;
+      border-bottom: 1px solid #ddd;
     }
   }
 
@@ -56,11 +62,10 @@
   }
 }
 
-@media  (max-width: 450px) {
+@media (max-width: 450px) {
   .crypto-widget {
     margin: 0.6rem 0.8rem 1rem;
     max-height: none;
     overflow-y: auto;
   }
-
 }

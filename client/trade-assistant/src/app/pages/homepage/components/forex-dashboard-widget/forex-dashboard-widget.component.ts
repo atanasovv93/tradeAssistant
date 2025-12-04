@@ -2,7 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ForexService, ForexRate } from '../../../../services/forex.service/forex.service';
+import { ForexService, ForexRate, ForexTrendItem } from '../../../../services/forex.service/forex.service';
 import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
@@ -13,36 +13,24 @@ import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/load
   styleUrls: ['./forex-dashboard-widget.component.scss'],
 })
 export class ForexDashboardWidgetComponent implements OnInit {
+
   private readonly forexService = inject(ForexService);
 
-  // Сите валути што ќе ги поддржиме како base
   readonly bases = ['EUR', 'USD', 'GBP', 'CHF', 'AUD', 'CAD', 'MKD'];
 
-  // state (Angular signals)
+  // Signals (state)
   selectedBase = signal<string>('EUR');
   latest = signal<ForexRate | null>(null);
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
-
-  // map на rates за лесно прикажување во template
-  ratesArray = computed(() => {
-    const rate = this.latest();
-    if (!rate) return [];
-    return Object.entries(rate.rates).map(([currency, value]) => ({
-      currency,
-      value,
-    }));
-  });
+  dailyTrends = signal<ForexTrendItem[]>([]);
 
   ngOnInit(): void {
     this.loadRates();
+    this.loadDailyTrends();
   }
 
-  onBaseChange(base: string) {
-    this.selectedBase.set(base);
-    this.loadRates();
-  }
-
+  /** Load Forex Rates */
   private loadRates() {
     this.loading.set(true);
     this.error.set(null);
@@ -60,6 +48,22 @@ export class ForexDashboardWidgetComponent implements OnInit {
     });
   }
 
+  /** Load Trend Data */
+  private loadDailyTrends() {
+    this.forexService.getDailyTrends().subscribe({
+      next: (res) => {
+        this.dailyTrends.set(res.trends);
+      },
+      error: (err) => console.error('Cannot load trends', err),
+    });
+  }
+
+  /** Get matching trend for a currency (EUR → USD trend, USD → GBP etc.) */
+  getTrendFor(currency: string): ForexTrendItem | undefined {
+    return this.dailyTrends().find(t => t.currency === currency);
+  }
+
+  /** Display formatted date */
   getFormattedDate(rate: ForexRate | null): string {
     if (!rate) return '';
     if (rate.createdAt) {
@@ -70,4 +74,20 @@ export class ForexDashboardWidgetComponent implements OnInit {
     }
     return '';
   }
+
+  onBaseChange(base: string) {
+    this.selectedBase.set(base);
+    this.loadRates();
+  }
+
+  /** Transform rates into list for easy display */
+  ratesArray = computed(() => {
+    const rate = this.latest();
+    if (!rate) return [];
+    return Object.entries(rate.rates).map(([currency, value]) => ({
+      currency,
+      value,
+      trendInfo: this.getTrendFor(currency)
+    }));
+  });
 }
