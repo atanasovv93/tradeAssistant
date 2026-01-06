@@ -1,8 +1,8 @@
 <app-back-button />
 <div class="article-details" *ngIf="news; else loading">
   <h1>{{ news.title }}</h1>
-  <img *ngIf="news.imageUrl || news.image"
-     [src]="news.imageUrl || news.image"
+  <img *ngIf="news.image || news.image"
+     [src]="news.image || news.image"
      [alt]="news.title"
      class="news-image">
   <p class="meta">
@@ -11,6 +11,7 @@
     Category: {{ news.category }}
   </p>
   <div class="content">
+  {{ news.fixedMorningMessage }}
   {{ news.content }}
 </div>
 </div>

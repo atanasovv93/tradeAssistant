@@ -8,6 +8,7 @@ export interface News {
   id?: number;
   title: string;
   image?: string;
+  fixedMorningMessage?: string;
   content: string;
   author: string;
   publishDate: string;

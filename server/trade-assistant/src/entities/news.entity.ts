@@ -11,6 +11,9 @@ export class News {
 
   @Column('text')
   content: string;
+  
+  @Column('text', { nullable: true })
+  fixedMorningMessage?: string;
 
   @Column({ nullable: true })
   image?: string;

@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/require-await */
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Controller, Get, Param } from '@nestjs/common';
@@ -22,7 +24,8 @@ export class CryptoController {
 
   @Get('sync')
   async syncAll() {
-    return this.cryptoService.syncDaily();
+    void this.cryptoService.syncDaily();
+    return { message: 'Crypto rates fetched manually ✅' };
   }
 
   @Get('symbols')

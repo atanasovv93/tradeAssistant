@@ -17,9 +17,9 @@ export class NewsPublishService {
     ) { }
 
     /**
-     * 🟦 Daily Forex Article — 08:05
+     * 🟦 Daily Forex Article — 10:00
      */
-    @Cron('25 8 * * *')
+    @Cron('00 10 * * *')
     async publishDailyForexAnalysis(): Promise<boolean> {
         try {
             const analysis = await this.forexAnalysisService.analyzeDailyTrends();
@@ -52,6 +52,7 @@ export class NewsPublishService {
 
             await this.newsService.create(news);
             this.logger.log(`✅ Forex analysis news published`);
+                console.log(news);
 
             return true;
         } catch (error) {
@@ -63,9 +64,9 @@ export class NewsPublishService {
     }
 
     /**
-     * 🟪 Daily Crypto Article — 08:06
+     * 🟪 Daily Crypto Article — 10:00
      */
-    @Cron('25 8 * * *')
+    @Cron('00 10 * * *')
 async publishDailyCryptoAnalysis(): Promise<boolean> {
   try {
     const analysis = await this.cryptoDailyAnalysisService.analyzeDailyTrends();
@@ -96,6 +97,7 @@ async publishDailyCryptoAnalysis(): Promise<boolean> {
 
     await this.newsService.create(news);
     this.logger.log(`✅ Crypto analysis news published`);
+    console.log(news);
 
     return true;
   } catch (error) {

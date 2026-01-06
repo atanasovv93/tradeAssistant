@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { NewsService } from '../../services/news/news.service';
+import { NewsService, News } from '../../services/news/news.service';
 import { BackButtonComponent } from '../../shared/back-button/back-button.component';
 
 @Component({
@@ -12,7 +12,7 @@ import { BackButtonComponent } from '../../shared/back-button/back-button.compon
   styleUrls: ['./article-details.component.scss']
 })
 export class ArticleDetailsComponent implements OnInit {
-  news: any;
+  news: News | null = null;
   message = '';
 
   constructor(
