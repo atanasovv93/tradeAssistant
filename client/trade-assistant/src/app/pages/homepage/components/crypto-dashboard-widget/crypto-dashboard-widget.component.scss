@@ -66,6 +66,18 @@
   .crypto-widget {
     margin: 0.6rem 0.8rem 1rem;
     max-height: none;
+    min-width: 380px;
     overflow-y: auto;
   }
+
+}
+
+  @media (max-width: 380px) {
+  .crypto-widget {
+    margin: 0.6rem 0.8rem 1rem;
+    max-height: none;
+    min-width: 157px;
+    overflow-y: auto;
+  }
+
 }
