@@ -76,8 +76,17 @@
   border-radius: 20px;
 }
 
+@media (max-width: 350px) {
+  .homepage-illustration {
+  max-width: 90%;
+  height: auto;
+  border-radius: 20px;
+}
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
+
