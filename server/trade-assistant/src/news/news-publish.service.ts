@@ -17,9 +17,9 @@ export class NewsPublishService {
     ) { }
 
     /**
-     * 🟦 Daily Forex Article — 10:00
+     * 🟦 Daily Forex Article — 09:00
      */
-    @Cron('00 10 * * *')
+    @Cron('00 09 * * *')
     async publishDailyForexAnalysis(): Promise<boolean> {
         try {
             const analysis = await this.forexAnalysisService.analyzeDailyTrends();
@@ -64,9 +64,9 @@ export class NewsPublishService {
     }
 
     /**
-     * 🟪 Daily Crypto Article — 10:00
+     * 🟪 Daily Crypto Article — 09:00
      */
-    @Cron('00 10 * * *')
+    @Cron('00 09 * * *')
 async publishDailyCryptoAnalysis(): Promise<boolean> {
   try {
     const analysis = await this.cryptoDailyAnalysisService.analyzeDailyTrends();
