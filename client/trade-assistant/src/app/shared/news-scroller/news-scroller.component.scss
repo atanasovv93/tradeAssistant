@@ -46,9 +46,16 @@
     animation-play-state: running;
   }
 
+  @media (max-width: 768px) {
+    padding: 1.5rem 0;
+
+    .news-item { width: 200px; height: 320px; }
+  }
+
   // Mobile / tablet
-  @media (max-width: 340px) {
+  @media (max-width: 320px) {
     .scroller-track {
+      
       animation: none;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
