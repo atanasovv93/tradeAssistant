@@ -3,14 +3,14 @@ import { IsString, IsOptional, IsDateString } from 'class-validator';
 
 export class CreateNewsDto {
   @IsString()
-  title: string;
+  title!: string;
 
   @IsOptional()
   @IsString()
   fixedMorningMessage?: string;
 
   @IsString()
-  content: string;
+  content!: string;
   
   @IsString()
   @IsOptional()
