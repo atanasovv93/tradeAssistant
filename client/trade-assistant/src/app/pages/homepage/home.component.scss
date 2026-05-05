@@ -12,6 +12,7 @@
     grid-template-columns: repeat(3, minmax(200px, 1fr));
   }
   @media (max-width: 850px) {
+    justify-content: center;
     grid-template-columns: repeat(3, minmax(200px, 1fr));
   }
 
@@ -31,7 +32,9 @@
 }
 
 
-@media (max-width: 800px) {
+
+
+@media (max-width: 850px) {
   .widgets-container {
     flex-direction: column;
     align-items: center;
@@ -74,6 +77,14 @@
   height: auto;
   margin-bottom: 20px;
   border-radius: 20px;
+}
+
+@media (max-width: 850px) {
+  .homepage-illustration {
+  max-width: 60%;
+  height: auto;
+  border-radius: 20px;
+}
 }
 
 @media (max-width: 550px) {

@@ -48,6 +48,7 @@ app-footer {
 }
 
 .darkmode-btn {
+  margin-bottom: 0.5rem;
   position: relative;
   top: 5px;
   left: 10px;
@@ -71,9 +72,9 @@ app-footer {
 
 @media (max-width: 770px) {
   .darkmode-btn {
-    top: 1px;
+    top: 3px;
     left: 5px;
-
+    
     button {
       padding: 4px 7px;
       font-size: 12px;
