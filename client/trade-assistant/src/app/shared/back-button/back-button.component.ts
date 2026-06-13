@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Location } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
+import { LanguageService } from '../../services/language/language.service';
 
 @Component({
   selector: 'app-back-button',
@@ -11,9 +11,16 @@ import { Location } from '@angular/common';
 })
 export class BackButtonComponent {
 
-  constructor(private location: Location) {}
+  constructor(
+    private location: Location,
+    private languageService: LanguageService
+  ) {}
 
   goBack() {
     this.location.back();
+  }
+
+  get currentLanguage(): 'EN' | 'DE' {
+    return this.languageService.getLanguage();
   }
 }

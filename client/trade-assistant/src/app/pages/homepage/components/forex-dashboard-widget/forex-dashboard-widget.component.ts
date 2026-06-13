@@ -4,6 +4,7 @@ import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ForexService, ForexRate, ForexTrendItem } from '../../../../services/forex.service/forex.service';
 import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/loading-spinner.component';
+import { LanguageService } from '../../../../services/language/language.service';
 
 @Component({
   selector: 'app-forex-dashboard-widget',
@@ -15,6 +16,7 @@ import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/load
 export class ForexDashboardWidgetComponent implements OnInit {
 
   private readonly forexService = inject(ForexService);
+  private readonly languageService = inject(LanguageService);
 
   readonly bases = ['EUR', 'USD', 'GBP', 'CHF', 'AUD', 'CAD', 'MKD'];
 
@@ -42,7 +44,10 @@ export class ForexDashboardWidgetComponent implements OnInit {
       },
       error: (err: any) => {
         console.error(err);
-        this.error.set('Не можам да ги вчитам курсевите моментално.');
+        this.error.set(this.currentLanguage === 'DE'
+          ? 'Kurse können momentan nicht geladen werden.'
+          : 'Cannot load rates at the moment.'
+        );
         this.loading.set(false);
       },
     });
@@ -90,4 +95,9 @@ export class ForexDashboardWidgetComponent implements OnInit {
       trendInfo: this.getTrendFor(currency)
     }));
   });
+
+  get currentLanguage(): 'EN' | 'DE' {
+  return this.languageService.getLanguage();
+}
+
 }

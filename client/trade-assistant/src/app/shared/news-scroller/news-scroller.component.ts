@@ -61,5 +61,8 @@ export class NewsScrollerComponent implements OnInit, OnDestroy {
     this.isPaused = !this.isPaused;
   }
 
+  get currentLanguage(): 'EN' | 'DE' {
+    return this.languageService.getLanguage();
+  }
 
 }

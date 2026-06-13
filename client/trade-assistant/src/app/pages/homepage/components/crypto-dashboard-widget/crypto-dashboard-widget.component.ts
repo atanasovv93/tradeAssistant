@@ -4,6 +4,8 @@ import { interval, switchMap, Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CryptoService } from '../../../../services/binance/binance.service';
 import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/loading-spinner.component';
+import { LanguageService } from '../../../../services/language/language.service';
+
 @Component({
   selector: 'app-crypto-dashboard-widget',
   standalone: true,
@@ -14,6 +16,7 @@ import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/load
 export class CryptoDashboardWidgetComponent implements OnInit, OnDestroy {
 
   private readonly cryptoService = inject(CryptoService);
+  private readonly languageService = inject(LanguageService);
   private refreshSub!: Subscription;
 
   readonly fixedBases = ['BTC', 'ETH', 'BNB', 'SOL', 'LTC', 'ADA', 'AXS'];
@@ -71,7 +74,11 @@ export class CryptoDashboardWidgetComponent implements OnInit, OnDestroy {
         this.loading.set(false);
       },
       error: () => {
-        this.error.set('Cannot load rates at the moment.');
+        this.error.set(this.currentLanguage === 'DE'
+    ? 'Kurse können momentan nicht geladen werden.'
+    : 'Cannot load rates at the moment.'
+);
+
         this.loading.set(false);
       }
     });
@@ -88,4 +95,9 @@ export class CryptoDashboardWidgetComponent implements OnInit, OnDestroy {
       hour12: true,
     });
   }
+
+  get currentLanguage(): 'EN' | 'DE' {
+  return this.languageService.getLanguage();
+}
+
 }

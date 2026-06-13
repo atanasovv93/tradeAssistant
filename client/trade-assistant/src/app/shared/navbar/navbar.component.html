@@ -11,29 +11,29 @@
     <ul class="nav-links" [class.active]="isMenuOpen">
       <li>
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="toggleMenu()">
-          Home
+          {{ currentLanguage === 'DE' ? 'Startseite' : 'Home' }}
         </a>
       </li>
       <li>
         <a routerLink="/about" routerLinkActive="active" (click)="toggleMenu()">
-          About Us
+          {{ currentLanguage === 'DE' ? 'Über uns' : 'About Us' }}
         </a>
       </li>
       <li>
         <a routerLink="/services" routerLinkActive="active" (click)="toggleMenu()">
-          Our Services
+          {{ currentLanguage === 'DE' ? 'Unsere Dienstleistungen' : 'Our Services' }}
         </a>
       </li>
       <li>
         <a routerLink="/contact" routerLinkActive="active" (click)="toggleMenu()">
-          Contact
+          {{ currentLanguage === 'DE' ? 'Kontakt' : 'Contact' }}
         </a>
       </li>
 
       <ng-container *ngIf="!auth.isLoggedIn(); else loggedIn">
         <li>
           <a routerLink="/auth/login" routerLinkActive="active" (click)="toggleMenu()">
-            Login
+            {{ currentLanguage === 'DE' ? 'Anmelden' : 'Login' }}
           </a>
         </li>
       </ng-container>
@@ -41,12 +41,12 @@
       <ng-template #loggedIn>
         <li>
           <a routerLink="/dashboard" routerLinkActive="active" (click)="toggleMenu()">
-            Dashboard
+            {{ currentLanguage === 'DE' ? 'Dashboard' : 'Dashboard' }}
           </a>
         </li>
         <li>
           <a (click)="logout()">
-            Logout
+            {{ currentLanguage === 'DE' ? 'Abmelden' : 'Logout' }}
           </a>
         </li>
       </ng-template>

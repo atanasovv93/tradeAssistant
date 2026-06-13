@@ -7,19 +7,19 @@
       <img *ngIf="product.image"
          [src]="product.image"
          class="product-image" />
-      <p>Category: {{ product.category }}</p>
-      <p>Quantity: {{ product.quantity }}</p>
+      <p>{{ currentLanguage === 'DE' ? 'Kategorie:' : 'Category:' }} {{ product.category }}</p>
+      <p>{{ currentLanguage === 'DE' ? 'Menge:' : 'Quantity:' }} {{ product.quantity }}</p>
 
-      <p *ngIf="product.distributor">Distributor: {{ product.distributor }}</p>
-      <p *ngIf="product.entryDate">Added: {{ product.entryDate | date:'mediumDate' }}</p>
+      <p *ngIf="product.distributor">{{ currentLanguage === 'DE' ? 'Händler:' : 'Distributor:' }} {{ product.distributor }}</p>
+      <p *ngIf="product.entryDate">{{ currentLanguage === 'DE' ? 'Hinzugefügt:' : 'Added:' }}  {{ product.entryDate | date:'mediumDate' }}</p>
       <p *ngIf="product.expirationDate">
-        Expiration Date: {{ product.expirationDate | date:'mediumDate' }}
+        {{ currentLanguage === 'DE' ? 'Ablaufdatum:' : 'Expiration Date:' }} {{ product.expirationDate | date:'mediumDate' }}
       </p>
-      <p *ngIf="product.purchasePrice">Purchase Price: {{ product.purchasePrice | currency }}</p>
-      <p *ngIf="product.barcode">Barcode: {{ product.barcode }}</p>
+      <p *ngIf="product.purchasePrice">{{ currentLanguage === 'DE' ? 'Kaufpreis:' : 'Purchase Price:' }} {{ product.purchasePrice | currency }}</p>
+      <p *ngIf="product.barcode">{{ currentLanguage === 'DE' ? 'Barcode:' : 'Barcode:' }} {{ product.barcode }}</p>
 
       <p class="price" *ngIf="product.salePrice">
-        {{ product.salePrice | currency }}
+        {{ currentLanguage === 'DE' ? 'Verkaufspreis:' : 'Sale Price:' }} {{ product.salePrice | currency }}
       </p>
 
     </a>

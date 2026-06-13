@@ -1,10 +1,29 @@
 <footer class="footer">
   <div class="footer-content">
-    <p>&copy; {{ currentYear }} Trade Assistant. All rights reserved.</p>
+
+    <p *ngIf="currentLanguage === 'EN'">
+      &copy; {{ currentYear }} Trade Assistant. All rights reserved.
+    </p>
+
+    <p *ngIf="currentLanguage === 'DE'">
+      &copy; {{ currentYear }} Trade Assistant. Alle Rechte vorbehalten.
+    </p>
+
     <nav class="footer-links">
-      <a href="/">Home</a>
-      <a href="/contact">Contact</a>
-     <a href="/about">About Us</a>
+
+      <a href="/">
+        {{ currentLanguage === 'DE' ? 'Startseite' : 'Home' }}
+      </a>
+
+      <a href="/contact">
+        {{ currentLanguage === 'DE' ? 'Kontakt' : 'Contact' }}
+      </a>
+
+      <a href="/about">
+        {{ currentLanguage === 'DE' ? 'Über uns' : 'About Us' }}
+      </a>
+
     </nav>
+
   </div>
 </footer>

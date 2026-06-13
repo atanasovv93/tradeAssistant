@@ -1,5 +1,7 @@
 <div class="forex-widget">
-  <h3>Forex Rates</h3>
+  <h3>
+    {{ currentLanguage === 'DE' ? 'Forex Kurse' : 'Forex Rates' }}
+  </h3>
 
   <app-loading-spinner max-width="100px" max-height="100px"
     *ngIf="loading()"></app-loading-spinner>
@@ -7,7 +9,7 @@
   <div *ngIf="error()" class="error">{{ error() }}</div>
 
   <div class="controls">
-    <label for="baseSelect">Base currency:</label>
+    <label for="baseSelect">{{ currentLanguage === 'DE' ? 'Basiswährung:' : 'Base currency:' }}</label>
     <select
       id="baseSelect"
       [ngModel]="selectedBase()"
@@ -20,9 +22,9 @@
   <table *ngIf="latest() && !loading()">
     <thead>
       <tr>
-        <th>Currency</th>
-        <th>Last Price</th>
-        <th>Trend</th>
+        <th>{{ currentLanguage === 'DE' ? 'Währung' : 'Currency' }}</th>
+        <th>{{ currentLanguage === 'DE' ? 'Letzter Preis' : 'Last Price' }}</th>
+        <th>{{ currentLanguage === 'DE' ? 'Trend' : 'Trend' }}</th>
       </tr>
     </thead>
     <tbody>
@@ -40,5 +42,8 @@
     </tbody>
   </table>
 
-  <p *ngIf="latest()">Last updated: {{ getFormattedDate(latest()) }}</p>
+  <p *ngIf="latest()">
+    {{ currentLanguage === 'DE' ? 'Zuletzt aktualisiert:' : 'Last updated:' }}
+    {{ getFormattedDate(latest()) }}
+  </p>
 </div>

@@ -9,7 +9,7 @@
         <img [src]="article.image" [alt]="article.title" />
         <h3>{{ article.title | slice:0:40 }}{{ article.title.length > 40 ? '...' : '' }}</h3>
         <p>{{ article.content | slice:0:80 }}{{ article.content.length > 80 ? '...' : '' }}</p>
-        <a [routerLink]="['/news', article.id]" class="btn">Read</a>
+        <a [routerLink]="['/news', article.id]" class="btn">{{ currentLanguage === 'DE' ? 'Lesen' : 'Read' }}</a>
       </div>
     </ng-container>
 
@@ -19,7 +19,7 @@
         <img [src]="article.image" [alt]="article.title" />
         <h3>{{ article.title | slice:0:40 }}{{ article.title.length > 40 ? '...' : '' }}</h3>
         <p>{{ article.content | slice:0:80 }}{{ article.content.length > 80 ? '...' : '' }}</p>
-        <a [routerLink]="['/news', article.id]" class="btn">Read</a>
+        <a [routerLink]="['/news', article.id]" class="btn">{{ currentLanguage === 'DE' ? 'Lesen' : 'Read' }}</a>
       </div>
     </ng-container>
   </div>

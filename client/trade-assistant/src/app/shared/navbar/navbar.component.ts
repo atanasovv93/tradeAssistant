@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
+import { LanguageService } from '../../services/language/language.service';
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -13,7 +14,11 @@ import { LanguageSwitcherComponent } from '../language-switcher/language-switche
 export class NavbarComponent {
   isMenuOpen = false;
 
-  constructor(public auth: AuthService) {}
+  constructor(
+    public auth: AuthService,
+    private languageService: LanguageService
+
+  ) {}
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
@@ -22,5 +27,9 @@ export class NavbarComponent {
   logout() {
     this.auth.logout();
     window.location.reload();
+  }
+
+  get currentLanguage(): 'EN' | 'DE' {
+    return this.languageService.getLanguage();
   }
 }
