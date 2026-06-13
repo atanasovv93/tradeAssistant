@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { IsString, IsOptional, IsDateString } from 'class-validator';
-
+import { IsEnum } from 'class-validator';
+import { NewsLanguage } from '../../enums/news-language.enum';
 export class CreateNewsDto {
   @IsString()
   title!: string;
@@ -27,4 +29,8 @@ export class CreateNewsDto {
   @IsOptional()
   @IsString()
   category?: string;
+
+  @IsString()
+  language!: string;
+
 }

@@ -48,6 +48,7 @@ export class NewsPublishService {
                     'https://images.ctfassets.net/hzjmpv1aaorq/2GG2BaOtWnvcy0odw5QseF/59984c27d5c432170cc7a37b72d6d4b4/Untitled_design__13_.png?q=70',
                 author: 'Forex Analysis Bot',
                 category: 'Forex Daily Analysis',
+                language: 'EN',
             };
 
             await this.newsService.create(news);
@@ -93,6 +94,7 @@ async publishDailyCryptoAnalysis(): Promise<boolean> {
         'https://images.ctfassets.net/hzjmpv1aaorq/2GG2BaOtWnvcy0odw5QseF/59984c27d5c432170cc7a37b72d6d4b4/Untitled_design__13_.png?q=70',
       author: 'Crypto Analysis Bot',
       category: 'Crypto Daily Analysis',
+      language: 'en', // Assuming the language is English; adjust as needed
     };
 
     await this.newsService.create(news);
