@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Subscription, interval, switchMap } from 'rxjs';
 import { News, NewsService } from '../../services/news/news.service';
+import { LanguageService } from '../../services/language/language.service';
+
 
 @Component({
   selector: 'app-news-scroller',
@@ -16,6 +18,7 @@ export class NewsScrollerComponent implements OnInit, OnDestroy {
   @Input() excludeId?: number | string;
 
   private newsService = inject(NewsService);
+  private languageService = inject(LanguageService);
   private refreshSub!: Subscription;
 
   articles: News[] = [];
@@ -28,7 +31,7 @@ export class NewsScrollerComponent implements OnInit, OnDestroy {
     // Refresh every 5 minutes
     this.refreshSub = interval(5 * 60 * 1000)
       .pipe(
-        switchMap(() => this.newsService.getAll())
+        switchMap(() => this.newsService.getAll(this.languageService.getLanguage()))
       )
       .subscribe((res: any) => {
         this.articles = this.filterExcluded(res.items);
@@ -36,13 +39,12 @@ export class NewsScrollerComponent implements OnInit, OnDestroy {
   }
 
   private loadNews() {
-    this.newsService.getAll()
-  .subscribe((res: any) => {
-    this.articles = this.filterExcluded(res.items);
-    this.isLoading = false;
-  });
-
-  }
+  this.newsService.getAll(this.languageService.getLanguage())
+    .subscribe((res: any) => {
+      this.articles = this.filterExcluded(res.items);
+      this.isLoading = false;
+    });
+}
 
   private filterExcluded(list: News[]) {
     return this.excludeId
@@ -59,5 +61,5 @@ export class NewsScrollerComponent implements OnInit, OnDestroy {
     this.isPaused = !this.isPaused;
   }
 
-  
+
 }

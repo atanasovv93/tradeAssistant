@@ -53,7 +53,7 @@ export class NewsPublishService {
 
             await this.newsService.create(news);
             this.logger.log(`✅ Forex analysis news published`);
-                console.log(news);
+                // console.log(news);
 
             return true;
         } catch (error) {
@@ -99,7 +99,7 @@ async publishDailyCryptoAnalysis(): Promise<boolean> {
 
     await this.newsService.create(news);
     this.logger.log(`✅ Crypto analysis news published`);
-    console.log(news);
+    // console.log(news);
 
     return true;
   } catch (error) {

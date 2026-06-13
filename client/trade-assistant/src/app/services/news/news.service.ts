@@ -13,6 +13,7 @@ export interface News {
   author: string;
   publishDate: string;
   category: string;
+  language: string;
 }
 
 @Injectable({
@@ -28,9 +29,11 @@ export class NewsService {
     return new HttpHeaders({ Authorization: `Bearer ${token}` });
   }
 
-  getAll(): Observable<News[]> {
-    return this.http.get<News[]>(this.baseUrl);
-  }
+  getAll(language: string): Observable<any> {
+  return this.http.get<any>(
+    `${this.baseUrl}?language=${language}`
+  );
+}
 
   getOne(id: number): Observable<News> {
     return this.http.get<News>(`${this.baseUrl}/${id}`);

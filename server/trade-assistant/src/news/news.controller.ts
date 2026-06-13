@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
@@ -9,6 +11,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { NewsPublishService } from './news-publish.service';
+import { NewsLanguage } from '../enums/news-language.enum';
 
 @Controller('news')
 export class NewsController {
@@ -35,8 +38,21 @@ async publishDailyForex() {
 }
 
   @Get()
-  findAll(@Query('search') search?: string, @Query('page') page?: number, @Query('limit') limit?: number) {
-    return this.newsService.findAll({ search, page: Number(page), limit: Number(limit) });
+  findAll(
+    @Query('page') page?: number,
+    @Query('limit') limit?: number,
+    @Query('language') language?: NewsLanguage,
+  ) {
+    const query: any = {
+      page,
+      limit,
+    };
+
+    if (language !== undefined) {
+      query.language = language;
+    }
+
+    return this.newsService.findAll(query);
   }
 
   @Get(':id')

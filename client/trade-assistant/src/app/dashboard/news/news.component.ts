@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NewsService } from '../../services/news/news.service';
+import { LanguageService } from '../../services/language/language.service';
 import { Router } from '@angular/router';
 import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.component';
 @Component({
@@ -15,6 +16,7 @@ import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.
 export class NewsComponent implements OnInit {
   newsList: any[] = [];
   message = '';
+  selectedLanguage: 'EN' | 'DE' = 'EN';
   newNews = {
     title: '',
     image: '',
@@ -22,6 +24,7 @@ export class NewsComponent implements OnInit {
     author: '',
     publishDate: '',
     category: '',
+    language: 'EN',
   };
 
   editingNewsId: number | null = null;
@@ -30,20 +33,22 @@ export class NewsComponent implements OnInit {
   showDeleteModal = false;
   newsIdToDelete: number | null = null;
 
-  constructor(private routesService: NewsService, private router: Router) {}
+  constructor(private routesService: NewsService, private router: Router, private languageService: LanguageService) {}
 
   ngOnInit() {
     this.loadNews();
   }
 
   loadNews() {
-    this.routesService.getAll().subscribe({
-      next: (res: any) => {
-        this.newsList = Array.isArray(res.items) ? res.items : [];
-      },
-      error: () => (this.message = '❌ Error while loading news'),
-    });
-  }
+  const language = this.languageService.getLanguage();
+
+  this.routesService.getAll(language).subscribe({
+    next: (res: any) => {
+      this.newsList = Array.isArray(res.items) ? res.items : [];
+    },
+    error: () => (this.message = '❌ Error while loading news'),
+  });
+}
 
   addNews() {
     this.routesService.create(this.newNews).subscribe({
@@ -57,6 +62,7 @@ export class NewsComponent implements OnInit {
           author: '',
           publishDate: '',
           category: '',
+          language: 'EN',
         };
       },
       error: () => (this.message = '❌ Error while adding article'),

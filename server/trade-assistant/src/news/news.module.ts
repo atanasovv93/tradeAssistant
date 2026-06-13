@@ -10,13 +10,14 @@ import { NewsPublishService } from './news-publish.service';
 import { News } from '../entities/news.entity';
 import { ForexRateModule } from '../forexRate/forex-rate.module';
 import { BinanceModule } from '../binance/services/binance.module';
-
+import { AiModule } from '../ai/ai.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([News]),
     ScheduleModule.forRoot(),
     ForexRateModule,
-    BinanceModule,           
+    BinanceModule,
+    AiModule,
   ],
   controllers: [NewsController],
   providers: [NewsService, NewsPublishService],
