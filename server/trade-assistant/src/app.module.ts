@@ -9,6 +9,7 @@ import { NewsModule } from './news/news.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BinanceModule } from './binance/services/binance.module';
+import { AiModule } from './ai/ai.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { BinanceModule } from './binance/services/binance.module';
     ProductsModule,
     NewsModule,
     BinanceModule,
+    AiModule, // <-- додај го тука
   ],
   controllers: [AppController],
   providers: [AppService],
