@@ -31,6 +31,7 @@ export class CreateNewsDto {
   category?: string;
 
   @IsString()
+  @IsEnum(NewsLanguage)
   language!: string;
 
 }
