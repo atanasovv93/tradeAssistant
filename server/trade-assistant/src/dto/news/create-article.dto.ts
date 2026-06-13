@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { IsString, IsOptional, IsDateString } from 'class-validator';
 import { IsEnum } from 'class-validator';

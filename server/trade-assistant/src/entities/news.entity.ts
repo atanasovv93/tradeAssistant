@@ -1,17 +1,24 @@
-/* eslint-disable prettier/prettier */
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
+import { NewsLanguage } from '../enums/news-language.enum';
 
 @Entity('news')
 export class News {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ length: 150 })
-  title: string;
+  title!: string;
 
   @Column('text')
-  content: string;
-  
+  content!: string;
+
   @Column('text', { nullable: true })
   fixedMorningMessage?: string;
 
@@ -25,11 +32,18 @@ export class News {
   publishDate?: Date;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 
   @Column({ nullable: true })
   category?: string;
+
+  @Column({
+    type: 'enum',
+    enum: NewsLanguage,
+    default: NewsLanguage.EN,
+  })
+  language!: NewsLanguage;
 }

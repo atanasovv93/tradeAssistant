@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { News } from '../entities/news.entity';
 import { CreateNewsDto } from '../dto/news/create-article.dto';
 import { UpdateNewsDto } from '../dto/news/update-article.dto';
+import { NewsLanguage } from '../enums/news-language.enum';
 
 @Injectable()
 export class NewsService {
@@ -27,6 +28,7 @@ export class NewsService {
     const news = this.newsRepo.create({
       ...dto,
       publishDate: dto.publishDate ?? new Date(),
+      language: NewsLanguage.EN,
     });
 
     return this.newsRepo.save(news);
