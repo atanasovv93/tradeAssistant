@@ -19,7 +19,7 @@
       <p *ngIf="product.barcode">{{ currentLanguage === 'DE' ? 'Barcode:' : 'Barcode:' }} {{ product.barcode }}</p>
 
       <p class="price" *ngIf="product.salePrice">
-        {{ currentLanguage === 'DE' ? 'Verkaufspreis:' : 'Sale Price:' }} {{ product.salePrice | currency }}
+        {{ product.salePrice | currency }}
       </p>
 
     </a>

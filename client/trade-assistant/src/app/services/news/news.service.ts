@@ -35,9 +35,11 @@ export class NewsService {
   );
 }
 
-  getOne(id: number): Observable<News> {
-    return this.http.get<News>(`${this.baseUrl}/${id}`);
-  }
+getOne(id: number, language?: 'EN' | 'DE'): Observable<News> {
+  return this.http.get<News>(
+    `${this.baseUrl}/${id}?language=${language ?? 'EN'}`
+  );
+}
 
   create(data: News): Observable<News> {
     return this.http.post<News>(this.baseUrl, data, { headers: this.getHeaders() });
