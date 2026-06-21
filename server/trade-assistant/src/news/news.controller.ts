@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -34,6 +35,23 @@ async publishDailyForex() {
     return { message: '✅ Daily Forex analysis news published successfully.' };
   } catch (error) {
     return { message: '❌ Error publishing daily Forex analysis.', error };
+  }
+}
+
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('admin', 'moderator')
+@Get('publish-daily-crypto')
+async publishDailyCryptoAnalysis() {
+  try {
+    const published = await this.newsPublishService.publishDailyCryptoAnalysis();
+
+    if (!published) {
+      return { message: '⚠️ Not enough data for daily analysis today.' };
+    }
+
+    return { message: '✅ Daily Crypto analysis news published successfully.' };
+  } catch (error) {
+    return { message: '❌ Error publishing daily Crypto analysis.', error };
   }
 }
 
