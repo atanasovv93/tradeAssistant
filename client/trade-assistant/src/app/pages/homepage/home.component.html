@@ -8,9 +8,9 @@
 <ng-template #content>
   <div class="widgets-container">
     <app-forex-dashboard-widget class="forex-widget" />
+    <img src="https://res.cloudinary.com/dzmw9dbvu/image/upload/v1770136506/marketanalysis_ysmkdi.png"  alt="Homepage Illustration" class="homepage-illustration" />
     <app-crypto-dashboard-widget class="crypto-widget" />
   </div>
-  <img src="https://res.cloudinary.com/dzmw9dbvu/image/upload/v1770136506/marketanalysis_ysmkdi.png"  alt="Homepage Illustration" class="homepage-illustration" />
   <app-news-scroller />
   <div *ngIf="productsList.length; else noProducts" class="product-card">
     <app-product-card *ngFor="let product of productsList" [product]="product">
