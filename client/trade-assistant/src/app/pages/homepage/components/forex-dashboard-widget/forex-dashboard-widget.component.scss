@@ -112,9 +112,9 @@
   }
 }
 
-/* ---------- 370px ---------- */
+/* ---------- 470px ---------- */
 
-@media (max-width: 370px) {
+@media (max-width: 470px) {
   .forex-widget {
     padding: 10px;
   }
@@ -143,5 +143,11 @@
 
   .currency-trend {
     font-size: 12px;
+  }
+
+  @media (max-width: 350px) {
+    .currency-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 }
