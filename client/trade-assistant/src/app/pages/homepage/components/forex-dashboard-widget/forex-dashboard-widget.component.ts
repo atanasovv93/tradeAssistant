@@ -18,7 +18,7 @@ export class ForexDashboardWidgetComponent implements OnInit {
   private readonly forexService = inject(ForexService);
   private readonly languageService = inject(LanguageService);
 
-  readonly bases = ['EUR', 'USD', 'GBP', 'CHF', 'AUD', 'CAD', 'MKD', 'TRY','RUB','JPY', 'CNY'];
+  readonly bases = ['EUR', 'USD', 'GBP', 'CHF', 'AUD', 'CAD', 'MKD', 'TRY','RUB','JPY',];
 
   readonly currencies: Record<string, {
   name: string;
@@ -73,11 +73,6 @@ export class ForexDashboardWidgetComponent implements OnInit {
   MKD: {
     name: 'Macedonian Denar',
     icon: 'https://png.pngtree.com/png-clipart/20230303/original/pngtree-macedonia-flag-national-symbol-with-transparent-background-png-image_8971563.png'
-  },
-
-  CNY: {
-    name: 'Chinese Yuan',
-    icon: 'https://img.magnific.com/premium-vector/flag-china-beautiful-strokes-abstract-concept-elements-design_546559-1037.jpg?semt=ais_hybrid&w=740&q=80'
   }
 
   };

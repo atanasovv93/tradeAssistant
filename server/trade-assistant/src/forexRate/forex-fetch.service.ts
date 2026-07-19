@@ -24,7 +24,7 @@ export class ForexFetchService {
       }
 
       // Fixer стил: ?access_key=...
-      const url = `${this.apiUrl}?access_key=${this.apiKey}&symbols=USD,AUD,CAD,GBP,CHF,MKD,TRY,RUB,JPY,CNY&format=1`;
+      const url = `${this.apiUrl}?access_key=${this.apiKey}&symbols=USD,AUD,CAD,GBP,CHF,MKD,TRY,RUB,JPY&format=1`;
       const response = await axios.get<ForexApiResponse>(url);
       const data = response.data;
 
