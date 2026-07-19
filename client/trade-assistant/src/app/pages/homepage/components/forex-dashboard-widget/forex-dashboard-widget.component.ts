@@ -18,7 +18,7 @@ export class ForexDashboardWidgetComponent implements OnInit {
   private readonly forexService = inject(ForexService);
   private readonly languageService = inject(LanguageService);
 
-  readonly bases = ['EUR', 'USD', 'GBP', 'CHF', 'AUD', 'CAD', 'MKD'];
+  readonly bases = ['EUR', 'USD', 'GBP', 'CHF', 'AUD', 'CAD', 'MKD', 'TRY','RUB','JPY'];
 
   // Signals (state)
   selectedBase = signal<string>('EUR');

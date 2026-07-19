@@ -19,7 +19,7 @@ export class CryptoDashboardWidgetComponent implements OnInit, OnDestroy {
   private readonly languageService = inject(LanguageService);
   private refreshSub!: Subscription;
 
-  readonly fixedBases = ['BTC', 'ETH', 'BNB', 'SOL', 'LTC', 'ADA', 'AXS'];
+  readonly fixedBases = ['BTC', 'ETH', 'BNB', 'SOL', 'LTC', 'ADA', 'AXS', 'SPCXB','XRP', 'NVDAB'];
 
   latest = signal<any[]>([]);
   loading = signal<boolean>(false);
