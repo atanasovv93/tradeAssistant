@@ -119,6 +119,10 @@
     padding: 10px;
   }
 
+  .currency-info {
+    bottom: 12px;
+  }
+
   .currency-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -134,8 +138,18 @@
   }
 
   .currency-name {
-    font-size: 10px;
-  }
+  font-size: 10px;
+  color: #777;
+  line-height: 1.2;
+
+  height: 24px;          // резервира простор за 2 реда
+  overflow: hidden;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
 
   .currency-price {
     font-size: 18px;
