@@ -41,6 +41,8 @@
 .currency-name {
   font-size: 13px;
   color: #777;
+  height: 24px;          // резервира простор за 2 реда
+  overflow: hidden;
 }
 
 .currency-price {
