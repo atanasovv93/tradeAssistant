@@ -42,7 +42,7 @@
     </tbody>
   </table>
 
-  <p *ngIf="latest()">
+  <p class="lastupdate" *ngIf="latest()">
     {{ currentLanguage === 'DE' ? 'Zuletzt aktualisiert:' : 'Last updated:' }}
     {{ getFormattedDate(latest()) }}
   </p>
