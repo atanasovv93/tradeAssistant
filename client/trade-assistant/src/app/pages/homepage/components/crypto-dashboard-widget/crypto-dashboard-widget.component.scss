@@ -1,83 +1,187 @@
 .crypto-widget {
   display: flex;
   flex-direction: column;
-  background: inherit;
-  padding: 16px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  color: inherit;
-  font-family: Arial, sans-serif;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  padding: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
 
-  h3 {
-    margin-bottom: 10px;
-  }
+/* ===== Grid ===== */
 
-  table {
-    border-collapse: collapse;
+.currency-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
 
-    th,
-    td {
-      padding: 8px 12px;
-      text-align: left;
-    }
+/* ===== Card ===== */
 
-    th {
-      background: inherit;
-    }
+.currency-card {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  transition: .25s;
+}
 
-    tbody tr:nth-child(odd),
-    tbody tr:nth-child(even) {
-      background: inherit;
-      border-bottom: 1px solid #ddd;
-    }
-  }
+.currency-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+}
 
-  .trend {
-    font-weight: bold;
+/* ===== Header ===== */
 
-    &.bullish {
-      color: #4caf50;
-    }
+.card-header {
+  display: flex;
+}
 
-    &.bearish {
-      color: #f44336;
-    }
+.currency-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 
-    &.neutral {
-      color: #595959;
-    }
-  }
+}
 
-  .error {
-    color: #ff5252;
-    font-weight: bold;
-  }
+.currency-icon {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  object-fit: contain;
+}
 
-  .showedtime {
-  margin-top: 1px;
+.currency-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 42px;
+}
+
+.currency-symbol {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.currency-name {
+  font-size: 13px;
+  color: #777;
+  line-height: 1.2;
+  height: 35px;
+  overflow: hidden;
+  margin-bottom: 4px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* ===== Price ===== */
+
+.currency-price {
+  margin-top: auto;
+  padding-top: 12px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* ===== Trend ===== */
+
+.currency-trend {
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.currency-trend.up {
+  color: #16a34a;
+}
+
+.currency-trend.down {
+  color: #dc2626;
+}
+
+.currency-trend.neutral {
+  color: #6b7280;
+}
+
+.error {
+  color: red;
+}
+
+.showedtime {
+  margin-top: 12px;
   font-size: 12px;
   color: #666;
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 900px) {
+  .currency-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
-@media (max-width: 450px) {
-  .crypto-widget {
-    margin: 0.6rem 0.8rem 1rem;
-    max-height: none;
-    min-width: 380px;
-    overflow-y: auto;
+@media (max-width: 768px) {
+  .currency-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 
+  .currency-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .currency-symbol {
+    font-size: 16px;
+  }
+
+  .currency-price {
+    font-size: 20px;
+  }
 }
 
-  @media (max-width: 380px) {
+@media (max-width: 470px) {
   .crypto-widget {
-    margin: 0.6rem 0.8rem 1rem;
-    max-height: none;
-    min-width: 157px;
-    overflow-y: auto;
+    padding: 10px;
   }
 
+  .currency-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .currency-card {
+    height: 160px;
+    padding: 12px;
+  }
+
+  .currency-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .currency-symbol {
+    font-size: 14px;
+  }
+
+  .currency-name {
+    font-size: 11px;
+  }
+
+  .currency-price {
+    font-size: 18px;
+  }
+
+  .currency-trend {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 370px) {
+  .currency-grid {
+    grid-template-columns: 1fr;
+  }
 }

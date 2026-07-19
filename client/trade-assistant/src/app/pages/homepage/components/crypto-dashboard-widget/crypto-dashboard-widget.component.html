@@ -8,39 +8,58 @@
   <app-loading-spinner max-width="100px" max-height="100px" *ngIf="loading()"></app-loading-spinner>
   <div *ngIf="error()" class="error">{{ error() }}</div>
 
-  <table *ngIf="!loading() && !error() && latest().length">
-    <thead>
-  <tr>
-    <th>{{ currentLanguage === 'DE' ? 'Symbol' : 'Symbol' }}</th>
-    <th>{{ currentLanguage === 'DE' ? 'Letzter Preis' : 'Last Price' }}</th>
-    <th>{{ currentLanguage === 'DE' ? 'Trend' : 'Trend' }}</th>
-  </tr>
-</thead>
-    <tbody>
-      <tr *ngFor="let rate of latest()">
-        <td>{{ rate.symbol }}</td>
-        <td>${{ rate.value | number:'1.2-8' }}</td>
-        <td>
-  <span class="trend"
-    [ngClass]="{
-      bullish: rate.trend === '📈' && Math.abs(rate.changePercent) >= 0.01,
-      bearish: rate.trend === '📉' && Math.abs(rate.changePercent) >= 0.01,
-      neutral: Math.abs(rate.changePercent) < 0.01
-    }">
+  <div class="currency-grid" *ngIf="!loading() && !error() && latest().length">
 
-    {{ Math.abs(rate.changePercent) < 0.01 ? '≈' : rate.trend }}
-    <strong>
-      {{ Math.abs(rate.changePercent) < 0.01 ? '' : (rate.trend === '📈' ? '↑' : '↓') }}
-    </strong>
+  <div class="currency-card" *ngFor="let rate of latest()">
 
-    {{ Math.abs(rate.changePercent) < 0.01 ? '0' : (rate.changePercent | number:'1.2-2') }}%
-  </span>
-</td>
+    <div class="card-header">
+      <div class="currency-info">
 
+        <img
+          class="currency-icon"
+          [src]="rate.icon"
+          [alt]="rate.symbol"
+        />
 
-      </tr>
-    </tbody>
-  </table>
+        <div class="currency-details">
+
+          <div class="currency-symbol">
+            {{ rate.symbol }}
+          </div>
+
+          <div class="currency-name">
+            {{ rate.name }}
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="currency-price">
+      ${{ rate.value | number:'1.2-8' }}
+    </div>
+
+    <div
+      class="currency-trend"
+      [class.up]="rate.changePercent > 0"
+      [class.down]="rate.changePercent < 0"
+      [class.neutral]="Math.abs(rate.changePercent) < 0.01">
+
+      <ng-container *ngIf="Math.abs(rate.changePercent) < 0.01; else trendTpl">
+        ≈ 0%
+      </ng-container>
+
+      <ng-template #trendTpl>
+        {{ rate.changePercent > 0 ? '▲' : '▼' }}
+        {{ rate.changePercent | number:'1.2-2' }}%
+      </ng-template>
+
+    </div>
+
+  </div>
+
+</div>
 
   <div class="showedtime">
   <p *ngIf="!loading() && !error()">
