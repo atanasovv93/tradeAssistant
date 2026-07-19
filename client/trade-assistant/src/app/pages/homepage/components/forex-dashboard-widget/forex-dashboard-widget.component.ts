@@ -20,6 +20,64 @@ export class ForexDashboardWidgetComponent implements OnInit {
 
   readonly bases = ['EUR', 'USD', 'GBP', 'CHF', 'AUD', 'CAD', 'MKD', 'TRY','RUB','JPY'];
 
+  readonly currencies: Record<string, {
+  name: string;
+  icon: string;
+}> = {
+
+  EUR: {
+    name: 'Euro',
+    icon: 'https://static.vecteezy.com/system/resources/thumbnails/012/026/927/small/european-union-flag-with-grunge-texture-png.png'
+  },
+
+  USD: {
+    name: 'US Dollar',
+    icon: 'https://img.magnific.com/premium-vector/grunge-american-flag-design_1102-1923.jpg?semt=ais_hybrid&w=740&q=80'
+  },
+
+  GBP: {
+    name: 'British Pound',
+    icon: 'https://img.magnific.com/premium-psd/brush-flag-united-kingdom-design-transparent-element-united-kingdom-brush-stroke-national-flag_609989-3747.jpg?semt=ais_hybrid&w=740&q=80'
+  },
+
+  CHF: {
+    name: 'Swiss Franc',
+    icon: 'https://png.pngtree.com/png-clipart/20200310/ourmid/pngtree-switzerland-flag-transparent-watercolor-painted-brush-png-image_2156595.jpg'
+  },
+
+  AUD: {
+    name: 'Australian Dollar',
+    icon: 'https://png.pngtree.com/png-vector/20210722/ourmid/pngtree-watercolor-or-torn-flag-of-australia-png-image_3626846.jpg'
+  },
+
+  CAD: {
+    name: 'Canadian Dollar',
+    icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSI8MraSVn2FW1r0FGD72YCW2yoJwqYuR7HolIcR4tyxUtQ821Ss3DxnhE&s=10'
+  },
+
+  JPY: {
+    name: 'Japanese Yen',
+    icon: 'https://png.pngtree.com/png-vector/20230408/ourmid/pngtree-japan-flag-transparent-watercolor-painted-brush-vector-art-png-image_6688587.png'
+  },
+
+  TRY: {
+    name: 'Turkish Lira',
+    icon: 'https://img.magnific.com/premium-photo/national-flag-turkey-grunge-stroke-brush-textured-white-background_150101-9238.jpg?semt=ais_hybrid&w=740&q=80'
+  },
+
+  RUB: {
+    name: 'Russian Ruble',
+    icon: 'https://www.citypng.com/public/uploads/preview/download-hd-russia-grunge-flag-png-735811695835771nojbsefqrv.png'
+  },
+
+  MKD: {
+    name: 'Macedonian Denar',
+    icon: 'https://png.pngtree.com/png-clipart/20230303/original/pngtree-macedonia-flag-national-symbol-with-transparent-background-png-image_8971563.png'
+  }
+
+};
+
+
   // Signals (state)
   selectedBase = signal<string>('EUR');
   latest = signal<ForexRate | null>(null);
@@ -87,14 +145,26 @@ export class ForexDashboardWidgetComponent implements OnInit {
 
   /** Transform rates into list for easy display */
   ratesArray = computed(() => {
-    const rate = this.latest();
-    if (!rate) return [];
-    return Object.entries(rate.rates).map(([currency, value]) => ({
-      currency,
-      value,
-      trendInfo: this.getTrendFor(currency)
-    }));
-  });
+
+  const rate = this.latest();
+
+  if (!rate) return [];
+
+  return Object.entries(rate.rates).map(([currency, value]) => ({
+
+    currency,
+
+    name: this.currencies[currency]?.name ?? currency,
+
+    icon: this.currencies[currency]?.icon,
+
+    value,
+
+    trendInfo: this.getTrendFor(currency)
+
+  }));
+
+});
 
   get currentLanguage(): 'EN' | 'DE' {
   return this.languageService.getLanguage();

@@ -19,28 +19,54 @@
     </select>
   </div>
 
-  <table *ngIf="latest() && !loading()">
-    <thead>
-      <tr>
-        <th>{{ currentLanguage === 'DE' ? 'Währung' : 'Currency' }}</th>
-        <th>{{ currentLanguage === 'DE' ? 'Letzter Preis' : 'Last Price' }}</th>
-        <th>{{ currentLanguage === 'DE' ? 'Trend' : 'Trend' }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let r of ratesArray()">
-        <td>{{ r.currency }}</td>
-        <td>{{ r.value | number:'1.4-4' }}</td>
-        <td>
-          <ng-container *ngIf="r.trendInfo; else noTrend">
-            {{ r.trendInfo.trend }}
-            ({{ r.trendInfo.dailyChange }}%)
-          </ng-container>
-          <ng-template #noTrend>—</ng-template>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+ <div class="currency-grid" *ngIf="latest() && !loading()">
+  <div class="currency-card" *ngFor="let r of ratesArray()">
+
+    <div class="card-header">
+      <div class="currency-info">
+        <img
+          class="currency-icon"
+          [src]="r.icon"
+          [alt]="r.currency"
+        />
+
+        <div>
+          <div class="currency-symbol">
+            {{ r.currency }}
+          </div>
+
+          <div class="currency-name">
+            {{ r.name }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="currency-price">
+      {{ r.value | number:'1.4-4' }}
+    </div>
+
+    <div
+      class="currency-trend"
+      *ngIf="r.trendInfo"
+      [class.up]="r.trendInfo.dailyChange >= 0"
+      [class.down]="r.trendInfo.dailyChange < 0">
+
+      <span>
+        {{ r.trendInfo.dailyChange >= 0 ? '▲' : '▼' }}
+      </span>
+
+      {{ r.trendInfo.dailyChange }}%
+    </div>
+
+    <div
+      class="currency-trend neutral"
+      *ngIf="!r.trendInfo">
+      —
+    </div>
+
+  </div>
+</div>
 
   <p class="lastupdate" *ngIf="latest()">
     {{ currentLanguage === 'DE' ? 'Zuletzt aktualisiert:' : 'Last updated:' }}
