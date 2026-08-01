@@ -2,7 +2,7 @@
 
   padding: 20px;
   border-radius: 16px;
-  background: #ffffff;
+  background: transparent;
 
 
   .header {
@@ -34,12 +34,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-
+    gap: 15px;
     padding: 15px;
 
     border-radius: 12px;
 
-    background: #f7f7f7;
+    background: transparent;
 
 
     .icon {
@@ -110,9 +110,9 @@
   .updated {
 
     margin-top: 15px;
-    font-size: 12px;
+    font-size: 15px;
     opacity: .6;
-
+    color: #0a0000;
   }
 
 

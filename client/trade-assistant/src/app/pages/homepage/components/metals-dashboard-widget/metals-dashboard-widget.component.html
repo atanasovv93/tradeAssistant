@@ -9,10 +9,8 @@
 
   @if (loading()) {
 
-  <div class="loading">
-    Loading metals...
-  </div>
-
+  <app-loading-spinner max-width="100px" max-height="100px"
+    *ngIf="loading()"></app-loading-spinner>
   }
 
 
@@ -61,7 +59,7 @@
       <div class="price">
 
         <div class="value">
-          {{ formatValue(metal.value) }}
+          ${{ formatValue(metal.value) }}
         </div>
 
 
@@ -75,6 +73,18 @@
 
     </div>
 
+    <div
+      class="trend"
+      *ngIf="metal.trendInfo"
+      [class.up]="metal.trendInfo.dailyChange >= 0"
+      [class.down]="metal.trendInfo.dailyChange < 0">
+
+      <span>
+        {{ metal.trendInfo.dailyChange >= 0 ? '▲' : '▼' }}
+      </span>
+
+      {{ metal.trendInfo.dailyChange }}%
+    </div>
 
     }
 

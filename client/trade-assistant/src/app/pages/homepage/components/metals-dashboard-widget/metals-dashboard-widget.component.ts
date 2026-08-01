@@ -4,11 +4,12 @@ import {
   MetalsService,
   Metal,
 } from '../../../../services/metals/metals.service';
+import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-metals-widget',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LoadingSpinnerComponent],
   templateUrl: './metals-dashboard-widget.component.html',
   styleUrls: ['./metals-dashboard-widget.component.scss'],
 })

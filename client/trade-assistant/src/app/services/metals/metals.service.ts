@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 
 export interface Metal {
+trendInfo: any;
   symbol: string;
   name: string;
   value: number;
