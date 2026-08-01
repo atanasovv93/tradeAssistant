@@ -19,7 +19,7 @@ export class MetalsService {
   private readonly http = inject(HttpClient);
 
   private readonly apiUrl =
-    'http://localhost:8080/metals/latest';
+    'https://tradeassistant.onrender.com/metals/latest';
 
 
   getLatest(): Observable<Metal[]> {
