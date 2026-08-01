@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
-
- 
+/* eslint-disable prettier/prettier */
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
@@ -56,13 +55,17 @@ export class MetalsService {
       });
 
       return cached
-        .sort((a, b) => a.symbol.localeCompare(b.symbol))
-        .map((m) => ({
-          symbol: m.symbol,
-          name: m.name,
-          value: Number(m.value),
-          timestamp: m.timestamp.toLocaleString('en-GB'),
-        }));
+  .sort((a, b) => a.symbol.localeCompare(b.symbol))
+  .map((m) => ({
+    symbol: m.symbol,
+    name: m.name,
+    value: Number(m.value),
+    timestamp: m.timestamp.toLocaleString('en-GB'),
+
+    change: 0,
+    changePercent: 0,
+    trend: '➡️',
+  }));
     }
   }
 
@@ -82,29 +85,40 @@ export class MetalsService {
     );
 
     const metals = response.data.metals;
+    const previousMetals = await this.metalRepository.find({
+  order: {
+    timestamp: 'DESC',
+  },
+  take: 4,
+});
 
-    await this.metalRepository.save([
-      {
-        symbol: 'GOLD',
-        name: 'Gold',
-        value: metals.gold,
-      },
-      {
-        symbol: 'SILVER',
-        name: 'Silver',
-        value: metals.silver,
-      },
-      {
-        symbol: 'PLATINUM',
-        name: 'Platinum',
-        value: metals.platinum,
-      },
-      {
-        symbol: 'PALLADIUM',
-        name: 'Palladium',
-        value: metals.palladium,
-      },
-    ]);
+const previousMap = new Map(
+  previousMetals.map((m) => [m.symbol, Number(m.value)]),
+);
+    const latestMetals = [
+  {
+    symbol: 'GOLD',
+    name: 'Gold',
+    value: metals.gold,
+  },
+  {
+    symbol: 'SILVER',
+    name: 'Silver',
+    value: metals.silver,
+  },
+  {
+    symbol: 'PLATINUM',
+    name: 'Platinum',
+    value: metals.platinum,
+  },
+  {
+    symbol: 'PALLADIUM',
+    name: 'Palladium',
+    value: metals.palladium,
+  },
+];
+
+await this.metalRepository.save(latestMetals);
 
     const inserted = await this.metalRepository.find({
       order: {
@@ -114,13 +128,36 @@ export class MetalsService {
     });
 
     return inserted
-      .sort((a, b) => a.symbol.localeCompare(b.symbol))
-      .map((m) => ({
-        symbol: m.symbol,
-        name: m.name,
-        value: Number(m.value),
-        timestamp: m.timestamp.toLocaleString('en-GB'),
-      }));
+  .sort((a, b) => a.symbol.localeCompare(b.symbol))
+  .map((m) => {
+    const previous = previousMap.get(m.symbol);
+
+    const change =
+      previous !== undefined
+        ? Number((Number(m.value) - previous).toFixed(4))
+        : 0;
+
+    const changePercent =
+      previous && previous !== 0
+        ? Number(((change / previous) * 100).toFixed(3))
+        : 0;
+
+    return {
+      symbol: m.symbol,
+      name: m.name,
+      value: Number(m.value),
+      timestamp: m.timestamp.toLocaleString('en-GB'),
+
+      change,
+      changePercent,
+      trend:
+        change > 0
+          ? '📈 Rise during the day'
+          : change < 0
+            ? '📉 Fall during the day'
+            : '⏸️ No change detected',
+    };
+  });
   } catch (err: any) {
     this.logger.error(err.response?.data);
     this.logger.error(err.response?.status);

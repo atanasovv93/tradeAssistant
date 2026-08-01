@@ -1,10 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
-import {
-  MetalsService,
-  Metal,
-} from '../../../../services/metals/metals.service';
+import { MetalsService } from '../../../../services/metals/metals.service';
 import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/loading-spinner.component';
+import { MetalInterface } from './interfaces/metals.interface';
 
 @Component({
   selector: 'app-metals-widget',
@@ -16,7 +14,7 @@ import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/load
 export class MetalsWidgetComponent implements OnInit {
   private readonly metalsService = inject(MetalsService);
 
-  metals = signal<Metal[]>([]);
+  metals = signal<MetalInterface[]>([]);
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
 

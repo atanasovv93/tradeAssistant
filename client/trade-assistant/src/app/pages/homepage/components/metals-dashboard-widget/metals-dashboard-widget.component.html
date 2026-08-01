@@ -68,23 +68,23 @@
         </div>
 
       </div>
+      <div
+  class="trend"
+  [class.up]="metal.change >= 0"
+  [class.down]="metal.change < 0">
 
+  <span>
+    {{ metal.change >= 0 ? '▲' : '▼' }}
+  </span>
+
+  {{ metal.changePercent }}%
+
+</div>
 
 
     </div>
 
-    <div
-      class="trend"
-      *ngIf="metal.trendInfo"
-      [class.up]="metal.trendInfo.dailyChange >= 0"
-      [class.down]="metal.trendInfo.dailyChange < 0">
 
-      <span>
-        {{ metal.trendInfo.dailyChange >= 0 ? '▲' : '▼' }}
-      </span>
-
-      {{ metal.trendInfo.dailyChange }}%
-    </div>
 
     }
 

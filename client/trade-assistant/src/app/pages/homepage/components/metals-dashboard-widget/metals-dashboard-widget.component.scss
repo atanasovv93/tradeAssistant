@@ -115,6 +115,21 @@
     color: #0a0000;
   }
 
+  .trend {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    &.up {
+      color: #16a34a;
+    }
+
+    &.down {
+      color: #dc2626;
+    }
+
+  }
+
 
 
   .loading,
