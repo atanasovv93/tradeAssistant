@@ -11,10 +11,10 @@ export enum ProductCategory {
 @Entity('products')
 export class Product {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ length: 100 })
-  name: string;
+  name!: string;
 
   @Column({ nullable: true })
   image?: string;
@@ -24,10 +24,10 @@ export class Product {
     enum: ProductCategory,
     default: ProductCategory.OTHER,
   })
-  category: ProductCategory;
+  category!: ProductCategory;
 
   @Column('decimal', { precision: 10, scale: 2, default: 0 })
-  quantity: number;
+  quantity!: number;
 
   @Column({ nullable: true })
   distributor?: string;
@@ -39,17 +39,17 @@ export class Product {
   expirationDate?: Date;
 
   @Column('decimal', { precision: 10, scale: 2, default: 0 })
-  purchasePrice: number;
+  purchasePrice!: number;
 
   @Column('decimal', { precision: 10, scale: 2, default: 0 })
-  salePrice: number;
+  salePrice!: number;
 
   @Column({ nullable: true })
   barcode?: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt! : Date;
 }

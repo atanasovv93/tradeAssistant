@@ -9,6 +9,7 @@ import { ProductCardComponent } from '../../shared/product-card/product-card.com
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { CryptoDashboardWidgetComponent } from './components/crypto-dashboard-widget/crypto-dashboard-widget.component';
 import { ForexDashboardWidgetComponent } from './components/forex-dashboard-widget/forex-dashboard-widget.component';
+import { MetalsWidgetComponent } from "./components/metals-dashboard-widget/metals-dashboard-widget.component";
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -19,7 +20,8 @@ import { ForexDashboardWidgetComponent } from './components/forex-dashboard-widg
     LoadingSpinnerComponent,
     NewsScrollerComponent,
     CryptoDashboardWidgetComponent,
-    ForexDashboardWidgetComponent
+    ForexDashboardWidgetComponent,
+    MetalsWidgetComponent
 ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']

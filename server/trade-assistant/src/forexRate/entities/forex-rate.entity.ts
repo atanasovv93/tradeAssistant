@@ -4,17 +4,17 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeor
 @Entity('forex_rates')
 export class ForexRate {
     @PrimaryGeneratedColumn()
-    id: number;
+    id!: number;
 
     @Column()
-    base: string;
+    base!: string;
 
     @Column('jsonb') // PostgreSQL JSON column за rates
-    rates: Record<string, number>;
+    rates!: Record<string, number>;
 
     @Column({ type: 'bigint', nullable: false, default: () => 'EXTRACT(EPOCH FROM NOW())' })
-    timestamp: number;
+    timestamp!: number;
 
     @CreateDateColumn()
-    createdAt: Date; // автоматски пополнува при insert
+    createdAt!: Date; // автоматски пополнува при insert
 }

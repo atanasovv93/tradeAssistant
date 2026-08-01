@@ -10,6 +10,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BinanceModule } from './binance/services/binance.module';
 import { AiModule } from './ai/ai.module';
+import { MetalsModule } from './metals/metals.module';
 
 @Module({
   imports: [
@@ -41,7 +42,8 @@ import { AiModule } from './ai/ai.module';
     ProductsModule,
     NewsModule,
     BinanceModule,
-    AiModule, // <-- додај го тука
+    AiModule,
+    MetalsModule, // <-- додај го тука
   ],
   controllers: [AppController],
   providers: [AppService],

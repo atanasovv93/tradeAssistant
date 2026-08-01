@@ -4,37 +4,37 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 @Entity('crypto_klines')
 export class CryptoKline {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  symbol: string;
+  symbol!: string;
 
   @Column({ type: 'bigint' })
-  openTime: number;
+  openTime!: number;
 
   @Column('decimal')
-  open: number;
+  open!: number;
 
   @Column('decimal')
-  high: number;
+  high!: number;
 
   @Column('decimal')
-  low: number;
+  low!: number;
 
   @Column('decimal')
-  close: number;
+  close!: number;
 
   @Column('decimal')
-  volume: number;
+  volume!: number;
 
   @Column('decimal')
-  takerBuyVolume: number;
+  takerBuyVolume!: number;
 
   @Column('decimal')
-  quoteVolume: number;
+  quoteVolume!: number;
 
   @Column({ type: 'bigint' })
-  closeTime: number;
+  closeTime!: number;
 
   @Column({ nullable: true })
   numberOfTrades?: number;

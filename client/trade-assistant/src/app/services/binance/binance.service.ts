@@ -2,7 +2,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map, forkJoin } from 'rxjs';
+import { Observable } from 'rxjs';
 
 export interface CryptoTrend {
   symbol: string;
@@ -27,38 +27,94 @@ export class CryptoService {
   constructor() {}
 
   /**
-   * Влече 24h податоци за еден крипто символ од Binance
+   * Live 24h ticker преку Binance WebSocket
    */
   get24hTrend(symbol: string): Observable<CryptoTrend> {
-    const apiUrl = `https://api.binance.com/api/v3/ticker/24hr?symbol=${symbol.toUpperCase()}`;
-    return this.http.get<any>(apiUrl).pipe(
-      map(res => {
-        const open = parseFloat(res.openPrice);
-        const close = parseFloat(res.lastPrice);
-        const priceChangePercent = parseFloat(res.priceChangePercent);
+    return new Observable<CryptoTrend>((observer) => {
+      const socket = new WebSocket(
+        `wss://stream.binance.com:9443/ws/${symbol.toLowerCase()}@ticker`
+      );
+
+      socket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+
+        const open = parseFloat(data.o);
+        const close = parseFloat(data.c);
+        const priceChangePercent = parseFloat(data.P);
         const change = close - open;
         const trend = change > 0 ? '📈' : change < 0 ? '📉' : '➡️';
         const mid = (open + close) / 2;
 
-        return { symbol: res.symbol, open, mid, close, change, priceChangePercent, trend } as CryptoTrend;
-      })
-    );
+        observer.next({
+          symbol: data.s,
+          open,
+          mid,
+          close,
+          change,
+          priceChangePercent,
+          trend,
+        });
+      };
+
+      socket.onerror = (err) => observer.error(err);
+
+      return () => {
+        socket.close();
+      };
+    });
   }
 
   /**
-   * Влече повеќе символи и враќа како CryptoTrendsResponse
+   * Live повеќе симболи преку една WebSocket конекција
    */
   getMultiple24hTrends(symbols: string[]): Observable<CryptoTrendsResponse> {
-    const requests = symbols.map(s => this.get24hTrend(s));
-    return forkJoin(requests).pipe(
-      map(trends => {
-        return { trends };
-      })
-    );
+    return new Observable<CryptoTrendsResponse>((observer) => {
+      const streams = symbols
+        .map((s) => `${s.toLowerCase()}@ticker`)
+        .join('/');
+
+      const socket = new WebSocket(
+        `wss://stream.binance.com:9443/stream?streams=${streams}`
+      );
+
+      const trendsMap: Record<string, CryptoTrend> = {};
+
+      socket.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        const data = message.data;
+
+        const open = parseFloat(data.o);
+        const close = parseFloat(data.c);
+        const priceChangePercent = parseFloat(data.P);
+        const change = close - open;
+        const trend = change > 0 ? '📈' : change < 0 ? '📉' : '➡️';
+        const mid = (open + close) / 2;
+
+        trendsMap[data.s] = {
+          symbol: data.s,
+          open,
+          mid,
+          close,
+          change,
+          priceChangePercent,
+          trend,
+        };
+
+        observer.next({
+          trends: Object.values(trendsMap),
+        });
+      };
+
+      socket.onerror = (err) => observer.error(err);
+
+      return () => {
+        socket.close();
+      };
+    });
   }
 
   /**
-   * Секогаш може да додадеш старите API повици за backend ако сакаш
+   * Backend API
    */
   syncAll(): Observable<any> {
     return this.http.get<any>(`/api/crypto/sync`);
@@ -69,6 +125,8 @@ export class CryptoService {
   }
 
   getHistory(symbol: string): Observable<any> {
-    return this.http.get<any>(`/api/crypto/history/${symbol.toUpperCase()}`);
+    return this.http.get<any>(
+      `/api/crypto/history/${symbol.toUpperCase()}`
+    );
   }
 }
