@@ -23,6 +23,8 @@ export class Metal {
   })
   value!: number;
 
-  @CreateDateColumn()
-  timestamp!: Date;
+  @CreateDateColumn({
+  type: 'timestamp with time zone',
+})
+timestamp!: Date;
 }
