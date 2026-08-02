@@ -149,10 +149,14 @@ h3 {
 
   @media (max-width: 490px) {
     .currency-grid {
-      max-width: 55%;
-      grid-template-columns: repeat(2, minmax(180px, 1fr));
+      max-width: 50%;
+      grid-template-columns: repeat(2, minmax(168px, 1fr));
       align-items: center;
-      margin-left: 10px;
+      margin-left: 15px;
+    }
+
+    .currency-symbol {
+      font-size: 11px;
     }
 
     .currency-trend {
