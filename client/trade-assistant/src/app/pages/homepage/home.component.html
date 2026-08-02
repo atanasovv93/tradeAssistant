@@ -6,12 +6,21 @@
 
 
 <ng-template #content>
-  <div class="widgets-container">
-    <app-forex-dashboard-widget class="forex-widget" />
-    <app-metals-widget></app-metals-widget>
-    <app-crypto-dashboard-widget class="crypto-widget" />
-  </div>
-  <app-news-scroller />
+  <div class="homepage-section">
+
+    <div class="widgets-container">
+
+        <app-forex-dashboard-widget></app-forex-dashboard-widget>
+
+        <app-metals-widget></app-metals-widget>
+
+    </div>
+
+    <app-crypto-dashboard-widget></app-crypto-dashboard-widget>
+
+    <app-news-scroller></app-news-scroller>
+
+</div>
   <div *ngIf="productsList.length; else noProducts" class="product-card">
     <app-product-card *ngFor="let product of productsList" [product]="product">
     </app-product-card>

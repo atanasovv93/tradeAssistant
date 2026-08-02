@@ -6,18 +6,29 @@ import { Observable } from 'rxjs';
 
 export interface CryptoTrend {
   symbol: string;
+
   open: number;
-  mid?: number | null;
+  high: number;
+  low: number;
+  mid: number;
   close: number;
+
   change: number;
   priceChangePercent: number;
   trend: string;
+
+  volume: number;
+  quoteVolume: number;
+  trades: number;
+
+  bid: number;
+  ask: number;
+  spread: number;
 }
 
 export interface CryptoTrendsResponse {
   trends: CryptoTrend[];
 }
-
 @Injectable({
   providedIn: 'root',
 })
@@ -46,14 +57,26 @@ export class CryptoService {
         const mid = (open + close) / 2;
 
         observer.next({
-          symbol: data.s,
-          open,
-          mid,
-          close,
-          change,
-          priceChangePercent,
-          trend,
-        });
+  symbol: data.s,
+
+  open,
+  high: parseFloat(data.h),
+  low: parseFloat(data.l),
+  mid,
+  close,
+
+  change,
+  priceChangePercent,
+  trend,
+
+  volume: parseFloat(data.v),
+  quoteVolume: parseFloat(data.q),
+  trades: Number(data.n),
+
+  bid: parseFloat(data.b),
+  ask: parseFloat(data.a),
+  spread: parseFloat(data.a) - parseFloat(data.b),
+});
       };
 
       socket.onerror = (err) => observer.error(err);
@@ -91,14 +114,26 @@ export class CryptoService {
         const mid = (open + close) / 2;
 
         trendsMap[data.s] = {
-          symbol: data.s,
-          open,
-          mid,
-          close,
-          change,
-          priceChangePercent,
-          trend,
-        };
+  symbol: data.s,
+
+  open,
+  high: parseFloat(data.h),
+  low: parseFloat(data.l),
+  mid,
+  close,
+
+  change,
+  priceChangePercent,
+  trend,
+
+  volume: parseFloat(data.v),
+  quoteVolume: parseFloat(data.q),
+  trades: Number(data.n),
+
+  bid: parseFloat(data.b),
+  ask: parseFloat(data.a),
+  spread: parseFloat(data.a) - parseFloat(data.b),
+};
 
         observer.next({
           trends: Object.values(trendsMap),

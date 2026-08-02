@@ -1,74 +1,127 @@
 <div class="crypto-widget">
+
   <h3>
-  {{ currentLanguage === 'DE'
-      ? 'Krypto Dashboard'
-      : 'Crypto Dashboard' }}
-</h3>
+    {{
+      currentLanguage === 'DE'
+        ? 'Krypto Dashboard'
+        : 'Crypto Dashboard'
+    }}
+  </h3>
 
-  <app-loading-spinner max-width="100px" max-height="100px" *ngIf="loading()"></app-loading-spinner>
-  <div *ngIf="error()" class="error">{{ error() }}</div>
+  <app-loading-spinner
+    max-width="100px"
+    max-height="100px"
+    *ngIf="loading()">
+  </app-loading-spinner>
 
-  <div class="currency-grid" *ngIf="!loading() && !error() && latest().length">
+  <div *ngIf="error()" class="error">
+    {{ error() }}
+  </div>
 
-  <div class="currency-card" *ngFor="let rate of latest()">
+  <div
+    class="currency-grid"
+    *ngIf="!loading() && !error() && latest().length">
 
-    <div class="card-header">
-      <div class="currency-info">
+    <div
+      class="currency-card"
+      *ngFor="let rate of latest(); trackBy: trackBySymbol">
 
-        <img
-          class="currency-icon"
-          [src]="rate.icon"
-          [alt]="rate.symbol"
-        />
+      <div class="card-header">
 
-        <div class="currency-details">
+        <div class="currency-info">
 
-          <div class="currency-symbol">
-            {{ rate.symbol }}
+          <img
+            class="currency-icon"
+            [src]="rate.icon"
+            [alt]="rate.symbol" />
+
+          <div>
+
+            <div class="currency-symbol">
+              {{ rate.symbol }}
+            </div>
+
+            <div class="currency-name">
+              {{ rate.name }}
+            </div>
+
+
           </div>
+          
+          <div
+        class="currency-trend"
+        [class.up]="rate.changePercent > 0"
+        [class.down]="rate.changePercent < 0"
+        [class.neutral]="Math.abs(rate.changePercent) < 0.01">
 
-          <div class="currency-name">
-            {{ rate.name }}
-          </div>
+        <ng-container
+          *ngIf="Math.abs(rate.changePercent) < 0.01; else trendTpl">
 
+          ≈ 0%
+
+        </ng-container>
+
+        <ng-template #trendTpl>
+
+          {{ rate.changePercent > 0 ? '▲' : '▼' }}
+
+          {{ rate.changePercent | number:'1.2-2' }}%
+
+        </ng-template>
+
+      </div>
         </div>
 
       </div>
-    </div>
 
-    <div class="currency-price">
-      ${{ rate.value | number:'1.2-8' }}
-    </div>
+      <div class="currency-price">
+        ${{ rate.value | number:'1.2-8' }}
+      </div>
 
-    <div
-      class="currency-trend"
-      [class.up]="rate.changePercent > 0"
-      [class.down]="rate.changePercent < 0"
-      [class.neutral]="Math.abs(rate.changePercent) < 0.01">
 
-      <ng-container *ngIf="Math.abs(rate.changePercent) < 0.01; else trendTpl">
-        ≈ 0%
-      </ng-container>
 
-      <ng-template #trendTpl>
-        {{ rate.changePercent > 0 ? '▲' : '▼' }}
-        {{ rate.changePercent | number:'1.2-2' }}%
-      </ng-template>
+      <div class="market-stats">
+
+        <div class="stat">
+          <span>High</span>
+          <strong>${{ rate.high | number:'1.2-4' }}</strong>
+        </div>
+
+        <div class="stat">
+          <span>Low</span>
+          <strong>${{ rate.low | number:'1.2-4' }}</strong>
+        </div>
+
+        <div class="stat">
+          <span>Volume</span>
+          <strong>{{ rate.volume | number:'1.0-0' }}</strong>
+        </div>
+
+        <div class="stat">
+          <span>Trades</span>
+          <strong>{{ rate.trades | number }}</strong>
+        </div>
+
+      </div>
 
     </div>
 
   </div>
 
-</div>
+  <div class="showedtime" *ngIf="!loading() && !error()">
 
-  <div class="showedtime">
-  <p *ngIf="!loading() && !error()">
-    {{
-      currentLanguage === 'DE'
-        ? 'Zuletzt aktualisiert:'
-        : 'Last updated:'
-    }}
-    {{ getFormattedDate() }}
-  </p>
-</div>
+    <p>
+
+      {{
+        currentLanguage === 'DE'
+          ? 'Zuletzt aktualisiert:'
+          : 'Last updated:'
+      }}
+
+      {{ getFormattedDate() }}
+
+    </p>
+
+  </div>
+
 </div>

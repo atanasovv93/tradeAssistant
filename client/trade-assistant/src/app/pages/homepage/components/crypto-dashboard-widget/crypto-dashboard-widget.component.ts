@@ -2,9 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+
 import { CryptoService } from '../../../../services/binance/binance.service';
 import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/loading-spinner.component';
 import { LanguageService } from '../../../../services/language/language.service';
+import { CryptoDashboardInterface } from './interfaces/crypto-dashboard.interface';
 
 @Component({
   selector: 'app-crypto-dashboard-widget',
@@ -13,8 +15,9 @@ import { LanguageService } from '../../../../services/language/language.service'
   templateUrl: './crypto-dashboard-widget.component.html',
   styleUrls: ['./crypto-dashboard-widget.component.scss'],
 })
-export class CryptoDashboardWidgetComponent implements OnInit, OnDestroy {
-
+export class CryptoDashboardWidgetComponent
+  implements OnInit, OnDestroy
+{
   private readonly cryptoService = inject(CryptoService);
   private readonly languageService = inject(LanguageService);
 
@@ -23,83 +26,106 @@ export class CryptoDashboardWidgetComponent implements OnInit, OnDestroy {
   readonly fixedBases: Record<string, { name: string; icon: string }> = {
     BTC: {
       name: 'Bitcoin',
-      icon: 'https://banner2.cleanpng.com/20180330/zdq/kisspng-free-bitcoin-computer-icons-bitcoin-5abdfe8b455c60.1048406415224009072841.jpg'
+      icon: 'https://banner2.cleanpng.com/20180330/zdq/kisspng-free-bitcoin-computer-icons-bitcoin-5abdfe8b455c60.1048406415224009072841.jpg',
     },
     ETH: {
       name: 'Ethereum',
-      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9BdemyVeuZZe931PFBYxnXq_QWDV3vLmMkmahl5GuHMtWLyC1HRxkbiT9&s=10'
+      icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9BdemyVeuZZe931PFBYxnXq_QWDV3vLmMkmahl5GuHMtWLyC1HRxkbiT9&s=10',
     },
     BNB: {
       name: 'BNB',
-      icon: 'https://banner2.cleanpng.com/20240304/elk/transparent-cryptocurrency-logo-company-logo-yellow-square-whi-yellow-square-with-white-triangle-logo-1710851467078.webp'
+      icon: 'https://banner2.cleanpng.com/20240304/elk/transparent-cryptocurrency-logo-company-logo-yellow-square-whi-yellow-square-with-white-triangle-logo-1710851467078.webp',
     },
     SOL: {
       name: 'Solana',
-      icon: 'https://pngdownloads.wordpress.com/wp-content/uploads/2024/03/solana-sol-black-logo-png.jpg?w=850'
+      icon: 'https://pngdownloads.wordpress.com/wp-content/uploads/2024/03/solana-sol-black-logo-png.jpg?w=850',
     },
     LTC: {
       name: 'Litecoin',
-      icon: 'https://icon2.cleanpng.com/20180701/hwb/kisspng-litecoin-computer-icons-cryptocurrency-stellar-bit-litecoin-5b38aa2e4fdd48.5189667315304402383271.jpg'
+      icon: 'https://icon2.cleanpng.com/20180701/hwb/kisspng-litecoin-computer-icons-cryptocurrency-stellar-bit-litecoin-5b38aa2e4fdd48.5189667315304402383271.jpg',
     },
     ADA: {
       name: 'Cardano',
-      icon: 'https://toppng.com/uploads/preview/cardano-logo-11552763966venp8i53za.png'
+      icon: 'https://toppng.com/uploads/preview/cardano-logo-11552763966venp8i53za.png',
     },
     XRP: {
       name: 'XRP',
-      icon: 'https://w7.pngwing.com/pngs/192/349/png-transparent-xrp-symbol-xrp-sign-xrp-logo-xrp-crypto-xrp-coin-xrp-3d-icon-thumbnail.png'
+      icon: 'https://w7.pngwing.com/pngs/192/349/png-transparent-xrp-symbol-xrp-sign-xrp-logo-xrp-crypto-xrp-coin-xrp-3d-icon-thumbnail.png',
     },
     AXS: {
       name: 'Axie Infinity',
-      icon: 'https://png.pngtree.com/png-clipart/20211214/ourmid/pngtree-3d-rendering-cryptocurrency-axie-infinity-blue-coin-with-cartoon-style-png-image_4056964.png'
+      icon: 'https://png.pngtree.com/png-clipart/20211214/ourmid/pngtree-3d-rendering-cryptocurrency-axie-infinity-blue-coin-with-cartoon-style-png-image_4056964.png',
     },
     SPCXB: {
       name: 'SPCXB Token',
-      icon: 'https://coin-images.coingecko.com/coins/images/102173888/large/bstocks_spacex.png?1781280362'
+      icon: 'https://coin-images.coingecko.com/coins/images/102173888/large/bstocks_spacex.png?1781280362',
     },
     NVDAB: {
       name: 'NVDAB',
-      icon: 'https://upload.wikimedia.org/wikipedia/commons/8/8e/Logo-nvidia-transparent-PNG.png'
-    }
+      icon: 'https://upload.wikimedia.org/wikipedia/commons/8/8e/Logo-nvidia-transparent-PNG.png',
+    },
   };
 
-  latest = signal<any[]>([]);
+  latest = signal<CryptoDashboardInterface[]>([]);
   loading = signal(false);
   error = signal<string | null>(null);
 
   Math = Math;
 
   ngOnInit(): void {
-
     this.loading.set(true);
     this.error.set(null);
 
     this.refreshSub = this.cryptoService
       .getMultiple24hTrends(
-        Object.keys(this.fixedBases).map(s => s + 'USDT')
+        Object.keys(this.fixedBases).map((s) => `${s}USDT`)
       )
       .subscribe({
         next: (res) => {
-
-          const filtered = res.trends.map(t => {
-
+          const filtered: CryptoDashboardInterface[] = res.trends.map((t) => {
             const symbol = t.symbol.replace('USDT', '');
-
-            return {
-              symbol,
-              name: this.fixedBases[symbol]?.name ?? symbol,
-              icon: this.fixedBases[symbol]?.icon ??
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9BdemyVeuZZe931PFBYxnXq_QWDV3vLmMkmahl5GuHMtWLyC1HRxkbiT9&s=10',
-              value: t.close,
-              trend: t.trend,
-              changePercent: t.priceChangePercent,
+            const trendData = t as unknown as {
+              open?: number;
+              high?: number;
+              low?: number;
+              volume?: number;
+              trades?: number;
+              bid?: number;
+              ask?: number;
+              spread?: number;
             };
 
+            return {
+  symbol,
+  name: this.fixedBases[symbol]?.name ?? symbol,
+  icon:
+    this.fixedBases[symbol]?.icon ??
+    'https://...',
+
+  value: t.close,
+
+  open: t.open,
+  high: t.high,
+  low: t.low,
+
+  trend: t.trend,
+  change: t.change,
+  changePercent: t.priceChangePercent,
+
+  volume: t.volume,
+  quoteVolume: t.quoteVolume,
+  trades: t.trades,
+
+  bid: t.bid,
+  ask: t.ask,
+  spread: t.spread,
+};
           });
 
           this.latest.set(filtered);
           this.loading.set(false);
         },
+
         error: () => {
           this.error.set(
             this.currentLanguage === 'DE'
@@ -108,7 +134,7 @@ export class CryptoDashboardWidgetComponent implements OnInit, OnDestroy {
           );
 
           this.loading.set(false);
-        }
+        },
       });
   }
 
@@ -116,14 +142,15 @@ export class CryptoDashboardWidgetComponent implements OnInit, OnDestroy {
     this.refreshSub?.unsubscribe();
   }
 
-  trackBySymbol(index: number, item: any): string {
+  trackBySymbol(
+    index: number,
+    item: CryptoDashboardInterface
+  ): string {
     return item.symbol;
   }
 
   getFormattedDate(): string {
-    const now = new Date();
-
-    return now.toLocaleString('en-GB', {
+    return new Date().toLocaleString('en-GB', {
       day: '2-digit',
       month: 'short',
       year: 'numeric',

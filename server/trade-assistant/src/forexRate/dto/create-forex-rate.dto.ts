@@ -2,10 +2,10 @@ import { IsString, IsObject, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateForexRateDto {
   @IsString()
-  base: string;
+  base!: string;
 
   @IsObject()
-  rates: Record<string, number>;
+  rates!: Record<string, number>;
 
   @IsNumber()
   @IsOptional()

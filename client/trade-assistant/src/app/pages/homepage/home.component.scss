@@ -23,6 +23,12 @@
   }
 }
 
+.homepage-section{
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+}
+
  .homepage-illustration-container {
     display: flex;
     justify-content: center;
