@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import OpenAI from 'openai';
@@ -14,6 +16,7 @@ export class AiService {
   }
 
   async ask(prompt: string) {
+  try {
     const completion = await this.client.chat.completions.create({
       model: 'z-ai/glm-5.1',
       messages: [
@@ -25,5 +28,13 @@ export class AiService {
     });
 
     return completion.choices[0].message.content;
+  } catch (err: any) {
+    console.error(err);
+    console.error(err.status);
+    console.error(err.message);
+    console.error(err.error);
+
+    throw err;
   }
+}
 }
