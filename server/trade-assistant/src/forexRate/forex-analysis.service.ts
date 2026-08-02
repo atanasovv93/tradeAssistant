@@ -26,39 +26,49 @@ export class ForexAnalysisService {
     constructor(private readonly forexRateService: ForexRateService) { }
 
     async analyzeDailyTrends(): Promise<DailyAnalysis | null> {
-        const records: ForexRate[] = await this.forexRateService.findAll();
-        records.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  const records: ForexRate[] = await this.forexRateService.findAll();
 
-        if (records.length < 3) {
-            this.logger.warn('There is not enough data for daily analysis (3 fetches required).');
-            return null;
-        }
+  records.sort(
+    (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+  );
 
-        const [latest, mid, first] = records.slice(0, 3);
+  if (records.length < 3) {
+    this.logger.warn(
+      'There is not enough data for daily analysis (3 fetches required).',
+    );
 
-        const trends: DailyTrend[] = Object.keys(latest.rates).map(currency => {
-            const start = first.rates[currency];
-            const midt = mid.rates[currency];
-            const end = latest.rates[currency];
-            const change = ((end - start) / start) * 100;
+    return null;
+  }
 
-            return {
-                currency,
-                start,
-                mid: midt,
-                end,
-                dailyChange: Number(change.toFixed(3)),
-                trend: change > 0 ? '📈 Rise during the day'
-                     : change < 0 ? '📉 Fall during the day'
-                     : '⏸️ No change detected',
-            };
-        });
+  const [latest, mid, first] = records.slice(0, 3);
 
-        return {
-            base: latest.base,
-            from: first.createdAt,
-            to: latest.createdAt,
-            trends,
-        };
-    }
+  const trends: DailyTrend[] = Object.keys(latest.rates).map((currency) => {
+    const start = first.rates[currency];
+    const middle = mid.rates[currency];
+    const end = latest.rates[currency];
+
+    const change = ((end - start) / start) * 100;
+
+    return {
+      currency,
+      start,
+      mid: middle,
+      end,
+      dailyChange: Number(change.toFixed(3)),
+      trend:
+        change > 0
+          ? '📈 Exchange rate increased'
+          : change < 0
+            ? '📉 Exchange rate decreased'
+            : '⏸️ No change detected',
+    };
+  });
+
+  return {
+    base: latest.base,
+    from: first.createdAt,
+    to: latest.createdAt,
+    trends,
+  };
+}
 }
