@@ -147,12 +147,12 @@ h3 {
     font-size: 20px;
   }
 
-  @media (max-width: 490px) {
+  @media (max-width: 520px) {
     .currency-grid {
       max-width: 50%;
       grid-template-columns: repeat(2, minmax(168px, 1fr));
       align-items: center;
-      margin-left: 15px;
+      margin-left: 13px;
     }
 
     .currency-symbol {
