@@ -150,6 +150,43 @@ h3 {
   @media (max-width: 520px) {
     .currency-grid {
       max-width: 50%;
+      grid-template-columns: repeat(2, minmax(200px, 1fr));
+      align-items: center;
+      margin-left: 2px;
+    }
+
+    .currency-symbol {
+      font-size: 11px;
+    }
+
+    .currency-trend {
+      font-size: 8px;
+      padding: 2px 5px;
+    }
+    .currency-price {
+    font-size: 15px;
+  }
+
+  .stat {
+    font-size: 10px;
+    padding: 2px;
+  }
+  .currency-card {
+    padding: 3px;
+  }
+
+
+  .mark-stats {
+    padding: 0px;
+    gap: 0px;
+    grid-template-columns: repeat(1, 0fr);
+  }
+
+  }
+
+  @media (max-width: 420px) {
+    .currency-grid {
+      max-width: 50%;
       grid-template-columns: repeat(2, minmax(168px, 1fr));
       align-items: center;
       margin-left: 13px;
