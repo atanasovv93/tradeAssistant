@@ -1,6 +1,4 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable prettier/prettier */
-/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import {
@@ -20,9 +18,11 @@ import { MetalsApiResponse } from './interfaces/metals-api-response.interface';
 @Injectable()
 export class MetalsService {
   private readonly logger = new Logger(MetalsService.name);
+
   private readonly apiKey = process.env.METALS_API_KEY;
 
-  private readonly CACHE_TIME = 8 * 60 * 60 * 1000; // 8 hours
+  // 8 часа
+  private readonly CACHE_TIME = 8 * 60 * 60 * 1000;
 
   constructor(
     @InjectRepository(Metal)
@@ -30,143 +30,300 @@ export class MetalsService {
   ) {}
 
   async getLatest(): Promise<MetalDto[]> {
-  // Последен запис
-  const latest = await this.metalRepository.find({
+    /*
+     * =====================================================
+     * 1. Земаме го најновиот запис од базата
+     * =====================================================
+     */
+
+    const latestRecords = await this.metalRepository.find({
     order: {
       timestamp: 'DESC',
+      id: 'DESC',
     },
     take: 1,
   });
 
-  const latestRecord = latest[0];
+  const latestRecord = latestRecords[0];
 
-  // Ако последниот update е помал од 8 часа
+  /*
+   * =====================================================
+   * 2. CACHE
+   * =====================================================
+   */
+
   if (latestRecord) {
-    const age = Date.now() - latestRecord.timestamp.getTime();
+    const age =
+      Date.now() - latestRecord.timestamp.getTime();
 
     if (age < this.CACHE_TIME) {
-      this.logger.log('Returning cached metals.');
+      this.logger.log(
+        'Returning cached metals from database.',
+      );
 
-      const cached = await this.metalRepository.find({
-        order: {
-          timestamp: 'DESC',
-        },
-        take: 4,
-      });
+      const cached = await this.getLatestRecords();
 
-      return cached
-  .sort((a, b) => a.symbol.localeCompare(b.symbol))
-  .map((m) => ({
-    symbol: m.symbol,
-    name: m.name,
-    value: Number(m.value),
-    timestamp: m.timestamp.toLocaleString('en-GB'),
-
-    change: 0,
-    changePercent: 0,
-    trend: '➡️',
-  }));
+      return cached.map((metal) =>
+        this.toDto(metal),
+      );
     }
   }
 
-  this.logger.log('Fetching fresh metals from API...');
 
-  try {
-    const response = await axios.get<MetalsApiResponse>(
-      'https://api.metals.dev/v1/latest',
-      {
-        params: {
-          api_key: this.apiKey,
-          currency: 'USD',
-          unit: 'g',
-        },
-        timeout: 10000,
-      },
-    );
+    /*
+     * =====================================================
+     * 3. ЗЕМАМЕ ПРЕТХОДНИ ВРЕДНОСТИ
+     * =====================================================
+     *
+     * Ова е многу важно.
+     *
+     * Не користиме:
+     *
+     *   take: 4
+     *
+     * затоа што сакаме последна вредност за
+     * секој различен metal.
+     */
 
-    const metals = response.data.metals;
-    const previousMetals = await this.metalRepository.find({
-  order: {
-    timestamp: 'DESC',
-  },
-  take: 4,
-});
-
-const previousMap = new Map(
-  previousMetals.map((m) => [m.symbol, Number(m.value)]),
-);
-    const latestMetals = [
-  {
-    symbol: 'GOLD',
-    name: 'Gold',
-    value: metals.gold,
-  },
-  {
-    symbol: 'SILVER',
-    name: 'Silver',
-    value: metals.silver,
-  },
-  {
-    symbol: 'PLATINUM',
-    name: 'Platinum',
-    value: metals.platinum,
-  },
-  {
-    symbol: 'PALLADIUM',
-    name: 'Palladium',
-    value: metals.palladium,
-  },
-];
-
-await this.metalRepository.save(latestMetals);
-
-    const inserted = await this.metalRepository.find({
+    const allRecords = await this.metalRepository.find({
       order: {
         timestamp: 'DESC',
       },
-      take: 4,
     });
 
-    return inserted
-  .sort((a, b) => a.symbol.localeCompare(b.symbol))
-  .map((m) => {
-    const previous = previousMap.get(m.symbol);
+    const previousMap = new Map<string, number>();
 
-    const change =
-      previous !== undefined
-        ? Number((Number(m.value) - previous).toFixed(4))
-        : 0;
+    for (const record of allRecords) {
+      if (!previousMap.has(record.symbol)) {
+        previousMap.set(
+          record.symbol,
+          Number(record.value),
+        );
+      }
+    }
 
-    const changePercent =
-      previous && previous !== 0
-        ? Number(((change / previous) * 100).toFixed(3))
-        : 0;
+    this.logger.log(
+      `Previous values: ${JSON.stringify(
+        Object.fromEntries(previousMap),
+      )}`,
+    );
+
+    /*
+     * =====================================================
+     * 4. ПОВИКУВАМЕ METALS API
+     * =====================================================
+     */
+
+    this.logger.log(
+      'Fetching fresh metals from Metals API...',
+    );
+
+    try {
+      const response = await axios.get<MetalsApiResponse>(
+        'https://api.metals.dev/v1/latest',
+        {
+          params: {
+            api_key: this.apiKey,
+            currency: 'USD',
+            unit: 'g',
+          },
+          timeout: 10000,
+        },
+      );
+
+      const metals = response.data.metals;
+
+      /*
+       * =====================================================
+       * 5. ГИ ПОДГОТВУВАМЕ НОВИТЕ ВРЕДНОСТИ
+       * =====================================================
+       */
+
+      const latestMetals = [
+        {
+          symbol: 'GOLD',
+          name: 'Gold',
+          value: Number(metals.gold),
+        },
+        {
+          symbol: 'SILVER',
+          name: 'Silver',
+          value: Number(metals.silver),
+        },
+        {
+          symbol: 'PLATINUM',
+          name: 'Platinum',
+          value: Number(metals.platinum),
+        },
+        {
+          symbol: 'PALLADIUM',
+          name: 'Palladium',
+          value: Number(metals.palladium),
+        },
+      ];
+
+      /*
+       * =====================================================
+       * 6. ПРЕСМЕТУВАМЕ CHANGE
+       * =====================================================
+       */
+
+      const recordsToSave = latestMetals.map((metal) => {
+        const current = Number(metal.value);
+
+        const previous = previousMap.get(metal.symbol);
+
+        let change = 0;
+        let changePercent = 0;
+
+        /*
+         * Ако постои претходна вредност,
+         * ја пресметуваме разликата.
+         */
+
+        if (
+          previous !== undefined &&
+          Number.isFinite(previous)
+        ) {
+          change = Number(
+            (current - previous).toFixed(4),
+          );
+
+          if (previous !== 0) {
+            changePercent = Number(
+              ((change / previous) * 100).toFixed(3),
+            );
+          }
+        }
+
+        return {
+          symbol: metal.symbol,
+          name: metal.name,
+          value: current,
+          change,
+          changePercent,
+        };
+      });
+
+      this.logger.log(
+        `New metals: ${JSON.stringify(recordsToSave)}`,
+      );
+
+      /*
+       * =====================================================
+       * 7. SAVE
+       * =====================================================
+       *
+       * Секој API update создава нови 4 записи.
+       */
+
+      await this.metalRepository.save(recordsToSave);
+
+      /*
+       * =====================================================
+       * 8. ЗЕМАМЕ ГИ НОВИТЕ ЗАПИСИ ОД БАЗА
+       * =====================================================
+       */
+
+      const inserted = await this.getLatestRecords();
+
+      /*
+       * =====================================================
+       * 9. RETURN DTO
+       * =====================================================
+       */
+
+      return inserted.map((metal) =>
+        this.toDto(metal),
+      );
+    } catch (err: any) {
+      this.logger.error(
+        'Metals API error:',
+      );
+
+      this.logger.error(
+        err.response?.data,
+      );
+
+      this.logger.error(
+        err.response?.status,
+      );
+
+      this.logger.error(
+        err.message,
+      );
+
+      throw new HttpException(
+        'Unable to fetch metals.',
+        HttpStatus.BAD_GATEWAY,
+      );
+    }
+  }
+
+  /*
+   * =======================================================
+   * GET LATEST RECORD FOR EACH METAL
+   * =======================================================
+   */
+
+  private async getLatestRecords(): Promise<Metal[]> {
+    const records = await this.metalRepository.find({
+      order: {
+        timestamp: 'DESC',
+        id: 'DESC',
+      },
+    });
+
+    const latestBySymbol = new Map<string, Metal>();
+
+    for (const record of records) {
+      if (!latestBySymbol.has(record.symbol)) {
+        latestBySymbol.set(
+          record.symbol,
+          record,
+        );
+      }
+    }
+
+    return Array.from(
+      latestBySymbol.values(),
+    ).sort((a, b) =>
+      a.symbol.localeCompare(b.symbol),
+    );
+  }
+
+  /*
+   * =======================================================
+   * ENTITY -> DTO
+   * =======================================================
+   */
+
+  private toDto(metal: Metal): MetalDto {
+    const change = Number(metal.change);
+    const changePercent = Number(
+      metal.changePercent,
+    );
+
+    let trend = '⏸️ No change detected';
+
+    if (change > 0) {
+      trend = '📈 Rise during the day';
+    } else if (change < 0) {
+      trend = '📉 Fall during the day';
+    }
 
     return {
-      symbol: m.symbol,
-      name: m.name,
-      value: Number(m.value),
-      timestamp: m.timestamp.toLocaleString('en-GB'),
+      symbol: metal.symbol,
+      name: metal.name,
+      value: Number(metal.value),
 
       change,
       changePercent,
-      trend:
-        change > 0
-          ? '📈 Rise during the day'
-          : change < 0
-            ? '📉 Fall during the day'
-            : '⏸️ No change detected',
-    };
-  });
-  } catch (err: any) {
-    this.logger.error(err.response?.data);
-    this.logger.error(err.response?.status);
-    this.logger.error(err.message);
 
-    throw new HttpException(
-      'Unable to fetch metals.',
-      HttpStatus.BAD_GATEWAY,
-    );
+      trend,
+
+      timestamp:
+        metal.timestamp.toLocaleString('en-GB'),
+    };
   }
-}
 }

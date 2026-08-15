@@ -23,8 +23,22 @@ export class Metal {
   })
   value!: number;
 
+  @Column('decimal', {
+    precision: 12,
+    scale: 4,
+    default: 0,
+  })
+  change!: number;
+
+  @Column('decimal', {
+    precision: 12,
+    scale: 4,
+    default: 0,
+  })
+  changePercent!: number;
+
   @CreateDateColumn({
-  type: 'timestamp with time zone',
-})
-timestamp!: Date;
+    type: 'timestamp with time zone',
+  })
+  timestamp!: Date;
 }
