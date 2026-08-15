@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { MetalsService } from './metals.service';
 
 @Controller('metals')
@@ -13,5 +13,10 @@ export class MetalsController {
   async latest() {
     return this.metalsService.getLatest();
   }
+
+  @Get('history/:symbol')
+async historyBySymbol(@Param('symbol') symbol: string) {
+  return this.metalsService.getHistoryBySymbol(symbol);
+}
 
 }

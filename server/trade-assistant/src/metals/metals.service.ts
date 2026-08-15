@@ -325,4 +325,54 @@ export class MetalsService {
       timestamp: metal.timestamp.toISOString(),
     };
   }
+
+  async getHistoryBySymbol(symbol: string): Promise<MetalDto[]> {
+  const records = await this.metalRepository.find({
+    where: {
+      symbol: symbol.toUpperCase(),
+    },
+    order: {
+      timestamp: 'ASC',
+      id: 'ASC',
+    },
+  });
+
+  return records.map((metal, index) => {
+    const current = Number(metal.value);
+
+    const previous =
+      index > 0
+        ? Number(records[index - 1].value)
+        : undefined;
+
+    const change =
+      previous !== undefined
+        ? Number((current - previous).toFixed(4))
+        : 0;
+
+    const changePercent =
+      previous !== undefined && previous !== 0
+        ? Number(((change / previous) * 100).toFixed(3))
+        : 0;
+
+    let trend = '⏸️ No change detected';
+
+    if (change > 0) {
+      trend = '📈 Rise';
+    } else if (change < 0) {
+      trend = '📉 Fall';
+    }
+
+    return {
+      symbol: metal.symbol,
+      name: metal.name,
+      value: current,
+      change,
+      changePercent,
+      trend,
+      timestamp: metal.timestamp.toISOString(),
+    };
+  });
+}
+
 }
