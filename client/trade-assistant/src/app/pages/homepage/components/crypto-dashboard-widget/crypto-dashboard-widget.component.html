@@ -14,7 +14,9 @@
     *ngIf="loading()">
   </app-loading-spinner>
 
-  <div *ngIf="error()" class="error">
+  <div
+    *ngIf="error()"
+    class="error">
     {{ error() }}
   </div>
 
@@ -26,16 +28,19 @@
       class="currency-card"
       *ngFor="let rate of latest(); trackBy: trackBySymbol">
 
+      <!-- CARD HEADER -->
       <div class="card-header">
 
+        <!-- LEFT SIDE: ICON + NAME -->
         <div class="currency-info">
 
           <img
             class="currency-icon"
             [src]="rate.icon"
-            [alt]="rate.symbol" />
+            [alt]="rate.symbol"
+          />
 
-          <div>
+          <div class="currency-details">
 
             <div class="currency-symbol">
               {{ rate.symbol }}
@@ -45,70 +50,113 @@
               {{ rate.name }}
             </div>
 
-
           </div>
-          
-          <div
-        class="currency-trend"
-        [class.up]="rate.changePercent > 0"
-        [class.down]="rate.changePercent < 0"
-        [class.neutral]="Math.abs(rate.changePercent) < 0.01">
 
-        <ng-container
-          *ngIf="Math.abs(rate.changePercent) < 0.01; else trendTpl">
+        </div>
 
-          ≈ 0%
+        <!-- RIGHT SIDE: TREND -->
+        <div
+          class="currency-trend"
+          [class.up]="rate.changePercent > 0"
+          [class.down]="rate.changePercent < 0"
+          [class.neutral]="Math.abs(rate.changePercent) < 0.01"
+        >
 
-        </ng-container>
+          <ng-container
+            *ngIf="
+              Math.abs(rate.changePercent) < 0.01;
+              else trendTpl
+            "
+          >
+            ≈ 0%
+          </ng-container>
 
-        <ng-template #trendTpl>
+          <ng-template #trendTpl>
 
-          {{ rate.changePercent > 0 ? '▲' : '▼' }}
+            {{ rate.changePercent > 0 ? '▲' : '▼' }}
 
-          {{ rate.changePercent | number:'1.2-2' }}%
+            {{ rate.changePercent | number:'1.2-2' }}%
 
-        </ng-template>
+          </ng-template>
 
-      </div>
         </div>
 
       </div>
+      <!-- END CARD HEADER -->
 
+
+      <!-- PRICE -->
       <div class="currency-price">
         ${{ rate.value | number:'1.2-8' }}
       </div>
 
 
-
+      <!-- MARKET STATS -->
       <div class="market-stats">
 
         <div class="stat">
-          <span>High</span>
-          <strong>${{ rate.high | number:'1.2-4' }}</strong>
+
+          <span>
+            High
+          </span>
+
+          <strong>
+            ${{ rate.high | number:'1.2-4' }}
+          </strong>
+
         </div>
 
-        <div class="stat">
-          <span>Low</span>
-          <strong>${{ rate.low | number:'1.2-4' }}</strong>
-        </div>
 
         <div class="stat">
-          <span>Volume</span>
-          <strong>{{ rate.volume | number:'1.0-0' }}</strong>
+
+          <span>
+            Low
+          </span>
+
+          <strong>
+            ${{ rate.low | number:'1.2-4' }}
+          </strong>
+
         </div>
 
+
         <div class="stat">
-          <span>Trades</span>
-          <strong>{{ rate.trades | number }}</strong>
+
+          <span>
+            Volume
+          </span>
+
+          <strong>
+            {{ rate.volume | number:'1.0-0' }}
+          </strong>
+
+        </div>
+
+
+        <div class="stat">
+
+          <span>
+            Trades
+          </span>
+
+          <strong>
+            {{ rate.trades | number }}
+          </strong>
+
         </div>
 
       </div>
+      <!-- END MARKET STATS -->
 
     </div>
 
   </div>
 
-  <div class="showedtime" *ngIf="!loading() && !error()">
+
+  <!-- LAST UPDATED -->
+  <div
+    class="showedtime"
+    *ngIf="!loading() && !error()">
 
     <p>
 
