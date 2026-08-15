@@ -63,26 +63,12 @@ export class MetalsWidgetComponent implements OnInit {
     return 'Invalid date';
   }
 
-  // Expected format: DD/MM/YYYY, HH:mm:ss
-  const match = date.match(
-    /^(\d{2})\/(\d{2})\/(\d{4}),\s*(\d{2}):(\d{2}):(\d{2})$/,
-  );
+  const parsedDate = new Date(date);
 
-  if (!match) {
+  if (Number.isNaN(parsedDate.getTime())) {
     console.error('Unknown date format:', date);
     return 'Invalid date';
   }
-
-  const [, day, month, year, hours, minutes, seconds] = match;
-
-  const parsedDate = new Date(
-    Number(year),
-    Number(month) - 1,
-    Number(day),
-    Number(hours),
-    Number(minutes),
-    Number(seconds),
-  );
 
   return parsedDate.toLocaleString('en-GB', {
     day: '2-digit',
