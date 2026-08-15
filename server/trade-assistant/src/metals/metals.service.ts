@@ -322,8 +322,7 @@ export class MetalsService {
 
       trend,
 
-      timestamp:
-        metal.timestamp.toLocaleString('en-GB'),
+      timestamp: metal.timestamp.toISOString(),
     };
   }
 }

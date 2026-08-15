@@ -38,10 +38,9 @@ export class MetalsWidgetComponent implements OnInit {
 
     this.metalsService.getLatest().subscribe({
       next: (data) => {
-        this.metals.set(data);
-
-        this.loading.set(false);
-      },
+  this.metals.set(data);
+  this.loading.set(false);
+},
 
       error: () => {
         this.error.set('Cannot load metals prices.');
@@ -60,12 +59,37 @@ export class MetalsWidgetComponent implements OnInit {
   }
 
   formatDate(date: string): string {
-    return new Date(date).toLocaleString('en-GB', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+  if (!date) {
+    return 'Invalid date';
   }
+
+  // Expected format: DD/MM/YYYY, HH:mm:ss
+  const match = date.match(
+    /^(\d{2})\/(\d{2})\/(\d{4}),\s*(\d{2}):(\d{2}):(\d{2})$/,
+  );
+
+  if (!match) {
+    console.error('Unknown date format:', date);
+    return 'Invalid date';
+  }
+
+  const [, day, month, year, hours, minutes, seconds] = match;
+
+  const parsedDate = new Date(
+    Number(year),
+    Number(month) - 1,
+    Number(day),
+    Number(hours),
+    Number(minutes),
+    Number(seconds),
+  );
+
+  return parsedDate.toLocaleString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
 }
