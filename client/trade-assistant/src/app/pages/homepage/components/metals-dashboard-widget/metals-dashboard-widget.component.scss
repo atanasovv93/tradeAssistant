@@ -21,8 +21,8 @@
 
   .metal-list {
 
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
     gap: 12px;
 
   }
