@@ -292,12 +292,12 @@ h3 {
    SMALL MOBILE
    ================================ */
 
-@media (max-width: 420px) {
-  
+@media (max-width: 460px) {
+
 
   .currency-grid {
     max-width: 50%;
-    grid-template-columns: repeat(2, minmax(175px, 1fr));
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
     margin-left: 10px;
   }
 }
