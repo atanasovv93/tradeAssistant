@@ -293,6 +293,7 @@ h3 {
    ================================ */
 
 @media (max-width: 420px) {
+  
 
   .currency-grid {
     max-width: 50%;
@@ -314,7 +315,7 @@ h3 {
 
   .currency-grid {
     max-width: 60%;
-    grid-template-columns: repeat(2, minmax(153px, 1fr));
+    grid-template-columns: repeat(2, minmax(158px, 1fr));
     margin-left: 5px;
   }
 
