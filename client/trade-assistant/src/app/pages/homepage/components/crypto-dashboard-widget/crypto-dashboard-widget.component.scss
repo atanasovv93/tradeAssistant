@@ -296,7 +296,7 @@ h3 {
 
   .currency-grid {
     max-width: 50%;
-    grid-template-columns: repeat(2, minmax(168px, 1fr));
+    grid-template-columns: repeat(2, minmax(175px, 1fr));
     margin-left: 7px;
   }
 }
@@ -308,12 +308,17 @@ h3 {
 
 @media (max-width: 390px) {
 
+  .crypto-widget {
+    padding: 14px;
+  }
 
   .currency-grid {
     max-width: 60%;
-    grid-template-columns: repeat(2, minmax(168px, 1fr));
-    margin-left: 13px;
+    grid-template-columns: repeat(2, minmax(153px, 1fr));
+    margin-left: 5px;
   }
+
+
 }
 
 @media (max-width: 344px) {
