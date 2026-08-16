@@ -3,10 +3,14 @@
   display: inline-block;
 }
 
-/* Активниот јазик */
+/* ================================
+   ACTIVE LANGUAGE
+   ================================ */
+
 .language-current {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
 
   border: none;
@@ -17,22 +21,32 @@
   background: #f3f4f6;
   font-size: 14px;
   font-weight: 600;
+
+  transition: background 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    background: #e5e7eb;
+    transform: translateY(-1px);
+  }
 }
 
-.language-current:hover {
-  background: #f3f4f6;
-}
+/* ================================
+   FLAGS
+   ================================ */
 
-/* Знаменцето */
 .language-current img,
 .language-options img {
   width: 37px;
   height: 22px;
   object-fit: cover;
   border-radius: 2px;
+  flex-shrink: 0;
 }
 
-/* Dropdown */
+/* ================================
+   DROPDOWN
+   ================================ */
+
 .language-options {
   position: absolute;
   top: calc(100% + 5px);
@@ -56,15 +70,23 @@
   visibility: hidden;
   transform: translateY(-5px);
 
-  transition: 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease,
+    transform 0.2s ease;
 }
 
-/* Кога е отворен */
+/* OPEN */
+
 .language-options.open {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
 }
+
+/* ================================
+   DROPDOWN BUTTONS
+   ================================ */
 
 .language-options button {
   display: flex;
@@ -81,8 +103,101 @@
   border-radius: 6px;
 
   font-size: 14px;
+
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #f3f4f6;
+  }
 }
 
-.language-options button:hover {
-  background: #f3f4f6;
+/* ================================
+   TABLET
+   ================================ */
+
+@media (max-width: 768px) {
+
+  .language-current {
+    gap: 5px;
+    padding: 7px 10px;
+    font-size: 13px;
+  }
+
+  .language-current img,
+  .language-options img {
+    width: 30px;
+    height: 18px;
+  }
+
+  .language-options {
+    min-width: 82px;
+  }
+
+  .language-options button {
+    padding: 7px 8px;
+    font-size: 13px;
+  }
+}
+
+/* ================================
+   MOBILE
+   ================================ */
+
+@media (max-width: 520px) {
+
+  .language-current {
+    gap: 4px;
+    padding: 6px 8px;
+    font-size: 12px;
+    border-radius: 5px;
+  }
+
+  .language-current img,
+  .language-options img {
+    width: 27px;
+    height: 17px;
+  }
+
+  .language-options {
+    top: calc(100% + 4px);
+    right: 0;
+    min-width: 76px;
+    padding: 3px;
+    border-radius: 7px;
+  }
+
+  .language-options button {
+    gap: 5px;
+    padding: 6px 7px;
+    font-size: 12px;
+    border-radius: 5px;
+  }
+}
+
+/* ================================
+   SMALL MOBILE
+   ================================ */
+
+@media (max-width: 380px) {
+
+  .language-current {
+    padding: 5px 7px;
+    font-size: 11px;
+    gap: 3px;
+  }
+
+  .language-current img,
+  .language-options img {
+    width: 24px;
+    height: 15px;
+  }
+
+  .language-options {
+    min-width: 70px;
+  }
+
+  .language-options button {
+    padding: 5px 6px;
+    font-size: 11px;
+  }
 }
