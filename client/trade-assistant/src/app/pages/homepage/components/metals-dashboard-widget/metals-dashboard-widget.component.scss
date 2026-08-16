@@ -142,3 +142,15 @@
 
 
 }
+
+@media (max-width: 380px) {
+
+  .metals-widget {
+
+    .metal-list {
+      grid-template-columns: repeat(1, minmax(220px, 1fr));
+    }
+
+  }
+
+}
