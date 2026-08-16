@@ -1,13 +1,47 @@
 <div class="language-switcher">
-  <button
-    [class.active]="currentLanguage === 'EN'"
-    (click)="changeLanguage('EN')">
-    🇬🇧 EN
-  </button>
 
   <button
-    [class.active]="currentLanguage === 'DE'"
-    (click)="changeLanguage('DE')">
-    🇩🇪 DE
+    class="language-current"
+    type="button"
+    (click)="toggleLanguages()">
+
+    <img
+      [src]="currentLanguage === 'EN'
+        ? 'https://png.pngtree.com/png-clipart/20220602/ourmid/pngtree-england-flag-png-illustration-png-image_4776187.png'
+        : 'https://w7.pngwing.com/pngs/808/859/png-transparent-germany-flag-german-waving.png'"
+      [alt]="currentLanguage === 'EN' ? 'English Flag' : 'German Flag'">
+
+    <span>{{ currentLanguage }}</span>
+
+    <span class="arrow">⌄</span>
   </button>
+
+  <div class="language-options" [class.open]="languagesOpen">
+
+    <button
+      *ngIf="currentLanguage !== 'EN'"
+      type="button"
+      (click)="changeLanguage('EN')">
+
+      <img
+        src="https://png.pngtree.com/png-clipart/20220602/ourmid/pngtree-england-flag-png-illustration-png-image_4776187.png"
+        alt="English Flag">
+
+      EN
+    </button>
+
+    <button
+      *ngIf="currentLanguage !== 'DE'"
+      type="button"
+      (click)="changeLanguage('DE')">
+
+      <img
+        src="https://w7.pngwing.com/pngs/808/859/png-transparent-germany-flag-german-waving.png"
+        alt="German Flag">
+
+      DE
+    </button>
+
+  </div>
+
 </div>

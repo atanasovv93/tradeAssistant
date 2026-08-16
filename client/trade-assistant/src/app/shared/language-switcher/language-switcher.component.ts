@@ -23,4 +23,11 @@ export class LanguageSwitcherComponent {
     // едноставно refresh
     window.location.reload();
   }
+
+  languagesOpen = false;
+
+  toggleLanguages() {
+    this.languagesOpen = !this.languagesOpen;
+  }
+
 }

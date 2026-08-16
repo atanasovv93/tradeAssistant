@@ -1,16 +1,88 @@
 .language-switcher {
-  display: flex;
-  gap: 8px;
+  position: relative;
+  display: inline-block;
 }
 
-button {
+/* Активниот јазик */
+.language-current {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
   border: none;
   padding: 8px 12px;
   cursor: pointer;
   border-radius: 6px;
+
+  background: #f3f4f6;
+  font-size: 14px;
+  font-weight: 600;
 }
 
-button.active {
-  font-weight: bold;
-  border: 2px solid #000;
+.language-current:hover {
+  background: #f3f4f6;
+}
+
+/* Знаменцето */
+.language-current img,
+.language-options img {
+  width: 37px;
+  height: 22px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+/* Dropdown */
+.language-options {
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 90px;
+  padding: 4px;
+
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+
+  z-index: 1000;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-5px);
+
+  transition: 0.2s ease;
+}
+
+/* Кога е отворен */
+.language-options.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.language-options button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  width: 100%;
+
+  border: none;
+  padding: 8px 10px;
+
+  background: transparent;
+  cursor: pointer;
+  border-radius: 6px;
+
+  font-size: 14px;
+}
+
+.language-options button:hover {
+  background: #f3f4f6;
 }
