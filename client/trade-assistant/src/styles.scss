@@ -14,6 +14,7 @@ body {
   color: #111827;
   font-family: Arial, Helvetica, sans-serif;
 
+
   transition:
     background-color 0.25s ease,
     color 0.25s ease;
@@ -41,4 +42,13 @@ app-root.dark-mode body {
 .dark-mode {
   background-color: #0f172a;
   color: #e5e7eb;
+}
+
+
+@media (max-width: 420px) {
+  body {
+    justify-content: center;
+    padding: 0px;
+
+  }
 }
