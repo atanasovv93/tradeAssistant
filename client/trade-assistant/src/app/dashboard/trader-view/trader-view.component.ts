@@ -26,14 +26,19 @@ export class TraderViewComponent
 {
   private readonly cryptoService = inject(CryptoService);
 
+  readonly coins = Object.entries(FIXED_BASES).map(([symbol, data]) => ({
+  symbol: `${symbol}USDT`,
+  name: data.name,
+  icon: data.icon,
+}));
+
   private cryptoSub?: Subscription;
 
   selectedSymbol = 'BTCUSDT';
 
   trend: CryptoTrend | null = null;
 
-  readonly coins = FIXED_BASES;
-
+  
   ngOnInit(): void {
     this.loadCoinData(this.selectedSymbol);
   }

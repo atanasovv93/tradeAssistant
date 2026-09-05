@@ -21,11 +21,11 @@
       >
 
         <option
-          *ngFor="let coin of coins"
-          [value]="coin"
-        >
-          {{ coin }}
-        </option>
+      *ngFor="let coin of coins"
+      [value]="coin.symbol"
+    >
+      {{ coin.name }} ({{ coin.symbol }})
+    </option>
 
       </select>
 
