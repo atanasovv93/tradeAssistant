@@ -95,7 +95,7 @@ export class TraderViewComponent
     script.innerHTML = JSON.stringify({
       autosize: true,
       symbol: `BINANCE:${this.selectedSymbol}`,
-      interval: '15',
+      interval: '1D',
       timezone: 'Europe/Vienna',
       theme: 'dark',
       style: '1',
