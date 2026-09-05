@@ -26,6 +26,14 @@ export interface CryptoTrend {
   spread: number;
 }
 
+export interface BinanceTrade {
+  id: number;
+  price: number;
+  quantity: number;
+  time: Date;
+  side: 'BUY' | 'SELL';
+}
+
 export interface CryptoTrendsResponse {
   trends: CryptoTrend[];
 }
@@ -147,6 +155,39 @@ export class CryptoService {
       };
     });
   }
+
+  getRecentTrades(symbol: string): Observable<BinanceTrade> {
+  return new Observable<BinanceTrade>((observer) => {
+    const socket = new WebSocket(
+      `wss://stream.binance.com:9443/ws/${symbol.toLowerCase()}@trade`
+    );
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+
+      const price = parseFloat(data.p);
+      const quantity = parseFloat(data.q);
+
+      const side: 'BUY' | 'SELL' = data.m ? 'SELL' : 'BUY';
+
+      observer.next({
+        id: Number(data.t),
+        price,
+        quantity,
+        time: new Date(data.T),
+        side,
+      });
+    };
+
+    socket.onerror = (error) => {
+      observer.error(error);
+    };
+
+    return () => {
+      socket.close();
+    };
+  });
+}
 
   /**
    * Backend API
