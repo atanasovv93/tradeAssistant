@@ -35,6 +35,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./dashboard/products/products.component').then(m => m.ProductsComponent)
       },
+      {
+        path: 'traderview',
+        loadComponent: () =>
+          import('./dashboard/trader-view/trader-view.component').then(m => m.TraderViewComponent)
+      },
       { path: '', redirectTo: 'news', pathMatch: 'full' }
     ]
   },

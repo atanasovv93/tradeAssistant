@@ -1,0 +1,258 @@
+<div class="trader-view">
+
+  <!-- HEADER -->
+  <div class="trader-header">
+
+    <div>
+      <h2>Trader View</h2>
+      <p>Live market statistics</p>
+    </div>
+
+    <div class="coin-selector">
+
+      <label for="coin">
+        Coin
+      </label>
+
+      <select
+        id="coin"
+        [value]="selectedSymbol"
+        (change)="loadCoin($any($event.target).value)"
+      >
+
+        <option
+          *ngFor="let coin of coins"
+          [value]="coin"
+        >
+          {{ coin }}
+        </option>
+
+      </select>
+
+    </div>
+
+  </div>
+
+
+  <!-- CONTENT -->
+  <div class="trader-content">
+
+
+    <!-- TRADINGVIEW CHART -->
+    <div class="chart-container">
+
+      <div class="chart-header">
+        <strong>
+          {{ selectedSymbol }}
+        </strong>
+      </div>
+
+      <!-- TradingView го вметнува преку TypeScript -->
+      <div
+        id="tradingview_chart"
+        class="tradingview-chart"
+      ></div>
+
+    </div>
+
+
+    <!-- MARKET STATISTICS -->
+    <aside class="market-panel">
+
+      <div class="market-title">
+
+        <span>
+          {{ selectedSymbol }}
+        </span>
+
+        <span
+          *ngIf="trend"
+          class="live-indicator"
+        >
+          ● LIVE
+        </span>
+
+      </div>
+
+
+      <!-- PRICE -->
+      <div
+        *ngIf="trend"
+        class="price-section"
+      >
+
+        <span class="label">
+          Price
+        </span>
+
+        <strong class="main-price">
+          ${{ trend.close | number:'1.2-8' }}
+        </strong>
+
+      </div>
+
+
+      <!-- CHANGE -->
+      <div
+        *ngIf="trend"
+        class="change"
+        [class.positive]="trend.priceChangePercent > 0"
+        [class.negative]="trend.priceChangePercent < 0"
+      >
+
+        {{ trend.priceChangePercent > 0 ? '▲' : '▼' }}
+
+        {{ trend.priceChangePercent | number:'1.2-2' }}%
+
+      </div>
+
+
+      <!-- STATISTICS -->
+      <div
+        *ngIf="trend"
+        class="stats-grid"
+      >
+
+
+        <!-- HIGH -->
+        <div class="stat">
+
+          <span>
+            24h High
+          </span>
+
+          <strong>
+            ${{ trend.high | number:'1.2-8' }}
+          </strong>
+
+        </div>
+
+
+        <!-- LOW -->
+        <div class="stat">
+
+          <span>
+            24h Low
+          </span>
+
+          <strong>
+            ${{ trend.low | number:'1.2-8' }}
+          </strong>
+
+        </div>
+
+
+        <!-- TRADES -->
+        <div class="stat">
+
+          <span>
+            Trades
+          </span>
+
+          <strong>
+            {{ trend.trades | number }}
+          </strong>
+
+        </div>
+
+
+        <!-- VOLUME -->
+        <div class="stat">
+
+          <span>
+            Volume
+          </span>
+
+          <strong>
+            {{ trend.volume | number:'1.0-2' }}
+          </strong>
+
+        </div>
+
+
+        <!-- QUOTE VOLUME -->
+        <div class="stat">
+
+          <span>
+            Quote Volume
+          </span>
+
+          <strong>
+            ${{ trend.quoteVolume | number:'1.0-2' }}
+          </strong>
+
+        </div>
+
+
+        <!-- AVERAGE TRADE -->
+        <div class="stat">
+
+          <span>
+            Avg. Trade
+          </span>
+
+          <strong>
+            ${{ averageTradeSize | number:'1.2-2' }}
+          </strong>
+
+        </div>
+
+
+        <!-- BID -->
+        <div class="stat">
+
+          <span>
+            Bid
+          </span>
+
+          <strong>
+            ${{ trend.bid | number:'1.2-8' }}
+          </strong>
+
+        </div>
+
+
+        <!-- ASK -->
+        <div class="stat">
+
+          <span>
+            Ask
+          </span>
+
+          <strong>
+            ${{ trend.ask | number:'1.2-8' }}
+          </strong>
+
+        </div>
+
+
+        <!-- SPREAD -->
+        <div class="stat full">
+
+          <span>
+            Spread
+          </span>
+
+          <strong>
+            ${{ trend.spread | number:'1.2-8' }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- LOADING -->
+      <div
+        *ngIf="!trend"
+        class="loading"
+      >
+        Loading market data...
+      </div>
+
+    </aside>
+
+  </div>
+
+</div>
+```
