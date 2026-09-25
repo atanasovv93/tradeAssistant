@@ -167,7 +167,7 @@ export class TraderViewComponent
         `BINANCE:${this.selectedSymbol}`,
 
       // Daily candles
-      interval: '1D',
+      interval: '1',
 
       timezone: 'Europe/Vienna',
 
