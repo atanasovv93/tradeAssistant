@@ -104,6 +104,20 @@
   }
 }
 
+@media (max-width: 768px) {
+  .metals-widget {
+    padding: 15px;
+
+    .metal-list {
+      grid-template-columns: 1fr;
+    }
+
+    .metal-card {
+      padding: 12px;
+    }
+  }
+}
+
 /* Tablet / normal mobile */
 @media (max-width: 460px) {
   .metals-widget {
