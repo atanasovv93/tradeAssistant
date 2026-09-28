@@ -1,12 +1,9 @@
 .metals-widget {
-
   padding: 20px;
   border-radius: 16px;
   background: transparent;
 
-
   .header {
-
     margin-bottom: 20px;
 
     h3 {
@@ -14,101 +11,72 @@
       font-size: 20px;
       font-weight: 600;
     }
-
   }
-
-
 
   .metal-list {
-
     display: grid;
-    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
-
   }
 
-
-
   .metal-card {
-
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 15px;
+    gap: 10px;
     padding: 15px;
+    min-width: 0;
 
     border-radius: 12px;
-
     background: transparent;
 
-
     .icon {
+      width: 50px;
+      height: 50px;
+      flex-shrink: 0;
 
-  width: 50px;
-  height: 50px;
-
-  img {
-    width: 45px;
-    height: 45px;
-    object-fit: contain;
-    border-radius: 50%;
-  }
-
-}
-
-
+      img {
+        width: 45px;
+        height: 45px;
+        object-fit: contain;
+        border-radius: 50%;
+      }
+    }
 
     .info {
-
       flex: 1;
-
+      min-width: 0;
 
       .name {
-
         font-weight: 600;
-
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
-
 
       .symbol {
-
         font-size: 12px;
         opacity: .6;
-
       }
-
     }
-
-
 
     .price {
-
       text-align: right;
-
+      flex-shrink: 0;
 
       .value {
-
         font-size: 18px;
         font-weight: 700;
-
       }
-
 
       .unit {
-
         font-size: 12px;
         opacity: .6;
-
       }
-
     }
-
   }
 
-
-
   .updated {
-
     margin-top: 15px;
     font-size: 15px;
     opacity: .6;
@@ -127,69 +95,81 @@
     &.down {
       color: #dc2626;
     }
-
   }
-
-
 
   .loading,
   .error {
-
     padding: 20px;
     text-align: center;
-
   }
-
-
 }
 
+/* Tablet / normal mobile */
 @media (max-width: 460px) {
-
   .metals-widget {
+    padding: 15px;
 
     .metal-list {
-      grid-template-columns: repeat(1, minmax(220px, 1fr));
+      grid-template-columns: 1fr;
     }
 
+    .metal-card {
+      padding: 12px;
+    }
   }
 }
 
+/* Very narrow screens */
 @media (max-width: 380px) {
-
   .metals-widget {
+    padding: 10px;
 
-    .metal-list {
-      grid-template-columns: repeat(1, minmax(200px, 1fr));
+    .header {
+      margin-bottom: 15px;
+
+      h3 {
+        font-size: 18px;
+      }
     }
 
-  }
+    .metal-card {
+      padding: 10px;
+      gap: 8px;
 
-  .metal-card {
+      .icon {
+        width: 40px;
+        height: 40px;
 
-    .info {
-
-      .name {
-        font-size: 12px;
+        img {
+          width: 36px;
+          height: 36px;
+        }
       }
 
-      .symbol {
-        font-size: 10px;
+      .info {
+        .name {
+          font-size: 13px;
+        }
+
+        .symbol {
+          font-size: 10px;
+        }
       }
 
+      .price {
+        .value {
+          font-size: 15px;
+          font-weight: 700;
+        }
+
+        .unit {
+          font-size: 10px;
+        }
+      }
     }
 
-    .price {
-
-      .value {
-        font-size: 14px;
-        font-weight: 100;
-      }
-
-      .unit {
-        font-size: 10px;
-      }
-
+    .updated {
+      font-size: 12px;
     }
-
   }
 }
