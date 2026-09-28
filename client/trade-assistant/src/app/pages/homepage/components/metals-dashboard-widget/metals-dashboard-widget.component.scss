@@ -159,9 +159,37 @@
   .metals-widget {
 
     .metal-list {
-      grid-template-columns: repeat(1, minmax(220px, 1fr));
+      grid-template-columns: repeat(1, minmax(200px, 1fr));
     }
 
   }
 
+  .metal-card {
+
+    .info {
+
+      .name {
+        font-size: 12px;
+      }
+
+      .symbol {
+        font-size: 10px;
+      }
+
+    }
+
+    .price {
+
+      .value {
+        font-size: 14px;
+        font-weight: 100;
+      }
+
+      .unit {
+        font-size: 10px;
+      }
+
+    }
+
+  }
 }
