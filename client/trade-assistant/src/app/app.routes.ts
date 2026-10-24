@@ -1,10 +1,13 @@
+
 import { Routes } from '@angular/router';
+
 import { HomeComponent } from './pages/homepage/home.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ArticleDetailsComponent } from './pages/article-details/article-details.component';
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
+import { CryptoDetailsCardComponent } from './pages/homepage/components/crypto-dashboard-widget/crypto-dashboard-widget/crypto-details-card/crypto-details-card.component';
 import { AuthGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
@@ -14,33 +17,48 @@ export const routes: Routes = [
   { path: 'auth/login', component: LoginComponent },
   { path: 'auth/register', component: RegisterComponent },
 
-
   // PUBLIC PAGES
   { path: 'news/:id', component: ArticleDetailsComponent },
   { path: 'product/:id', component: ProductDetailsComponent },
+
+  // CRYPTO DETAILS
+  {
+    path: 'crypto/:symbol',
+    component: CryptoDetailsCardComponent
+  },
 
   // PROTECTED ROUTES
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [AuthGuard],     // ⬅ Protect dashboard
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'news',
         loadComponent: () =>
-          import('./dashboard/news/news.component').then(m => m.NewsComponent)
+          import('./dashboard/news/news.component').then(
+            (m) => m.NewsComponent
+          )
       },
       {
         path: 'products',
         loadComponent: () =>
-          import('./dashboard/products/products.component').then(m => m.ProductsComponent)
+          import('./dashboard/products/products.component').then(
+            (m) => m.ProductsComponent
+          )
       },
       {
         path: 'traderview',
         loadComponent: () =>
-          import('./dashboard/trader-view/trader-view.component').then(m => m.TraderViewComponent)
+          import('./dashboard/trader-view/trader-view.component').then(
+            (m) => m.TraderViewComponent
+          )
       },
-      { path: '', redirectTo: 'news', pathMatch: 'full' }
+      {
+        path: '',
+        redirectTo: 'news',
+        pathMatch: 'full'
+      }
     ]
   },
 

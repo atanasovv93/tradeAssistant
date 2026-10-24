@@ -1,343 +1,638 @@
-/* ================================
-   BASE
-   ================================ */
-.crypto-widget {
-  background: transparent;
-  border-radius: 14px;
-  padding: 20px;
 
+/* ========================================
+   BASE
+======================================== */
+
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
 }
-h3 {
-  margin-bottom: 18px;
+
+.crypto-dashboard {
+  width: 100%;
+  min-width: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  background: transparent;
+  color: #111827;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ========================================
+   HEADER
+======================================== */
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.dashboard-title h2 {
+  margin: 0 0 6px;
   font-size: 22px;
   font-weight: 700;
 }
 
-.error {
-  text-align: center;
-  color: #dc2626;
-  padding: 20px;
+.dashboard-title p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
 }
+
+.dashboard-updated {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: #16a34a;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.live-indicator,
+.live-dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: live-pulse 1.6s ease-in-out infinite;
+}
+
+.updated-time {
+  margin-left: 6px;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+@keyframes live-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* ========================================
+   LOADING, ERROR AND EMPTY STATE
+======================================== */
+
+.dashboard-error,
+.dashboard-empty {
+  padding: 24px 16px;
+  text-align: center;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.dashboard-error {
+  color: #dc2626;
+}
+
+.dashboard-empty {
+  color: #6b7280;
+}
+
+/* ========================================
+   CRYPTO GRID
+======================================== */
+
 
 .currency-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: 12px;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
 }
 
+/* CRYPTO CARD */
 .currency-card {
-  background: transparent;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 11px;
   border: 1px solid #ececec;
-  border-radius: 14px;
-  padding: 14px;
-  transition: 0.25s;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  border-radius: 11px;
+  background: transparent;
+  color: #111827;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+
+  cursor: pointer;
+  text-decoration: none;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .currency-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+  border-color: #4ade80;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
-.card-header {
+.currency-card:focus-visible {
+  outline: 2px solid #4ade80;
+  outline-offset: 2px;
+}
+
+.currency-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 10px;
   width: 100%;
+  min-width: 0;
+}
+
+.currency-icon {
+  display: block;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: contain;
 }
 
 .currency-info {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
   min-width: 0;
 }
 
-.currency-details {
-  display: flex;
-  flex-direction: column;
-}
-
-.currency-icon {
-  width: 42px;
-  height: 42px;
-  object-fit: fill;
-  border-radius: 50%;
-}
-
-.currency-symbol {
+.currency-info h3 {
+  margin: 0;
+  color: #111827;
   font-size: 18px;
   font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
-.currency-name {
-  font-size: 13px;
+.currency-info p {
+  margin: 0;
   color: #6b7280;
+  font-size: 13px;
+  overflow-wrap: anywhere;
 }
 
-.currency-price {
-  margin-top: 12px;
-  font-size: 24px;
-  font-weight: 700;
-}
+/* ========================================
+   24H TREND BADGE
+======================================== */
 
-.currency-trend {
-  margin-top: 0;
+.trend-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
   padding: 5px 8px;
   border-radius: 999px;
+  font-size: 12px;
   font-weight: 700;
-  font-size: 14px;
   white-space: nowrap;
-  flex-shrink: 0;
 }
 
-.currency-trend.up {
+.trend-badge.positive {
   background: rgba(34, 197, 94, 0.15);
   color: #16a34a;
 }
 
-.currency-trend.down {
+.trend-badge.negative {
   background: rgba(239, 68, 68, 0.15);
   color: #dc2626;
 }
 
-.currency-trend.neutral {
-  background: rgba(148, 163, 184, 0.15);
-  color: #64748b;
-}
+/* ========================================
+   CURRENT PRICE
+======================================== */
 
-.market-stats {
-  margin-top: 16px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
-
-.stat {
-  background: transparent;
-  border-radius: 10px;
-  padding: 10px;
-}
-
-.stat span {
-  display: block;
-  font-size: 11px;
-  color: #64748b;
-  margin-bottom: 4px;
-}
-
-.stat strong {
-  font-size: 14px;
-}
-
-.showedtime {
+.currency-price-section {
   margin-top: 20px;
-  text-align: center;
-  color: #6b7280;
-  font-size: 13px;
 }
 
+.price-label {
+  display: block;
+  margin-bottom: 6px;
+  color: #6b7280;
+  font-size: 12px;
+}
 
-/* ================================
+.currency-price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  font-size: clamp(19px, 2vw, 25px);
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.price-currency {
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.price-change {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.positive {
+  color: #16a34a;
+}
+
+.negative {
+  color: #dc2626;
+}
+
+/* ========================================
+   MARKET STATISTICS
+======================================== */
+
+.currency-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #ececec;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.detail-label {
+  color: #6b7280;
+  font-size: 11px;
+}
+
+.detail-item strong {
+  color: #111827;
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* ========================================
+   BID / ASK
+======================================== */
+
+.bid-ask-section {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+  padding: 10px;
+  border-radius: 9px;
+  background: rgba(148, 163, 184, 0.08);
+}
+
+.bid-item,
+.ask-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.bid-item span,
+.ask-item span {
+  color: #6b7280;
+  font-size: 11px;
+}
+
+.bid-item strong {
+  color: #16a34a;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.ask-item strong {
+  color: #dc2626;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+/* ========================================
+   CARD FOOTER
+======================================== */
+
+.view-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 14px;
+  color: #16a34a;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.details-arrow {
+  display: inline-block;
+  font-size: 18px;
+  transition: transform 0.2s ease;
+}
+
+.currency-card:hover .details-arrow {
+  transform: translateX(4px);
+}
+
+/* ========================================
    DARK MODE
-   ================================ */
+======================================== */
 
 :host-context(.dark-mode) {
-
-  .crypto-widget {
+  .crypto-dashboard {
     color: #e5e7eb;
   }
 
-  h3 {
-    color: #f8fafc;
+  .dashboard-title h2,
+  .currency-info h3 {
+    color: #f9fafb;
+  }
+
+  .dashboard-title p,
+  .updated-time,
+  .currency-info p,
+  .price-label,
+  .price-currency,
+  .detail-label,
+  .bid-item span,
+  .ask-item span {
+    color: #9ca3af;
   }
 
   .currency-card {
     background: #111827;
     border-color: #374151;
+    color: #e5e7eb;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
   }
 
   .currency-card:hover {
     border-color: #00d4ff;
-    box-shadow: 0 10px 24px rgba(0, 212, 255, 0.25);
+    box-shadow: 0 10px 24px rgba(0, 212, 255, 0.18);
   }
 
-  .currency-symbol {
-    color: #f9fafb;
-  }
-
-  .currency-name,
-  .showedtime {
-    color: #9ca3af;
+  .currency-card:focus-visible {
+    outline-color: #00d4ff;
   }
 
   .currency-price {
-    color: #f8fafc;
+    color: #f9fafb;
   }
 
-  .stat {
-    background: #1f2937;
+  .currency-details {
+    border-top-color: #374151;
   }
 
-  .stat span {
-    color: #9ca3af;
-  }
-
-  .stat strong {
+  .detail-item strong {
     color: #e5e7eb;
   }
 
-  .error {
-    color: #f87171;
+  .bid-ask-section {
+    background: rgba(31, 41, 55, 0.8);
   }
 
-  .currency-trend.up {
+  .trend-badge.positive {
     background: rgba(34, 197, 94, 0.18);
     color: #4ade80;
   }
 
-  .currency-trend.down {
+  .trend-badge.negative {
     background: rgba(239, 68, 68, 0.18);
     color: #f87171;
   }
 
-  .currency-trend.neutral {
-    background: rgba(148, 163, 184, 0.18);
-    color: #94a3b8;
+  .dashboard-error {
+    color: #f87171;
+  }
+
+  .dashboard-empty {
+    color: #9ca3af;
+  }
+
+  .view-details {
+    color: #4ade80;
   }
 }
 
-
-/* ================================
+/* ========================================
    TABLET
-   ================================ */
+======================================== */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+  .crypto-dashboard {
+    padding: 16px;
+  }
 
   .currency-grid {
-    grid-template-columns: repeat(3, minmax(160px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .currency-card {
+    padding: 14px;
+  }
+}
+
+/* ========================================
+   SMALL TABLET
+======================================== */
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    align-items: flex-start;
+  }
+
+  .currency-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .currency-price {
+    font-size: 21px;
+  }
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 480px) {
+  .crypto-dashboard {
+    padding: 12px;
+  }
+
+  .dashboard-header {
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .dashboard-title h2 {
+    font-size: 20px;
+  }
+
+  .dashboard-updated {
+    font-size: 11px;
+  }
+
+  .updated-time {
+    font-size: 10px;
+  }
+
+  .currency-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .currency-card {
+    padding: 11px;
+    border-radius: 12px;
+  }
+
+  .currency-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .currency-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .currency-info h3 {
+    font-size: 15px;
+  }
+
+  .currency-info p {
+    font-size: 11px;
+  }
+
+  .trend-badge {
+    padding: 4px 6px;
+    font-size: 10px;
+  }
+
+  .currency-price-section {
+    margin-top: 16px;
+  }
+
+  .currency-price {
+    font-size: 18px;
+  }
+
+  .price-label,
+  .price-change {
+    font-size: 11px;
+  }
+
+  .currency-details {
+    gap: 10px 6px;
+    margin-top: 15px;
+    padding-top: 12px;
+  }
+
+  .detail-label {
+    font-size: 10px;
+  }
+
+  .detail-item strong {
+    font-size: 11px;
+  }
+
+  .bid-ask-section {
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .bid-item strong,
+  .ask-item strong {
+    font-size: 10px;
+  }
+
+  .view-details {
+    padding-top: 12px;
+    font-size: 10px;
+  }
+}
+
+/* ========================================
+   VERY SMALL MOBILE
+======================================== */
+
+@media (max-width: 350px) {
+  .crypto-dashboard {
+    padding: 8px;
+  }
+
+  .currency-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .currency-card {
+    padding: 14px;
+  }
+
+  .currency-header {
+    flex-wrap: nowrap;
+  }
+
+  .currency-info h3 {
+    font-size: 17px;
   }
 
   .currency-price {
     font-size: 22px;
   }
-}
 
-
-/* ================================
-   SMALL TABLET / MOBILE
-   ================================ */
-
-@media (max-width: 680px) {
-
-  .currency-grid {
-    grid-template-columns: repeat(3, minmax(180px, 1fr));
-    align-items: center;
-  }
-
-  .currency-symbol {
+  .trend-badge {
     font-size: 11px;
   }
-
-  .currency-trend {
-    font-size: 8px;
-    padding: 2px 2px;
-  }
-
-  .currency-price {
-    font-size: 20px;
-  }
-
-  .stat {
-    font-size: 10px;
-    padding: 2px;
-  }
-
-  .currency-card {
-    padding: 3px;
-  }
 }
 
+/* ========================================
+   REDUCED MOTION
+======================================== */
 
-/* ================================
-   MOBILE
-   ================================ */
-
-@media (max-width: 520px) {
-
-  .currency-grid {
-    max-width: 50%;
-    grid-template-columns: repeat(2, minmax(220px, 1fr));
-    align-items: center;
-    margin-left: 7px;
+@media (prefers-reduced-motion: reduce) {
+  .currency-card,
+  .details-arrow,
+  .live-indicator,
+  .live-dot {
+    animation: none;
+    transition: none;
   }
 
-  .currency-trend {
-    padding: 2px 5px;
-  }
-
-  .currency-price {
-    font-size: 15px;
-  }
-
-  .market-stats {
-    padding: 0;
-    gap: 0;
-  }
-}
-
-
-/* ================================
-   SMALL MOBILE
-   ================================ */
-
-@media (max-width: 460px) {
-
-
-  .currency-grid {
-    max-width: 50%;
-    grid-template-columns: repeat(2, minmax(200px, 1fr));
-    margin-left: 10px;
-  }
-}
-
-
-/* ================================
-   VERY SMALL MOBILE
-   ================================ */
-
-@media (max-width: 390px) {
-
-  .crypto-widget {
-    padding: 14px;
-  }
-
-  .currency-grid {
-    max-width: 60%;
-    grid-template-columns: repeat(2, minmax(158px, 1fr));
-    margin-left: 5px;
-  }
-
-
-}
-
-@media (max-width: 344px) {
-
-  .crypto-widget {
-    justify-content: center;
-    margin-left: 45px;
-  }
-
-  .currency-grid {
-
-    max-width: 50%;
-    grid-template-columns: repeat(1, minmax(192px, 1fr));
-
-
-  }
-
-  .h3 {
-    padding: 10px;
+  .currency-card:hover {
+    transform: none;
   }
 }
