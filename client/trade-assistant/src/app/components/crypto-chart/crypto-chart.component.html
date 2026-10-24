@@ -1,3 +1,4 @@
+
 <section class="crypto-chart">
   <div class="chart-header">
     <div class="coin-info">
@@ -11,15 +12,16 @@
 
     <div class="price-info">
       <span class="current-price">
-        {{ currentPrice > 0
-        ? (currentPrice | number:'1.2-8')
-        : '—' }}
+        {{ currentPrice > 0 ? (currentPrice | number:'1.2-8') : '—' }}
         <small>USDT</small>
       </span>
 
-      <span class="price-change" [class.positive]="priceChangePercent > 0" [class.negative]="priceChangePercent < 0">
-        {{ priceChangePercent > 0 ? '+' : '' }}
-        {{ priceChangePercent | number:'1.2-2' }}%
+      <span
+        class="price-change"
+        [class.positive]="priceChangePercent > 0"
+        [class.negative]="priceChangePercent < 0"
+      >
+        {{ priceChangePercent > 0 ? '+' : '' }}{{ priceChangePercent | number:'1.2-2' }}%
         <span>24h</span>
       </span>
     </div>
@@ -37,6 +39,9 @@
     </div>
   </div>
 
+  
+<!-- Chart -->
+<div class="chart-area">
   <div class="chart-container">
     <div class="chart-status" *ngIf="loading">
       <span class="spinner"></span>
@@ -47,10 +52,17 @@
       {{ error }}
     </div>
 
-    <canvas *ngIf="!loading && !error" baseChart [type]="'line'" [data]="lineChartData" [options]="lineChartOptions">
+    <canvas
+      *ngIf="!loading && !error"
+      baseChart
+      [type]="'line'"
+      [data]="lineChartData"
+      [options]="lineChartOptions">
     </canvas>
 
-    <div class="empty-state" *ngIf="
+    <div
+      class="empty-state"
+      *ngIf="
         !loading &&
         !error &&
         lineChartData.datasets[0].data.length === 0
@@ -58,15 +70,70 @@
       Waiting for market data...
     </div>
   </div>
+</div>
 
-  <div class="chart-footer">
-    <div class="footer-item">
-      <span class="footer-dot"></span>
-      <span>Live market price</span>
-    </div>
-
-    <span class="footer-note">
-      Source: Binance Spot
-    </span>
+<!-- Statistics below the chart -->
+<div class="session-stats">
+  <div class="stat-card">
+    <span class="stat-label">Session Trades</span>
+    <strong>{{ sessionTrades | number }}</strong>
   </div>
+
+  <div class="stat-card">
+    <span class="stat-label">Session Volume</span>
+    <strong>{{ sessionVolume | number:'1.2-6' }}</strong>
+  </div>
+
+  <div class="stat-card">
+    <span class="stat-label">Volume (USDT)</span>
+    <strong>{{ sessionQuoteVolume | number:'1.2-2' }}</strong>
+  </div>
+
+  <div class="stat-card">
+    <span class="stat-label">Buy Volume</span>
+    <strong class="positive">
+      {{ buyVolume | number:'1.2-6' }}
+    </strong>
+  </div>
+
+  <div class="stat-card">
+    <span class="stat-label">Sell Volume</span>
+    <strong class="negative">
+      {{ sellVolume | number:'1.2-6' }}
+    </strong>
+  </div>
+
+  <div class="stat-card">
+    <span class="stat-label">Session High</span>
+    <strong>
+      {{ sessionHigh > 0 ? (sessionHigh | number:'1.2-8') : '—' }}
+    </strong>
+  </div>
+
+  <div class="stat-card">
+    <span class="stat-label">Session Low</span>
+    <strong>
+      {{ sessionLow > 0 ? (sessionLow | number:'1.2-8') : '—' }}
+    </strong>
+  </div>
+
+  <div class="stat-card">
+    <span class="stat-label">Session Change</span>
+    <strong
+      [class.positive]="sessionChangePercent > 0"
+      [class.negative]="sessionChangePercent < 0">
+      {{ sessionChangePercent > 0 ? '+' : '' }}{{ sessionChangePercent | number:'1.2-2' }}%
+    </strong>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="chart-footer">
+  <div class="footer-item">
+    <span class="footer-dot"></span>
+    <span>Live market price</span>
+  </div>
+
+  <span class="footer-note">Source: Binance Spot</span>
+</div>
 </section>
