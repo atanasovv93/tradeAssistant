@@ -5,6 +5,7 @@ import {
   inject,
 } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import {
@@ -15,7 +16,6 @@ import {
 
 import { FIXED_BASES } from '../../../../../../services/binance/crypto-assets.config';
 import { CryptoChartComponent } from '../../../../../../components/crypto-chart/crypto-chart.component';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-crypto-details-card',
@@ -31,6 +31,7 @@ import { RouterLink } from '@angular/router';
 export class CryptoDetailsCardComponent implements OnInit, OnDestroy {
   private readonly cryptoService = inject(CryptoService);
   private readonly location = inject(Location);
+  private readonly route = inject(ActivatedRoute);
 
   // Available cryptocurrencies
   readonly coins = Object.entries(FIXED_BASES).map(([symbol, data]) => ({
@@ -42,6 +43,7 @@ export class CryptoDetailsCardComponent implements OnInit, OnDestroy {
   // WebSocket subscriptions
   private cryptoSub?: Subscription;
   private tradesSub?: Subscription;
+  private routeSub?: Subscription;
 
   // Selected cryptocurrency
   selectedSymbol = 'BTCUSDT';
@@ -51,13 +53,28 @@ export class CryptoDetailsCardComponent implements OnInit, OnDestroy {
 
   // Recent trades
   trades: BinanceTrade[] = [];
-
   buyTrades: BinanceTrade[] = [];
-
   sellTrades: BinanceTrade[] = [];
 
   ngOnInit(): void {
-    this.loadCoinData(this.selectedSymbol);
+    // Read the cryptocurrency symbol from the URL.
+    this.routeSub = this.route.paramMap.subscribe(params => {
+      const symbol = params.get('symbol');
+
+      if (!symbol) {
+        return;
+      }
+
+      const normalizedSymbol = symbol.toUpperCase();
+
+      if (normalizedSymbol === this.selectedSymbol &&
+          (this.cryptoSub || this.tradesSub)) {
+        return;
+      }
+
+      this.selectedSymbol = normalizedSymbol;
+      this.loadCoinData(this.selectedSymbol);
+    });
   }
 
   /**
@@ -69,33 +86,37 @@ export class CryptoDetailsCardComponent implements OnInit, OnDestroy {
 
   /**
    * Change the selected cryptocurrency.
-   * The chart receives the new symbol through @Input().
    */
   loadCoin(symbol: string): void {
-    if (!symbol || symbol === this.selectedSymbol) {
+    if (!symbol) {
       return;
     }
 
-    this.selectedSymbol = symbol;
+    const normalizedSymbol = symbol.toUpperCase();
 
-    this.loadCoinData(symbol);
+    if (normalizedSymbol === this.selectedSymbol) {
+      return;
+    }
+
+    this.selectedSymbol = normalizedSymbol;
+    this.loadCoinData(this.selectedSymbol);
   }
 
   /**
    * Load live Binance ticker and trade data.
    */
   private loadCoinData(symbol: string): void {
-    // Unsubscribe from previous streams
+    // Unsubscribe from previous streams.
     this.cryptoSub?.unsubscribe();
     this.tradesSub?.unsubscribe();
 
-    // Reset data for the selected cryptocurrency
+    // Reset data for the selected cryptocurrency.
     this.trend = null;
     this.trades = [];
     this.buyTrades = [];
     this.sellTrades = [];
 
-    // Subscribe to 24-hour ticker
+    // Subscribe to 24-hour ticker.
     this.cryptoSub = this.cryptoService
       .get24hTrend(symbol)
       .subscribe({
@@ -107,7 +128,7 @@ export class CryptoDetailsCardComponent implements OnInit, OnDestroy {
         },
       });
 
-    // Subscribe to real-time trades
+    // Subscribe to real-time trades.
     this.tradesSub = this.cryptoService
       .getRecentTrades(symbol)
       .subscribe({
@@ -150,6 +171,7 @@ export class CryptoDetailsCardComponent implements OnInit, OnDestroy {
    * Clean up subscriptions when the component is destroyed.
    */
   ngOnDestroy(): void {
+    this.routeSub?.unsubscribe();
     this.cryptoSub?.unsubscribe();
     this.tradesSub?.unsubscribe();
   }
