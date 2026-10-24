@@ -63,7 +63,7 @@ export class CryptoChartComponent
   loading = true;
   error = '';
 
-  private readonly maxPoints = 60;
+  private readonly maxPoints = 300;
 
   public lineChartData: ChartConfiguration<'line'>['data'] = {
     labels: [],
