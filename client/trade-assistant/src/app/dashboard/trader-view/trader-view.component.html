@@ -1,490 +1,186 @@
 <div class="trader-view">
 
-  <!-- ================================
-       HEADER
-       ================================ -->
-
+  <!-- HEADER -->
   <div class="trader-header">
+    <div>
+      <h2>Trader View</h2>
+      <p>Live market statistics</p>
+    </div>
 
-<div>
-  <h2>Trader View</h2>
-  <p>Live market statistics</p>
-</div>
+    <div class="coin-selector">
+      <label for="coin">Coin</label>
 
-<div class="coin-selector">
-
-  <label for="coin">
-    Coin
-  </label>
-
-  <select
-    id="coin"
-    [value]="selectedSymbol"
-    (change)="loadCoin($any($event.target).value)"
-  >
-
-    <option
-      *ngFor="let coin of coins"
-      [value]="coin.symbol"
-    >
-      {{ coin.name }} ({{ coin.symbol }})
-    </option>
-
-  </select>
-
-</div>
-
+      <select id="coin" [value]="selectedSymbol" (change)="loadCoin($any($event.target).value)">
+        <option *ngFor="let coin of coins" [value]="coin.symbol">
+          {{ coin.name }} ({{ coin.symbol }})
+        </option>
+      </select>
+    </div>
   </div>
 
-  <!-- ================================
-       MAIN CONTENT
-       ================================ -->
-
+  <!-- MAIN CONTENT -->
   <div class="trader-content">
 
-<!-- ================================
-     TRADINGVIEW CHART
-     ================================ -->
+  <app-crypto-chart [symbol]="selectedSymbol"></app-crypto-chart>
 
-<div class="chart-container">
+    <!-- MARKET STATISTICS -->
+    <aside class="market-panel">
 
-  <div class="chart-header">
+      <div class="market-title">
+        <span>{{ selectedSymbol }}</span>
 
-    <strong>
-      {{ selectedSymbol }}
-    </strong>
+        <span *ngIf="trend" class="live-indicator">
+          ● LIVE
+        </span>
+      </div>
 
+      <!-- PRICE -->
+      <div *ngIf="trend" class="price-section">
+        <span class="label">Price</span>
+
+        <strong class="main-price">
+          ${{ trend.close | number:'1.2-8' }}
+        </strong>
+      </div>
+
+      <!-- CHANGE -->
+      <div *ngIf="trend" class="change" [class.positive]="trend.priceChangePercent > 0"
+        [class.negative]="trend.priceChangePercent < 0">
+        {{ trend.priceChangePercent > 0 ? '▲' : trend.priceChangePercent < 0 ? '▼' : '●' }} {{ trend.priceChangePercent
+          | number:'1.2-2' }}% </div>
+
+          <!-- STATISTICS -->
+          <div *ngIf="trend" class="stats-grid">
+
+            <div class="stat">
+              <span>24h High</span>
+              <strong>${{ trend.high | number:'1.2-8' }}</strong>
+            </div>
+
+            <div class="stat">
+              <span>24h Low</span>
+              <strong>${{ trend.low | number:'1.2-8' }}</strong>
+            </div>
+
+            <div class="stat">
+              <span>Trades</span>
+              <strong>{{ trend.trades | number }}</strong>
+            </div>
+
+            <div class="stat">
+              <span>Volume</span>
+              <strong>{{ trend.volume | number:'1.0-2' }}</strong>
+            </div>
+
+            <div class="stat">
+              <span>Quote Volume</span>
+              <strong>${{ trend.quoteVolume | number:'1.0-2' }}</strong>
+            </div>
+
+            <div class="stat">
+              <span>Avg. Trade</span>
+              <strong>${{ averageTradeSize | number:'1.2-2' }}</strong>
+            </div>
+
+            <div class="stat">
+              <span>Bid</span>
+              <strong>${{ trend.bid | number:'1.2-8' }}</strong>
+            </div>
+
+            <div class="stat">
+              <span>Ask</span>
+              <strong>${{ trend.ask | number:'1.2-8' }}</strong>
+            </div>
+
+            <div class="stat full">
+              <span>Spread</span>
+              <strong>${{ trend.spread | number:'1.2-8' }}</strong>
+            </div>
+
+          </div>
+
+          <!-- LOADING -->
+          <div *ngIf="!trend" class="loading">
+            Loading market data...
+          </div>
+
+    </aside>
   </div>
 
-  <!-- TradingView го вметнува преку TypeScript -->
-  <div
-    id="tradingview_chart"
-    class="tradingview-chart"
-  ></div>
-
-</div>
-
-
-<!-- ================================
-     MARKET STATISTICS
-     ================================ -->
-
-<aside class="market-panel">
-
-  <div class="market-title">
-
-    <span>
-      {{ selectedSymbol }}
-    </span>
-
-    <span
-      *ngIf="trend"
-      class="live-indicator"
-    >
-      ● LIVE
-    </span>
-
-  </div>
-
-
-  <!-- ================================
-       PRICE
-       ================================ -->
-
-  <div
-    *ngIf="trend"
-    class="price-section"
-  >
-
-    <span class="label">
-      Price
-    </span>
-
-    <strong class="main-price">
-      ${{ trend.close | number:'1.2-8' }}
-    </strong>
-
-  </div>
-
-
-  <!-- ================================
-       CHANGE
-       ================================ -->
-
-  <div
-    *ngIf="trend"
-    class="change"
-    [class.positive]="trend.priceChangePercent > 0"
-    [class.negative]="trend.priceChangePercent < 0"
-  >
-
-    {{ trend.priceChangePercent > 0 ? '▲' : '▼' }}
-
-    {{ trend.priceChangePercent | number:'1.2-2' }}%
-
-  </div>
-
-
-  <!-- ================================
-       STATISTICS
-       ================================ -->
-
-  <div
-    *ngIf="trend"
-    class="stats-grid"
-  >
-
-
-    <!-- HIGH -->
-
-    <div class="stat">
-
-      <span>
-        24h High
-      </span>
-
-      <strong>
-        ${{ trend.high | number:'1.2-8' }}
-      </strong>
-
-    </div>
-
-
-    <!-- LOW -->
-
-    <div class="stat">
-
-      <span>
-        24h Low
-      </span>
-
-      <strong>
-        ${{ trend.low | number:'1.2-8' }}
-      </strong>
-
-    </div>
-
-
-    <!-- TRADES -->
-
-    <div class="stat">
-
-      <span>
-        Trades
-      </span>
-
-      <strong>
-        {{ trend.trades | number }}
-      </strong>
-
-    </div>
-
-
-    <!-- VOLUME -->
-
-    <div class="stat">
-
-      <span>
-        Volume
-      </span>
-
-      <strong>
-        {{ trend.volume | number:'1.0-2' }}
-      </strong>
-
-    </div>
-
-
-    <!-- QUOTE VOLUME -->
-
-    <div class="stat">
-
-      <span>
-        Quote Volume
-      </span>
-
-      <strong>
-        ${{ trend.quoteVolume | number:'1.0-2' }}
-      </strong>
-
-    </div>
-
-
-    <!-- AVERAGE TRADE -->
-
-    <div class="stat">
-
-      <span>
-        Avg. Trade
-      </span>
-
-      <strong>
-        ${{ averageTradeSize | number:'1.2-2' }}
-      </strong>
-
-    </div>
-
-
-    <!-- BID -->
-
-    <div class="stat">
-
-      <span>
-        Bid
-      </span>
-
-      <strong>
-        ${{ trend.bid | number:'1.2-8' }}
-      </strong>
-
-    </div>
-
-
-    <!-- ASK -->
-
-    <div class="stat">
-
-      <span>
-        Ask
-      </span>
-
-      <strong>
-        ${{ trend.ask | number:'1.2-8' }}
-      </strong>
-
-    </div>
-
-
-    <!-- SPREAD -->
-
-    <div class="stat full">
-
-      <span>
-        Spread
-      </span>
-
-      <strong>
-        ${{ trend.spread | number:'1.2-8' }}
-      </strong>
-
-    </div>
-
-  </div>
-
-
-  <!-- ================================
-       LOADING
-       ================================ -->
-
-  <div
-    *ngIf="!trend"
-    class="loading"
-  >
-    Loading market data...
-  </div>
-
-</aside>
-
-  </div>
-
-  <!-- ================================
-       RECENT TRADES
-       ================================ -->
-
+  <!-- RECENT TRADES -->
   <div class="trades-panel">
 
-<div class="trades-header">
+    <div class="trades-header">
+      <strong>Recent Trades</strong>
 
-  <strong>
-    Recent Trades
-  </strong>
-
-  <span
-    *ngIf="trades.length"
-    class="live-indicator"
-  >
-    ● LIVE
-  </span>
-
-</div>
-
-
-<!-- BUY / SELL -->
-
-<div class="trades-columns">
-
-
-  <!-- ================================
-       BUY TRADES
-       ================================ -->
-
-  <div class="trade-section buy-section">
-
-    <div class="trade-section-title buy-title">
-
-      <span>
-        BUY
+      <span *ngIf="trades.length" class="live-indicator">
+        ● LIVE
       </span>
-
-      <span>
-        {{ buyTrades.length }}
-      </span>
-
     </div>
 
-
-    <div class="trade-table">
-
-
-      <!-- TABLE HEADER -->
-
-      <div class="trade-row trade-head">
-
-        <span>
-          Time
-        </span>
-
-        <span>
-          Price
-        </span>
-
-        <span>
-          Amount
-        </span>
-
-        <span>
-          Total
-        </span>
-
-      </div>
-
+    <!-- BUY / SELL -->
+    <div class="trades-columns">
 
       <!-- BUY TRADES -->
+      <div class="trade-section buy-section">
 
-      <div
-        *ngFor="let trade of buyTrades"
-        class="trade-row"
-      >
+        <div class="trade-section-title buy-title">
+          <span>BUY</span>
+          <span>{{ buyTrades.length }}</span>
+        </div>
 
-        <span>
-          {{ trade.time | date:'HH:mm:ss' }}
-        </span>
+        <div class="trade-table">
 
-        <span>
-          ${{ trade.price | number:'1.2-8' }}
-        </span>
+          <div class="trade-row trade-head">
+            <span>Time</span>
+            <span>Price</span>
+            <span>Amount</span>
+            <span>Total</span>
+          </div>
 
-        <span>
-          {{ trade.quantity | number:'1.0-6' }}
-        </span>
+          <div *ngFor="let trade of buyTrades" class="trade-row">
+            <span>{{ trade.time | date:'HH:mm:ss' }}</span>
+            <span>${{ trade.price | number:'1.2-8' }}</span>
+            <span>{{ trade.quantity | number:'1.0-6' }}</span>
+            <span>${{ trade.price * trade.quantity | number:'1.2-2' }}</span>
+          </div>
 
-        <span>
-          ${{ trade.price * trade.quantity | number:'1.2-2' }}
-        </span>
+          <div *ngIf="!buyTrades.length" class="trades-empty">
+            No BUY trades
+          </div>
 
+        </div>
       </div>
 
-
-      <!-- EMPTY -->
-
-      <div
-        *ngIf="!buyTrades.length"
-        class="trades-empty"
-      >
-        No BUY trades
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- ================================
-       SELL TRADES
-       ================================ -->
-
-  <div class="trade-section sell-section">
-
-    <div class="trade-section-title sell-title">
-
-      <span>
-        SELL
-      </span>
-
-      <span>
-        {{ sellTrades.length }}
-      </span>
-
-    </div>
-
-
-    <div class="trade-table">
-
-
-      <!-- TABLE HEADER -->
-
-      <div class="trade-row trade-head">
-
-        <span>
-          Time
-        </span>
-
-        <span>
-          Price
-        </span>
-
-        <span>
-          Amount
-        </span>
-
-        <span>
-          Total
-        </span>
-
-      </div>
-
-
+    
       <!-- SELL TRADES -->
+      <div class="trade-section sell-section">
+        <div class="trade-section-title sell-title">
+          <span>SELL</span>
+          <span>{{ sellTrades.length }}</span>
+        </div>
 
-      <div
-        *ngFor="let trade of sellTrades"
-        class="trade-row"
-      >
+        <div class="trade-table">
+          <div class="trade-row trade-head">
+            <span>Time</span>
+            <span>Price</span>
+            <span>Amount</span>
+            <span>Total</span>
+          </div>
 
-        <span>
-          {{ trade.time | date:'HH:mm:ss' }}
-        </span>
+          <div *ngFor="let trade of sellTrades" class="trade-row">
+            <span>{{ trade.time | date:'HH:mm:ss' }}</span>
+            <span>${{ trade.price | number:'1.2-8' }}</span>
+            <span>{{ trade.quantity | number:'1.0-6' }}</span>
+            <span>${{ trade.price * trade.quantity | number:'1.2-2' }}</span>
+          </div>
 
-        <span>
-          ${{ trade.price | number:'1.2-8' }}
-        </span>
-
-        <span>
-          {{ trade.quantity | number:'1.0-6' }}
-        </span>
-
-        <span>
-          ${{ trade.price * trade.quantity | number:'1.2-2' }}
-        </span>
-
-      </div>
-
-
-      <!-- EMPTY -->
-
-      <div
-        *ngIf="!sellTrades.length"
-        class="trades-empty"
-      >
-        No SELL trades
+          <div *ngIf="!sellTrades.length" class="trades-empty">
+            No SELL trades
+          </div>
+        </div>
       </div>
 
     </div>
-
   </div>
-
-</div>`
-
-  </div>
-
 </div>

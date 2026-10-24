@@ -1,5 +1,5 @@
+
 import {
-  AfterViewInit,
   Component,
   OnDestroy,
   OnInit,
@@ -15,19 +15,22 @@ import {
 } from '../../services/binance/binance.service';
 
 import { FIXED_BASES } from '../../services/binance/crypto-assets.config';
+import { CryptoChartComponent } from '../../components/crypto-chart/crypto-chart.component';
 
 @Component({
   selector: 'app-trader-view',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    CryptoChartComponent,
+  ],
   templateUrl: './trader-view.component.html',
   styleUrl: './trader-view.component.scss',
 })
-export class TraderViewComponent
-  implements OnInit, AfterViewInit, OnDestroy {
+export class TraderViewComponent implements OnInit, OnDestroy {
   private readonly cryptoService = inject(CryptoService);
 
-  // Available coins
+  // Available cryptocurrencies
   readonly coins = Object.entries(FIXED_BASES).map(([symbol, data]) => ({
     symbol: `${symbol}USDT`,
     name: data.name,
@@ -38,13 +41,13 @@ export class TraderViewComponent
   private cryptoSub?: Subscription;
   private tradesSub?: Subscription;
 
-  // Selected coin
+  // Selected cryptocurrency
   selectedSymbol = 'BTCUSDT';
 
-  // Live 24h market data
+  // Live 24-hour market data
   trend: CryptoTrend | null = null;
 
-  // Last 10 trades
+  // Recent trades
   trades: BinanceTrade[] = [];
 
   buyTrades: BinanceTrade[] = [];
@@ -55,158 +58,87 @@ export class TraderViewComponent
     this.loadCoinData(this.selectedSymbol);
   }
 
-  ngAfterViewInit(): void {
-    this.loadTradingView();
-  }
-
   /**
-   * Change selected coin
+   * Change the selected cryptocurrency.
+   * The chart receives the new symbol through @Input().
    */
   loadCoin(symbol: string): void {
+    if (!symbol || symbol === this.selectedSymbol) {
+      return;
+    }
+
     this.selectedSymbol = symbol;
 
     this.loadCoinData(symbol);
-
-    // Reload TradingView with the new symbol
-    setTimeout(() => {
-      this.loadTradingView();
-    }, 0);
   }
 
   /**
-   * Load live Binance data
+   * Load live Binance ticker and trade data.
    */
   private loadCoinData(symbol: string): void {
-    // Close previous WebSocket connections
+    // Unsubscribe from previous streams
     this.cryptoSub?.unsubscribe();
     this.tradesSub?.unsubscribe();
 
-    // Reset data
+    // Reset data for the selected cryptocurrency
     this.trend = null;
     this.trades = [];
     this.buyTrades = [];
     this.sellTrades = [];
 
-    /**
-     * 24h ticker
-     */
+    // Subscribe to 24-hour ticker
     this.cryptoSub = this.cryptoService
       .get24hTrend(symbol)
       .subscribe({
-        next: (data) => {
+        next: (data: CryptoTrend) => {
           this.trend = data;
         },
-
-        error: (error) => {
-          console.error(
-            'Crypto WebSocket error:',
-            error
-          );
+        error: (error: unknown) => {
+          console.error('Crypto WebSocket error:', error);
         },
       });
 
-    /**
-     * Real-time trades
-     */
+    // Subscribe to real-time trades
     this.tradesSub = this.cryptoService
-  .getRecentTrades(symbol)
-  .subscribe({
-    next: (trade) => {
+      .getRecentTrades(symbol)
+      .subscribe({
+        next: (trade: BinanceTrade) => {
+          this.trades = [
+            trade,
+            ...this.trades,
+          ].slice(0, 20);
 
-      this.trades = [trade, ...this.trades].slice(0, 20);
-
-      if (trade.side === 'BUY') {
-        this.buyTrades = [
-          trade,
-          ...this.buyTrades,
-        ].slice(0, 10);
-      } else {
-        this.sellTrades = [
-          trade,
-          ...this.sellTrades,
-        ].slice(0, 10);
-      }
-    },
-
-    error: (error) => {
-      console.error('Trades WebSocket error:', error);
-    },
-  });
+          if (trade.side === 'BUY') {
+            this.buyTrades = [
+              trade,
+              ...this.buyTrades,
+            ].slice(0, 10);
+          } else {
+            this.sellTrades = [
+              trade,
+              ...this.sellTrades,
+            ].slice(0, 10);
+          }
+        },
+        error: (error: unknown) => {
+          console.error('Trades WebSocket error:', error);
+        },
+      });
   }
 
   /**
-   * Load TradingView chart
-   */
-  private loadTradingView(): void {
-    const container =
-      document.getElementById('tradingview_chart');
-
-    if (!container) {
-      console.warn(
-        'TradingView container not found'
-      );
-      return;
-    }
-
-    // Remove previous chart
-    container.innerHTML = '';
-
-    const script =
-      document.createElement('script');
-
-    script.src =
-      'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
-
-    script.type = 'text/javascript';
-    script.async = true;
-
-    script.innerHTML = JSON.stringify({
-      autosize: true,
-
-      symbol:
-        `BINANCE:${this.selectedSymbol}`,
-
-      // Daily candles
-      interval: '1',
-
-      timezone: 'Europe/Vienna',
-
-      theme: 'dark',
-
-      style: '1',
-
-      locale: 'en',
-
-      enable_publishing: false,
-
-      allow_symbol_change: false,
-
-      support_host:
-        'https://www.tradingview.com',
-    });
-
-    container.appendChild(script);
-  }
-
-  /**
-   * Average trade size
+   * Average quote volume per trade over the last 24 hours.
    */
   get averageTradeSize(): number {
-    if (
-      !this.trend ||
-      this.trend.trades === 0
-    ) {
+    if (!this.trend || this.trend.trades === 0) {
       return 0;
     }
 
-    return (
-      this.trend.quoteVolume /
-      this.trend.trades
-    );
+    return this.trend.quoteVolume / this.trend.trades;
   }
 
   /**
-   * Cleanup
+   * Clean up subscriptions when the component is destroyed.
    */
   ngOnDestroy(): void {
     this.cryptoSub?.unsubscribe();

@@ -58,14 +58,24 @@
   height: 45px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0 18px;
   border-bottom: 1px solid #ddd;
   box-sizing: border-box;
 }
 
-.tradingview-chart {
+.chart-canvas {
+  position: relative;
   width: 100%;
   height: calc(100% - 45px);
+  min-width: 0;
+  padding: 12px;
+  box-sizing: border-box;
+
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
 }
 
 /* MARKET */

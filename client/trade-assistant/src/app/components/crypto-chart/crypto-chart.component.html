@@ -1,0 +1,72 @@
+<section class="crypto-chart">
+  <div class="chart-header">
+    <div class="coin-info">
+      <div class="coin-icon">₿</div>
+
+      <div class="coin-details">
+        <h2>{{ selectedSymbol }}</h2>
+        <span class="subtitle">Cryptocurrency market</span>
+      </div>
+    </div>
+
+    <div class="price-info">
+      <span class="current-price">
+        {{ currentPrice > 0
+        ? (currentPrice | number:'1.2-8')
+        : '—' }}
+        <small>USDT</small>
+      </span>
+
+      <span class="price-change" [class.positive]="priceChangePercent > 0" [class.negative]="priceChangePercent < 0">
+        {{ priceChangePercent > 0 ? '+' : '' }}
+        {{ priceChangePercent | number:'1.2-2' }}%
+        <span>24h</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="chart-toolbar">
+    <div class="symbol-label">
+      <span>Trading pair</span>
+      <strong>{{ selectedSymbol }}</strong>
+    </div>
+
+    <div class="live-indicator">
+      <span class="live-dot"></span>
+      LIVE
+    </div>
+  </div>
+
+  <div class="chart-container">
+    <div class="chart-status" *ngIf="loading">
+      <span class="spinner"></span>
+      <p>Connecting to Binance...</p>
+    </div>
+
+    <div class="chart-error" *ngIf="error">
+      {{ error }}
+    </div>
+
+    <canvas *ngIf="!loading && !error" baseChart [type]="'line'" [data]="lineChartData" [options]="lineChartOptions">
+    </canvas>
+
+    <div class="empty-state" *ngIf="
+        !loading &&
+        !error &&
+        lineChartData.datasets[0].data.length === 0
+      ">
+      Waiting for market data...
+    </div>
+  </div>
+
+  <div class="chart-footer">
+    <div class="footer-item">
+      <span class="footer-dot"></span>
+      <span>Live market price</span>
+    </div>
+
+    <span class="footer-note">
+      Source: Binance Spot
+    </span>
+  </div>
+</section>
