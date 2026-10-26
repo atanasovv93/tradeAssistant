@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
+
 import {
   Chart,
   ChartConfiguration,
@@ -22,7 +23,9 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+
 import { Subscription } from 'rxjs';
+
 import {
   CryptoService,
   CryptoTrend,
@@ -101,10 +104,12 @@ export class CryptoChartComponent
     responsive: true,
     maintainAspectRatio: false,
     animation: false,
+
     interaction: {
       intersect: false,
       mode: 'index',
     },
+
     plugins: {
       legend: {
         display: false,
@@ -113,6 +118,7 @@ export class CryptoChartComponent
         enabled: true,
       },
     },
+
     scales: {
       x: {
         type: 'category',
@@ -124,6 +130,7 @@ export class CryptoChartComponent
           color: 'rgba(156, 163, 175, 0.12)',
         },
       },
+
       y: {
         type: 'linear',
         position: 'right',
@@ -170,7 +177,7 @@ export class CryptoChartComponent
     this.loading = true;
     this.error = '';
 
-    // Reset session statistics for the new symbol
+    // Reset session statistics
     this.sessionTrades = 0;
     this.sessionVolume = 0;
     this.sessionQuoteVolume = 0;
@@ -195,7 +202,7 @@ export class CryptoChartComponent
       ],
     };
 
-    // Stream 1: live ticker
+    // Stream 1: 24-hour ticker
     this.tickerSubscription = this.cryptoService
       .get24hTrend(symbol)
       .subscribe({
@@ -207,6 +214,7 @@ export class CryptoChartComponent
           }
 
           this.currentPrice = price;
+
           this.priceChangePercent =
             Number(trend.priceChangePercent) || 0;
 
@@ -220,13 +228,14 @@ export class CryptoChartComponent
             100;
 
           this.loading = false;
-
-          this.addPricePoint(price);
         },
+
         error: (error: unknown) => {
           console.error('[CryptoChart] Ticker error:', error);
+
           this.error =
             'Не може да се поврзе со Binance ticker.';
+
           this.loading = false;
         },
       });
@@ -236,59 +245,69 @@ export class CryptoChartComponent
       .getRecentTrades(symbol)
       .subscribe({
         next: (trade: BinanceTrade) => {
+          const price = Number(trade.price);
+          const quantity = Number(trade.quantity);
+
           if (
-            !Number.isFinite(trade.price) ||
-            trade.price <= 0 ||
-            !Number.isFinite(trade.quantity) ||
-            trade.quantity <= 0
+            !Number.isFinite(price) ||
+            price <= 0 ||
+            !Number.isFinite(quantity) ||
+            quantity <= 0
           ) {
             return;
           }
+
+          // Update current price and chart using the actual trade price
+          this.currentPrice = price;
+          this.addPricePoint(price);
 
           this.lastTrade = trade;
           this.sessionTrades++;
 
           // Volume in base asset, e.g. BTC
-          this.sessionVolume += trade.quantity;
+          this.sessionVolume += quantity;
 
           // Volume in quote asset, e.g. USDT
-          this.sessionQuoteVolume +=
-            trade.price * trade.quantity;
+          this.sessionQuoteVolume += price * quantity;
 
           if (trade.side === 'BUY') {
-            this.buyVolume += trade.quantity;
+            this.buyVolume += quantity;
           } else {
-            this.sellVolume += trade.quantity;
+            this.sellVolume += quantity;
           }
 
+          // Session high and low
           if (this.sessionHigh === 0) {
-            this.sessionHigh = trade.price;
-            this.sessionLow = trade.price;
+            this.sessionHigh = price;
+            this.sessionLow = price;
           } else {
             this.sessionHigh = Math.max(
               this.sessionHigh,
-              trade.price,
+              price,
             );
 
             this.sessionLow = Math.min(
               this.sessionLow,
-              trade.price,
+              price,
             );
           }
 
-          // If the ticker has not produced a price yet,
-          // use the first trade as the session start.
+          // Initialize session start price
           if (this.sessionStartPrice === 0) {
-            this.sessionStartPrice = trade.price;
+            this.sessionStartPrice = price;
           }
 
-          if (this.currentPrice > 0) {
+          if (this.sessionStartPrice > 0) {
             this.sessionChangePercent =
-              ((this.currentPrice - this.sessionStartPrice) /
+              ((price - this.sessionStartPrice) /
                 this.sessionStartPrice) *
               100;
           }
+
+          // Ensure the chart becomes visible when trades arrive
+          this.loading = false;
         },
+
         error: (error: unknown) => {
           console.error('[CryptoChart] Trades error:', error);
         },
@@ -304,16 +323,17 @@ export class CryptoChartComponent
       ...(this.lineChartData.datasets[0].data as number[]),
     ];
 
-    labels.push(
-      new Date().toLocaleTimeString('en-GB', {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-      }),
-    );
+    const timestamp = new Date().toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    });
 
+    labels.push(timestamp);
     values.push(price);
 
+    // Keep only the latest 300 points
     if (labels.length > this.maxPoints) {
       labels.shift();
       values.shift();
